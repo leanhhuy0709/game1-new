@@ -1,6 +1,6 @@
 class Size {
-    width: number
-    height: number
+    private width: number
+    private height: number
 
     public constructor(width: number, height: number) {
         this.width = width

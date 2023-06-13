@@ -1,0 +1,5 @@
+export enum SCENE_STATE {
+    GAME_PLAY_SCENE,
+    GAME_OVER_SCENE,
+    GAME_START_SCENE,
+}
