@@ -1,17 +1,24 @@
 import Renderer from '../engine/Renderer'
+import Coord from './Coord'
+import Renderable from './Renderable'
 
-class Text {
+class Text extends Renderable {
     private content: string
     private font: string
     private align: CanvasTextAlign
     private color: string
+    private coord: Coord
 
     public constructor(
         content = '',
+        x = 100,
+        y = 100,
         font = '30px Cambria',
         align: CanvasTextAlign,
         color = 'black'
     ) {
+        super()
+        this.coord = new Coord(x, y)
         this.content = content
         this.font = font
         this.align = align
@@ -41,15 +48,24 @@ class Text {
     public setAlign(align: CanvasTextAlign): void {
         this.align = align
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public render(x: number, y: number, depth: number): void {
+
+    public render(): void {
         if (Renderer.ctx) {
             Renderer.ctx.fillStyle = this.color
             Renderer.ctx.font = this.font
             Renderer.ctx.textAlign = this.align
-            Renderer.ctx.fillText(this.content, x, y)
-            //Renderer.ctx.strokeText(this.content, x, y)
+            Renderer.ctx.fillText(this.content, this.coord.getX(), this.coord.getY())
         }
+    }
+
+    public setCoord(x: number, y: number):void
+    {
+        this.coord.setCoord(x, y)
+    }
+
+    public getCoord(): Coord 
+    {
+        return this.coord
     }
 }
 

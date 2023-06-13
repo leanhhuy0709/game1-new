@@ -7,7 +7,7 @@ class Obstacle extends GameObject {
     }
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     public render() {
-        super.render(100)
+        super.render()
     }
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     public reset(x: number) {

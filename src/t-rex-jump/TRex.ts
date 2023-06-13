@@ -1,5 +1,6 @@
 import Picture from '../component/Picture'
 import Body, { LAND } from '../engine/Body'
+import Sound from '../engine/Sound'
 import Sprite from '../engine/Sprite'
 
 const DINOSAUR_MOVE_1 = 'assets/dinosaur-sprites/Run (1).png'
@@ -29,11 +30,15 @@ const DINOSAUR_DEAD_1 = 'assets/dinosaur-sprites/Dead (6).png'
 const DINOSAUR_IDLE_1 = 'assets/dinosaur-sprites/Idle (1).png'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DINOSAUR_DUCK_1 = 'assets/dinosaur-sprites/Duck (1).png'
+const DINOSAUR_DUCK_2 = 'assets/dinosaur-sprites/Duck (2).png'
 
 class TRex extends Body {
     private jumpSprites: Sprite
     private fallSprites: Sprite
-    private deadSprites: Sprite
+    private duckSprites: Sprite
+    private jumpSfx: Sound
+    private fallSfx: Sound
+    private isDuck: boolean
 
     public constructor(delay: number, x = 0, y = 0, w = 0, h = 0) {
         super(
@@ -65,7 +70,7 @@ class TRex extends Body {
         ]
         let tmp = []
         for (let i = 0; i < sprites.length; i++) {
-            tmp.push(new Picture(sprites[i], w, h))
+            tmp.push(new Picture(sprites[i], x, y, w, h))
         }
 
         this.jumpSprites = new Sprite(tmp, delay)
@@ -73,26 +78,25 @@ class TRex extends Body {
         sprites = [DINOSAUR_8, DINOSAUR_8, DINOSAUR_9, DINOSAUR_10, DINOSAUR_11, DINOSAUR_12]
         tmp = []
         for (let i = 0; i < sprites.length; i++) {
-            tmp.push(new Picture(sprites[i], w, h))
+            tmp.push(new Picture(sprites[i], x, y, w, h))
         }
 
         this.fallSprites = new Sprite(tmp, delay)
 
-        sprites = [DINOSAUR_DEAD_1]
+        sprites = [DINOSAUR_DUCK_1, DINOSAUR_DUCK_2]
         tmp = []
         for (let i = 0; i < sprites.length; i++) {
-            tmp.push(new Picture(sprites[i], w, h))
+            tmp.push(new Picture(sprites[i], x, y, w * 1.2, h * 0.8))
         }
 
-        this.deadSprites = new Sprite(tmp, delay)
+        this.duckSprites = new Sprite(tmp, delay * 2)
+
+        this.jumpSfx = new Sound('assets/sound/jump_sfx.mp3')
+        this.fallSfx = new Sound('assets/sound/fall_sfx.wav')
     }
 
-    public update(deltaTime: number, isDead = false) {
+    public update(deltaTime: number) {
         super.update(deltaTime)
-
-        if (isDead) {
-            return
-        }
 
         if (this.isJump()) {
             this.fallSprites.setIdx(0)
@@ -105,52 +109,63 @@ class TRex extends Body {
         } else {
             this.fallSprites.setIdx(0)
             this.jumpSprites.setIdx(0)
-            this.getSprite().goToNext(deltaTime)
+
+            if (this.isDuck) this.duckSprites.goToNext(deltaTime)
+            else this.getSprite().goToNext(deltaTime)
         }
     }
 
-    public render(depth = 5, isDead = false): void {
-        if (isDead) {
-            this.deadSprites.render(
+    public render(canPlaySfx = true): void {
+        if (this.isJump()) {
+            this.jumpSprites.setCoord(
                 this.getCoord().getX(),
-                this.getCoord().getY() - this.deadSprites.getCurrent().getSize().getHeight(),
-                depth
+                this.getCoord().getY() - this.jumpSprites.getCurrent().getSize().getHeight()
             )
-            return
-        }
-        if (this.isJump())
-            this.jumpSprites.render(
-                this.getCoord().getX(),
-                this.getCoord().getY() - this.jumpSprites.getCurrent().getSize().getHeight(),
-                depth
-            )
-        else if (this.isFall()) {
+            this.jumpSprites.render()
+        } else if (this.isFall()) {
+            if (this.getCoord().getY() + 30 > LAND && canPlaySfx) this.fallSfx.play()
             if (this.getCoord().getY() + 50 > LAND) {
                 this.fallSprites.setIdx(this.fallSprites.getLength() - 1)
                 this.fallSprites.setDelay(0)
-                this.fallSprites.render(
+                this.fallSprites.setCoord(
                     this.getCoord().getX(),
-                    this.getCoord().getY() - this.fallSprites.getCurrent().getSize().getHeight(),
-                    depth
+                    this.getCoord().getY() - this.fallSprites.getCurrent().getSize().getHeight()
                 )
+                this.fallSprites.render()
             } else {
-                this.fallSprites.render(
+                this.fallSprites.setCoord(
                     this.getCoord().getX(),
-                    this.getCoord().getY() - this.fallSprites.getCurrent().getSize().getHeight(),
-                    depth
+                    this.getCoord().getY() - this.fallSprites.getCurrent().getSize().getHeight()
                 )
+                this.fallSprites.render()
             }
-        } else super.render(depth)
-        //this.sprite.render(this.coord.getX(), this.coord.getY() - heightPicture, depth)
+        } else {
+            if (this.isDuck) {
+                this.duckSprites.setCoord(
+                    this.coord.getX(),
+                    this.coord.getY() - this.duckSprites.getCurrent().getSize().getHeight() + 10
+                )
+                this.duckSprites.render()
+            } else super.render()
+        }
     }
 
     public jump(): void {
         if (this.isJump() || this.isFall()) return
         this.setStartSpeed(2.5)
+        this.jumpSfx.play()
     }
 
     public fall(): void {
         this.setStartSpeed(0)
+    }
+
+    public duck(): void {
+        this.isDuck = true
+    }
+
+    public move(): void {
+        this.isDuck = false
     }
 }
 

@@ -2,15 +2,17 @@ import Coord from './Coord'
 import Renderer from '../engine/Renderer'
 import Size from './Size'
 import Text from './Text'
+import Renderable from './Renderable'
 
-class Button {
+class Button extends Renderable {
     private text: Text
     private coord: Coord
     private size: Size
     private isHover: boolean
 
     public constructor(content: string, x = 0, y = 0, w = 0, h = 0) {
-        this.text = new Text(content, `30px 'Montserrat', sans-serif`, 'center')
+        super()
+        this.text = new Text(content, x, y, `30px 'Montserrat', sans-serif`, 'center')
         this.coord = new Coord(x, y)
         this.size = new Size(w, h)
         this.isHover = false

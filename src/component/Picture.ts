@@ -1,13 +1,18 @@
 import Renderer from '../engine/Renderer'
+import Coord from './Coord'
+import Renderable from './Renderable'
 import Size from './Size'
 
-class Picture {
+class Picture extends Renderable {
     private href: string
     private size: Size
     private image: HTMLImageElement
+    private coord: Coord
 
-    public constructor(href = '', w = 0, h = 0) {
+    public constructor(href = '', x = 100, y = 100, w = 50, h = 50) {
+        super()
         this.href = href
+        this.coord = new Coord(x, y)
         this.size = new Size(w, h)
         this.image = new Image(w, h)
         this.image.src = href
@@ -33,10 +38,27 @@ class Picture {
     public setSize(w: number, h: number): void {
         this.size.setWidth(w)
         this.size.setHeight(h)
+        this.getImage().width = w
+        this.getImage().height = h
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public render(x: number, y: number, depth: number) {
-        Renderer.ctx?.drawImage(this.image, x, y, this.size.getWidth(), this.size.getHeight())
+
+    public setCoord(x: number, y: number): void {
+        this.coord.setX(x)
+        this.coord.setY(y)
+    }
+
+    public getCoord(): Coord {
+        return this.coord
+    }
+
+    public render() {
+        Renderer.ctx?.drawImage(
+            this.image,
+            this.coord.getX(),
+            this.coord.getY(),
+            this.size.getWidth(),
+            this.size.getHeight()
+        )
         //Renderer.addToQueue(this, new Coord(x, y), depth)
     }
 }

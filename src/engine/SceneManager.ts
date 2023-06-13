@@ -19,6 +19,7 @@ class SceneManager {
     public setNewScene(scene: Scene): void {
         this.scene.clear()
         this.scene = scene
+        SceneManager.nextSceneName = this.scene.getName()
     }
 
     public isNeedToChangeScene(): boolean {

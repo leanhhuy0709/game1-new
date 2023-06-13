@@ -1,17 +1,19 @@
 import Coord from '../component/Coord'
 import Picture from '../component/Picture'
+import Renderable from '../component/Renderable'
 import Size from '../component/Size'
 import Sprite from './Sprite'
 
-class GameObject {
+class GameObject extends Renderable {
     protected coord: Coord
     protected size: Size
     protected sprite: Sprite
 
     public constructor(sprites: string[], delay: number, x = 0, y = 0, w = 0, h = 0) {
+        super()
         const tmp = []
         for (let i = 0; i < sprites.length; i++) {
-            tmp.push(new Picture(sprites[i], w, h))
+            tmp.push(new Picture(sprites[i], x, y, w, h))
         }
         this.sprite = new Sprite(tmp, delay)
 
@@ -19,9 +21,10 @@ class GameObject {
         this.size = new Size(w, h)
     }
 
-    public render(depth = 5) {
+    public render() {
         const heightPicture = this.sprite.getCurrent().getSize().getHeight()
-        this.sprite.render(this.coord.getX(), this.coord.getY() - heightPicture, depth)
+        this.sprite.setCoord(this.coord.getX(), this.coord.getY() - heightPicture)
+        this.sprite.render()
     }
 
     public getCoord(): Coord {
@@ -36,8 +39,9 @@ class GameObject {
         return this.sprite
     }
 
-    public setCoord(coord: Coord): void {
-        this.coord = coord
+    public setCoord(x: number, y: number): void {
+        this.coord.setCoord(x, y)
+        this.sprite.setCoord(x, y)
     }
 
     public setSize(w: number, h: number): void {

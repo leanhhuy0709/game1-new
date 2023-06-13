@@ -3,9 +3,7 @@ import Cactus from './Cactus'
 import TRex from './TRex'
 import TRexScore, { GAME_SPEED_DEFAULT } from './TRexScore'
 import CollisionManager from '../engine/CollisionManager'
-
-//delete it if complete
-const BACKGROUND_WIDTH = 1000
+import FlyDino from './FlyDino'
 
 //ObstacleManager: manage obstacle and handle collision
 export default class ObstacleManager {
@@ -15,7 +13,8 @@ export default class ObstacleManager {
         const randNum = [1, 2, 4, 4, 5, 6, 6, 8, 8, 10]
         randNum.sort(() => Math.random())
         for (let i = 0; i < 10; i++) {
-            this.obstacles.push(new Cactus(0))
+            if (randNum[i] % 2 == 0) this.obstacles.push(new Cactus(0))
+            else this.obstacles.push(new FlyDino(30))
         }
         this.start()
     }
@@ -30,18 +29,30 @@ export default class ObstacleManager {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
             if (!isStop) {
-                this.obstacles[i]
-                    .getCoord()
-                    .setX(
-                        this.obstacles[i].getCoord().getX() -
-                            (deltaTime * TRexScore.getGameSpeed()) / GAME_SPEED_DEFAULT
-                    )
+                if (this.obstacles[i].getCoord().getX() <= 1200)
+                    this.obstacles[i]
+                        .getCoord()
+                        .setX(
+                            this.obstacles[i].getCoord().getX() -
+                                (deltaTime *
+                                    (TRexScore.getGameSpeed() + this.obstacles[i].getMoveSpeed())) /
+                                    GAME_SPEED_DEFAULT
+                        )
+                else
+                    this.obstacles[i]
+                        .getCoord()
+                        .setX(
+                            this.obstacles[i].getCoord().getX() -
+                                (deltaTime * TRexScore.getGameSpeed()) / GAME_SPEED_DEFAULT
+                        )
+
                 if (
                     this.obstacles[i].getCoord().getX() < -this.obstacles[i].getSize().getWidth() &&
                     !isStop
                 ) {
                     listObstacleNeedToReset.push(i)
                 }
+                this.obstacles[i].getSprite().goToNext(deltaTime)
             }
         }
         if (isStop) return
@@ -61,7 +72,7 @@ export default class ObstacleManager {
 
     public render(): void {
         for (let i = 0; i < this.obstacles.length; i++) {
-            if (this.obstacles[i].getCoord().getX() <= BACKGROUND_WIDTH) {
+            if (this.obstacles[i].getCoord().getX() <= 1200) {
                 this.obstacles[i].render()
             }
         }

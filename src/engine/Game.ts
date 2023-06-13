@@ -9,7 +9,6 @@ class Game {
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public update(lastTime: number) {
-        Renderer.waitForAllImagesToLoadAndCallDraw()
         const currTime = Date.now()
         requestAnimationFrame(() => this.update(currTime))
     }

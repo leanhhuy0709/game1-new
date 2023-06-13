@@ -1,8 +1,10 @@
 //import Button from '../component/Button'
 import Game from '../engine/Game'
+import Renderer from '../engine/Renderer'
 import SceneManager from '../engine/SceneManager'
 import GameOverScene from './GameOverScene'
 import GamePlayScene from './GamePlayScene'
+import GameSettingScene from './GameSettingScene'
 import GameStartScene from './GameStartScene'
 
 class TRexJump extends Game {
@@ -40,8 +42,13 @@ class TRexJump extends Game {
                 case 'GameStartScene':
                     this.sceneManager.setNewScene(new GameStartScene())
                     break
+                case 'GameSettingScene':
+                    this.sceneManager.setNewScene(new GameSettingScene())
+                    break
             }
         }
+
+        Renderer.drawAll()
 
         currTime = Date.now()
         super.update(currTime)

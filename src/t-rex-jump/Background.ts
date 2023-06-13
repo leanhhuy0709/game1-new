@@ -12,7 +12,7 @@ class Background {
     public constructor(pictures: string[], speed: number, w: number, h: number) {
         this.pictures = []
         for (let i = 0; i < pictures.length; i++) {
-            this.pictures.push(new Picture(pictures[i], w, h))
+            for (let j = 0; j < 20; j++) this.pictures.push(new Picture(pictures[i], 0, 0, w, h))
         }
         this.idx = 0
         this.speed = speed
@@ -42,11 +42,13 @@ class Background {
 
     public render(): void {
         const pic = this.getCurrent()
-        pic.render(this.position, 0, 0)
+        pic.setCoord(this.position, 0)
+        pic.render()
 
         if (this.size.getWidth() + this.position < Renderer.canvas.width) {
             const pic2 = this.getNext()
-            pic2.render(this.position + this.size.getWidth(), 0, 0)
+            pic2.setCoord(this.position + this.size.getWidth(), 0)
+            pic2.render()
         }
     }
 }

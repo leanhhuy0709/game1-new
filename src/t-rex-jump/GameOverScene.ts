@@ -1,5 +1,6 @@
 import Button from '../component/Button'
 import Text from '../component/Text'
+import Renderer from '../engine/Renderer'
 import Scene from '../engine/Scene'
 import SceneManager from '../engine/SceneManager'
 import Background from './Background'
@@ -17,7 +18,7 @@ class GameOverScene extends Scene {
     public constructor() {
         super('GameOverScene')
         //Comic Sans MS
-        this.text = new Text('Game Over', `50px Comic Sans MS`, 'center', 'red')
+        this.text = new Text('Game Over', 350, 150, `50px Comic Sans MS`, 'center', 'red')
         this.background = new Background([BACKGROUND, BACKGROUND], 0, 700, 400)
         this.tryAgainBtn = new Button('Try Again', 350, 220, 200, 50)
         this.settingBtn = new Button('Setting', 350, 280, 200, 50)
@@ -37,26 +38,38 @@ class GameOverScene extends Scene {
             const mouseCoord = this.input.getMouseCoord()
             if (this.tryAgainBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
                 SceneManager.setNextScene('GamePlayScene')
-            }
-            if (this.settingBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+            } else if (this.settingBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
                 SceneManager.setNextScene('GameSettingScene')
-            }
-            if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+            } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
                 SceneManager.setNextScene('GameStartScene')
             }
         }
     }
 
     public render(): void {
+        Renderer.addToQueue(this.background, 0)
+        Renderer.addToQueue(this.text, 5)
+        Renderer.addToQueue(this.tryAgainBtn, 5)
+        Renderer.addToQueue(this.settingBtn, 5)
+        Renderer.addToQueue(this.exitBtn, 5)
+
+        TRexScore.getHighScoreText().setCoord(5, 25)
+        Renderer.addToQueue(TRexScore.getScoreText(), 5)
+
+        TRexScore.getHighScoreText().setAlign('end')
+        TRexScore.getHighScoreText().setCoord(700, 25)
+        Renderer.addToQueue(TRexScore.getHighScoreText(), 5)
+        /*
         this.background.render()
-        this.text.render(350, 150, 10)
+        this.text.render()
         this.tryAgainBtn.render()
         this.settingBtn.render()
         this.exitBtn.render()
         TRexScore.showScore(5, 25)
 
-        TRexScore.getHighScoreText().setAlign('end')
+        
         TRexScore.showHighScore(700, 25)
+        */
     }
 }
 
