@@ -1,5 +1,5 @@
-import Coord from './component/Coord'
-import Renderer from './Renderer'
+import Coord from "../component/Coord"
+import Canvas from "../renderer/canvas/Canvas"
 
 class InputHandler {
     private keyStatesDown: { [key: string]: boolean }
@@ -22,13 +22,13 @@ class InputHandler {
         this.directTouch = ''
 
         // Gắn các bộ lắng nghe sự kiện vào canvas
-        Renderer.canvas.addEventListener('keydown', this.handleKeyDown.bind(this))
-        Renderer.canvas.addEventListener('keyup', this.handleKeyUp.bind(this))
-        Renderer.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this))
-        Renderer.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this))
-        Renderer.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this))
-        Renderer.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this))
-        Renderer.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this))
+        Canvas.canvas.addEventListener('keydown', this.handleKeyDown.bind(this))
+        Canvas.canvas.addEventListener('keyup', this.handleKeyUp.bind(this))
+        Canvas.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this))
+        Canvas.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this))
+        Canvas.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this))
+        Canvas.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this))
+        Canvas.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this))
     }
 
     private handleKeyDown(event: KeyboardEvent) {
@@ -42,7 +42,7 @@ class InputHandler {
     }
 
     private handleMouseDown(event: MouseEvent) {
-        const rect = Renderer.canvas.getBoundingClientRect()
+        const rect = Canvas.canvas.getBoundingClientRect()
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top
 
@@ -56,7 +56,7 @@ class InputHandler {
     }
 
     private handleMouseMove(event: MouseEvent) {
-        const rect = Renderer.canvas.getBoundingClientRect()
+        const rect = Canvas.canvas.getBoundingClientRect()
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top
         this.coordHover.setCoord(x, y)
@@ -64,7 +64,7 @@ class InputHandler {
 
     private handleTouchStart(event: TouchEvent) {
         this.resetAllKeyEvent()
-        const rect = Renderer.canvas.getBoundingClientRect()
+        const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.touches[0]
         const x = touch.clientX - rect.left
         const y = touch.clientY - rect.top
@@ -73,7 +73,7 @@ class InputHandler {
 
     private handleTouchEnd(event: TouchEvent) {
         this.resetAllKeyEvent()
-        const rect = Renderer.canvas.getBoundingClientRect()
+        const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.changedTouches[0]
         const x = touch.clientX - rect.left
         const y = touch.clientY - rect.top
@@ -109,10 +109,10 @@ class InputHandler {
     }
 
     public clear() {
-        Renderer.canvas.removeEventListener('keydown', this.handleKeyDown.bind(this))
-        Renderer.canvas.removeEventListener('keyup', this.handleKeyUp.bind(this))
-        Renderer.canvas.removeEventListener('mousedown', this.handleMouseDown.bind(this))
-        Renderer.canvas.removeEventListener('mouseup', this.handleMouseUp.bind(this))
+        Canvas.canvas.removeEventListener('keydown', this.handleKeyDown.bind(this))
+        Canvas.canvas.removeEventListener('keyup', this.handleKeyUp.bind(this))
+        Canvas.canvas.removeEventListener('mousedown', this.handleMouseDown.bind(this))
+        Canvas.canvas.removeEventListener('mouseup', this.handleMouseUp.bind(this))
     }
 
     public isKeyDown(key: string): boolean {

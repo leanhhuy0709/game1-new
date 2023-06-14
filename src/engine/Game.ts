@@ -1,11 +1,9 @@
-import Renderer from './Renderer'
+import Canvas from './renderer/canvas/Canvas'
 
-class Game {
-    public constructor(canvasWidth: number, canvasHeight: number) {
+export default class Game {
+    public constructor(gameWidth: number, gameHeight: number) {
         console.log('Game Init')
-        Renderer.canvas.width = canvasWidth
-        Renderer.canvas.height = canvasHeight
-        Renderer.canvas.setAttribute('style', 'position: fixed')
+        Canvas.init('game', gameWidth, gameHeight)
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public update(lastTime: number) {
@@ -18,4 +16,8 @@ class Game {
     }
 }
 
-export default Game
+/*
+<body style="width: 100%; display: flex; justify-content: center; align-items: center;">
+    <canvas tabindex='1' id="game"></canvas>
+  </body>
+*/

@@ -1,4 +1,4 @@
-class Coord {
+export default class Coord {
     private x: number
     private y: number
 
@@ -27,6 +27,9 @@ class Coord {
         this.x = x
         this.y = y
     }
-}
 
-export default Coord
+    public static distance(x1: number, y1: number, x2: number, y2: number)
+    {
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+    }
+}

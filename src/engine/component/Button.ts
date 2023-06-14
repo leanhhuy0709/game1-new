@@ -1,20 +1,15 @@
-import Coord from './Coord'
-import Renderer from '../Renderer'
-import Size from './Size'
+import GameObject from '../game-objects/GameObject'
+import Canvas from '../renderer/canvas/Canvas'
+import Rectangle from '../shape/Rectangle'
 import Text from './Text'
-import Renderable from './Renderable'
 
-class Button extends Renderable {
+class Button extends GameObject {
     private text: Text
-    private coord: Coord
-    private size: Size
     private isHover: boolean
 
-    public constructor(content: string, x = 0, y = 0, w = 0, h = 0) {
-        super()
-        this.text = new Text(content, x, y, `30px 'Montserrat', sans-serif`, 'center')
-        this.coord = new Coord(x, y)
-        this.size = new Size(w, h)
+    public constructor(content: string, x: number, y: number, w: number, h: number) {
+        super(new Rectangle(x, y, w, h))
+        this.text = new Text(content, x + w/2, y + h/2, `30px 'Montserrat', sans-serif`, 'center', 'white', 'middle')
         this.isHover = false
     }
 
@@ -22,96 +17,33 @@ class Button extends Renderable {
         return this.text
     }
 
-    public getCoord(): Coord {
-        return this.coord
-    }
-
-    public getSize(): Size {
-        return this.size
-    }
-
     public setContent(content: string): void {
         this.text.setContent(content)
     }
 
-    public setCoord(x: number, y: number): void {
-        this.coord.setX(x)
-        this.coord.setY(y)
-    }
-
-    public setSize(w: number, h: number): void {
-        this.size.setWidth(w)
-        this.size.setHeight(h)
-    }
-
     public render(): void {
-        if (Renderer.ctx) {
-            if (!this.isHover) {
-                Renderer.ctx.save()
-                Renderer.ctx.fillStyle = '#0d63fd'
-
-                Renderer.ctx.beginPath()
-                Renderer.ctx.roundRect(
-                    this.coord.getX() - this.size.getWidth() / 2,
-                    this.coord.getY() - this.size.getHeight() / 2,
-                    this.size.getWidth(),
-                    this.size.getHeight(),
-                    10
+        super.render()
+        if (Canvas.ctx) {
+            if (this.getShape() instanceof Rectangle) {
+                const rect = this.getShape() as Rectangle
+                Canvas.ctx.fillStyle = this.isHover ? '#0d63fd' : '#0d63fd'
+                Canvas.ctx.fillRect(
+                    rect.getCoord().getX(),
+                    rect.getCoord().getY(),
+                    rect.getSize().getWidth(),
+                    rect.getSize().getHeight()
                 )
-                Renderer.ctx.closePath()
-                Renderer.ctx.fill()
-                Renderer.ctx.stroke()
-
-                Renderer.ctx.fillStyle = 'white'
-                Renderer.ctx.font = this.text.getFont()
-                Renderer.ctx.textAlign = this.text.getAlign()
-                Renderer.ctx.textBaseline = 'middle'
-                //Renderer.ctx.strokeText(this.text.getContent(), this.coord.getX(), this.coord.getY())
-                Renderer.ctx.fillText(this.text.getContent(), this.coord.getX(), this.coord.getY())
-                Renderer.ctx.restore()
-            } else {
-                Renderer.ctx.save()
-                Renderer.ctx.fillStyle = 'white'
-
-                Renderer.ctx.beginPath()
-                Renderer.ctx.roundRect(
-                    this.coord.getX() - this.size.getWidth() / 2,
-                    this.coord.getY() - this.size.getHeight() / 2,
-                    this.size.getWidth(),
-                    this.size.getHeight(),
-                    10
-                )
-                Renderer.ctx.closePath()
-                Renderer.ctx.fill()
-                Renderer.ctx.stroke()
-
-                Renderer.ctx.fillStyle = '#0d63fd'
-                Renderer.ctx.font = this.text.getFont()
-                Renderer.ctx.textAlign = this.text.getAlign()
-                Renderer.ctx.textBaseline = 'middle'
-                //Renderer.ctx.strokeText(this.text.getContent(), this.coord.getX(), this.coord.getY())
-                Renderer.ctx.fillText(this.text.getContent(), this.coord.getX(), this.coord.getY())
-                Renderer.ctx.restore()
+                this.text.render()
             }
         }
     }
 
     public isClicked(x: number, y: number): boolean {
-        return (
-            x >= this.coord.getX() - this.size.getWidth() / 2 &&
-            x <= this.coord.getX() + this.size.getWidth() / 2 &&
-            y >= this.coord.getY() - this.size.getHeight() / 2 &&
-            y <= this.coord.getY() + this.size.getHeight() / 2
-        )
+        return true
     }
 
     public isHovered(x: number, y: number): boolean {
-        this.isHover =
-            x >= this.coord.getX() - this.size.getWidth() / 2 &&
-            x <= this.coord.getX() + this.size.getWidth() / 2 &&
-            y >= this.coord.getY() - this.size.getHeight() / 2 &&
-            y <= this.coord.getY() + this.size.getHeight() / 2
-        return this.isHover
+        return false
     }
 }
 

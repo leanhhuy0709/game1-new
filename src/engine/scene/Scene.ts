@@ -1,4 +1,5 @@
-import InputHandler from './InputHandler'
+import InputHandler from "../input/InputHandler"
+
 
 class Scene {
     protected input: InputHandler

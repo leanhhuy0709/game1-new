@@ -1,49 +1,51 @@
+import Shape from '../shape/Shape'
 import GameObject from './GameObject'
 //import TRexJump from '../t-rex-jump/TRexJump'
 
 export const LAND = 350 // ??
-export const GRAVITY = 0.01
+export const GRAVITY = 0.0001
+//export const GRAVITY = 0.001
+//Fix gravity
 
 class Body extends GameObject {
     private t: number
     private prevY: number
     private startSpeed: number
-    public constructor(sprites: string[], delay: number, x = 0, y = 0, w = 0, h = 0) {
-        super(sprites, delay, x, y, w, h)
+    public constructor(shape: Shape, imageHrefs: string[] = [], spriteChangeInterval = 1) {
+        super(shape, imageHrefs, spriteChangeInterval)
         this.t = 0
-        this.prevY = y
+        this.prevY = this.getShape().getCoord().getY()
         this.startSpeed = 0
     }
 
     public update(deltaTime: number): void {
         if (!this.isJumpOrFall()) return
 
-        if (this.getCoord().getY() > LAND) {
+        if (this.getShape().getHighestY() > LAND) {
             this.t = 0
-            this.getCoord().setY(LAND)
-            this.prevY = this.getCoord().getY()
+            this.getShape().setHighestY(LAND)
+            this.prevY = this.getShape().getCoord().getY()
             this.startSpeed = 0
         } else {
             this.t += deltaTime
 
-            this.getCoord().setY(
+            this.getShape().getCoord().setY(
                 this.prevY +
                     (1.0 / 2) * GRAVITY * this.t * this.t -
                     (this.startSpeed * this.t * 5) / 5
             )
 
-            if (this.getCoord().getY() <= 100) {
-                this.t = 0
-                this.getCoord().setY(100)
-                this.prevY = this.getCoord().getY()
+            if (this.getShape().getHighestY() <= 100) {
+                this.getShape().setHighestY(100)
                 this.startSpeed = 0
+                this.updatePrevY()
             }
         }
     }
 
     public updatePrevY(): void {
         this.t = 0
-        this.prevY = this.getCoord().getY()
+        this.prevY = this.getShape().getCoord().getY()
     }
 
     public setStartSpeed(speed: number): void {
@@ -55,7 +57,7 @@ class Body extends GameObject {
     }
 
     public isJumpOrFall(): boolean {
-        return !(this.getCoord().getY() == LAND && this.startSpeed == 0)
+        return !(this.getShape().getCoord().getY() == LAND && this.startSpeed == 0)
     }
 
     public isJump(): boolean {
@@ -63,7 +65,12 @@ class Body extends GameObject {
     }
 
     public isFall(): boolean {
-        return this.getCoord().getY() != LAND && this.startSpeed == 0
+        return this.getShape().getCoord().getY() != LAND && this.startSpeed == 0
+    }
+
+    public setY(y: number): void {
+        this.getShape().getCoord().setY(y) //Mat trong luc
+        this.updatePrevY()
     }
 }
 export default Body

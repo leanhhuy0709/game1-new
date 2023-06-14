@@ -1,9 +1,9 @@
 import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
-import Renderer from '../engine/Renderer'
-import Scene from '../engine/Scene'
-import SceneManager from '../engine/SceneManager'
-import Background from '../engine/Background'
+import Scene from '../engine/scene/Scene'
+import SceneManager from '../engine/scene/SceneManager'
+import Background from '../engine/sprite/Background'
+
 import TRex from './TRex'
 import TRexScore from './TRexScore'
 import { START_BACKGROUND } from './const'
@@ -59,6 +59,7 @@ class GameStartScene extends Scene {
     }
 
     public render(): void {
+        /*
         Renderer.addToQueue(this.background, 0)
         Renderer.addToQueue(this.text, 5)
         Renderer.addToQueue(this.startBtn, 5)
@@ -70,18 +71,18 @@ class GameStartScene extends Scene {
         Renderer.addToQueue(TRexScore.getHighScoreText(), 5)
 
         Renderer.addToQueue(this.tRex, 7)
-        /*
+        */
         this.background.render()
         this.text.render()
 
         this.startBtn.render()
         this.settingBtn.render()
         this.exitBtn.render()
-        this.tRex.render(false)
+        this.tRex.render()
 
-        TRexScore.getHighScoreText().setAlign('center')
-        TRexScore.showHighScore(350, 170)
-        */
+        //TRexScore.getHighScoreText().setAlign('center')
+        //TRexScore.showHighScore(350, 170)
+        
     }
 }
 

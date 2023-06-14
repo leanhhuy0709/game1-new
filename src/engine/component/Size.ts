@@ -1,4 +1,4 @@
-class Size {
+export default class Size {
     private width: number
     private height: number
 
@@ -28,5 +28,3 @@ class Size {
         this.height = height
     }
 }
-
-export default Size
