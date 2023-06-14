@@ -1,5 +1,5 @@
 import Coord from './Coord'
-import Renderer from '../engine/Renderer'
+import Renderer from '../Renderer'
 import Size from './Size'
 import Text from './Text'
 import Renderable from './Renderable'

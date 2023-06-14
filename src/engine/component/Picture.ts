@@ -1,4 +1,4 @@
-import Renderer from '../engine/Renderer'
+import Renderer from '../Renderer'
 import Coord from './Coord'
 import Renderable from './Renderable'
 import Size from './Size'
@@ -59,7 +59,21 @@ class Picture extends Renderable {
             this.size.getWidth(),
             this.size.getHeight()
         )
-        //Renderer.addToQueue(this, new Coord(x, y), depth)
+        if (Renderer.ctx) {
+            Renderer.ctx.fillStyle = '#0d63fd'
+
+            Renderer.ctx.beginPath()
+            Renderer.ctx.roundRect(
+                this.coord.getX(),
+                this.coord.getY(),
+                this.size.getWidth(),
+                this.size.getHeight(),
+                10
+            )
+            Renderer.ctx.closePath()
+            Renderer.ctx.stroke()
+        }
+        //draw rectangle
     }
 }
 

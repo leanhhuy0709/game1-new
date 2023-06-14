@@ -1,25 +1,26 @@
 import Obstacle from './Obstacle'
 import Cactus from './Cactus'
 import TRex from './TRex'
-import TRexScore, { GAME_SPEED_DEFAULT } from './TRexScore'
+import TRexScore from './TRexScore'
 import CollisionManager from '../engine/CollisionManager'
 import FlyDino from './FlyDino'
+import { GAME_SPEED_DEFAULT } from '../engine/Score'
 
 //ObstacleManager: manage obstacle and handle collision
 export default class ObstacleManager {
     private obstacles: Obstacle[]
     public constructor() {
         this.obstacles = []
-        const randNum = [1, 2, 4, 4, 5, 6, 6, 8, 8, 10]
+        const randNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         randNum.sort(() => Math.random())
         for (let i = 0; i < 10; i++) {
-            if (randNum[i] % 2 == 0) this.obstacles.push(new Cactus(0))
+            if (randNum[i] % 2 == 1) this.obstacles.push(new Cactus(0))
             else this.obstacles.push(new FlyDino(30))
         }
         this.start()
     }
     public start() {
-        let tmp = 0
+        let tmp = 500
         for (let i = 0; i < 10; i++) {
             tmp = Math.floor(Math.random() * 1000) + 400 + tmp
             this.obstacles[i].reset(tmp)
@@ -29,7 +30,7 @@ export default class ObstacleManager {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
             if (!isStop) {
-                if (this.obstacles[i].getCoord().getX() <= 1200)
+                if (this.obstacles[i].getCoord().getX() <= 900)
                     this.obstacles[i]
                         .getCoord()
                         .setX(

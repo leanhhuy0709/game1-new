@@ -1,7 +1,8 @@
-import Picture from '../component/Picture'
-import Size from '../component/Size'
-import Renderer from '../engine/Renderer'
-import TRexScore, { GAME_SPEED_DEFAULT } from './TRexScore'
+import Picture from './component/Picture'
+import Size from './component/Size'
+
+import Renderer from './Renderer'
+import Score, { GAME_SPEED_DEFAULT } from './Score'
 
 class Background {
     private pictures: Picture[]
@@ -21,7 +22,7 @@ class Background {
     }
 
     public update(deltaTime: number): void {
-        this.position -= deltaTime * (this.speed + TRexScore.getGameSpeed() / GAME_SPEED_DEFAULT)
+        this.position -= deltaTime * (this.speed + Score.getGameSpeed() / GAME_SPEED_DEFAULT)
         if (this.position < -this.size.getWidth()) {
             this.position += this.size.getWidth()
             this.goToNext()

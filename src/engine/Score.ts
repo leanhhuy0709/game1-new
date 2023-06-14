@@ -1,11 +1,13 @@
-import Renderable from '../component/Renderable'
-import Text from '../component/Text'
+import Renderable from './component/Renderable'
+import Text from './component/Text'
 
+export const GAME_SPEED_DEFAULT = 5
 class Score extends Renderable {
     private static score = 0
     private static highScore = 0
     private static scoreText: Text = new Text('0', 0, 0, '30px Cambria', 'start')
     private static highScoreText: Text = new Text('0', 0, 0, '30px Cambria', 'start')
+    protected static gameSpeed = GAME_SPEED_DEFAULT
 
     public static getScore(): number {
         return Score.score
@@ -37,24 +39,28 @@ class Score extends Renderable {
         Score.highScore = 0
     }
 
-    public static showScore(x: number, y: number) {
-        Score.scoreText.setContent(Score.score.toFixed(0).toString())
-        Score.scoreText.setCoord(x, y)
-        Score.scoreText.render()
-    }
-
-    public static showHighScore(x: number, y: number) {
-        Score.highScoreText.setContent('HighScore: ' + Score.highScore.toFixed(0).toString())
-        Score.highScoreText.setCoord(x, y)
-        Score.highScoreText.render()
-    }
-
     public static getScoreText(): Text {
         return Score.scoreText
     }
 
     public static getHighScoreText(): Text {
         return Score.highScoreText
+    }
+
+    public static getGameSpeed(): number {
+        return Score.gameSpeed
+    }
+
+    public static setGameSpeed(gameSpeed: number): void {
+        Score.gameSpeed = gameSpeed
+    }
+
+    public static addGameSpeed(coeff: number): void {
+        Score.gameSpeed += coeff
+    }
+
+    public static resetGameSpeed(): void {
+        Score.gameSpeed = GAME_SPEED_DEFAULT
     }
 }
 

@@ -1,19 +1,25 @@
-import Coord from '../component/Coord'
+import Coord from './component/Coord'
 import Renderer from './Renderer'
 
 class InputHandler {
-    private keyStates: { [key: string]: boolean }
+    private keyStatesDown: { [key: string]: boolean }
+    private keyStatesUp: { [key: string]: boolean }
     private mouseState: { [button: number]: boolean }
     private checkMouseDown: boolean
     private coord: Coord
     private coordHover: Coord
+    private coordTouch: Coord
+    private directTouch: string
 
     public constructor() {
-        this.keyStates = {}
+        this.keyStatesDown = {}
+        this.keyStatesUp = {}
         this.mouseState = {}
         this.checkMouseDown = false
         this.coord = new Coord(0, 0)
         this.coordHover = new Coord(0, 0)
+        this.coordTouch = new Coord(-1, -1)
+        this.directTouch = ''
 
         // Gắn các bộ lắng nghe sự kiện vào canvas
         Renderer.canvas.addEventListener('keydown', this.handleKeyDown.bind(this))
@@ -21,14 +27,18 @@ class InputHandler {
         Renderer.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this))
         Renderer.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this))
         Renderer.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this))
+        Renderer.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this))
+        Renderer.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this))
     }
 
     private handleKeyDown(event: KeyboardEvent) {
-        this.keyStates[event.code] = true
+        this.keyStatesDown[event.code] = true
+        this.keyStatesUp[event.code] = false
     }
 
     private handleKeyUp(event: KeyboardEvent) {
-        this.keyStates[event.code] = false
+        this.keyStatesDown[event.code] = false
+        this.keyStatesUp[event.code] = true
     }
 
     private handleMouseDown(event: MouseEvent) {
@@ -52,6 +62,52 @@ class InputHandler {
         this.coordHover.setCoord(x, y)
     }
 
+    private handleTouchStart(event: TouchEvent) {
+        this.resetAllKeyEvent()
+        const rect = Renderer.canvas.getBoundingClientRect()
+        const touch = event.touches[0]
+        const x = touch.clientX - rect.left
+        const y = touch.clientY - rect.top
+        this.coordTouch.setCoord(x, y)
+    }
+
+    private handleTouchEnd(event: TouchEvent) {
+        this.resetAllKeyEvent()
+        const rect = Renderer.canvas.getBoundingClientRect()
+        const touch = event.changedTouches[0]
+        const x = touch.clientX - rect.left
+        const y = touch.clientY - rect.top
+        const tmp = this.getDirection(this.coordTouch.getX(), this.coordTouch.getY(), x, y)
+        this.directTouch = tmp
+    }
+
+    public resetTouch() {
+        this.coordTouch.setCoord(-1, -1)
+        this.directTouch = ''
+    }
+
+    private getDirection(x1: number, y1: number, x2: number, y2: number) {
+        const x = x2 - x1
+        const y = y2 - y1
+        if (x < 0 && y < 0) {
+            if (Math.abs(x) < Math.abs(y)) return 'U'
+            else return 'L'
+        }
+        if (x < 0 && y > 0) {
+            if (Math.abs(x) < Math.abs(y)) return 'D'
+            else return 'L'
+        }
+        if (x > 0 && y < 0) {
+            if (Math.abs(x) < Math.abs(y)) return 'U'
+            else return 'R'
+        }
+        if (x > 0 && y > 0) {
+            if (Math.abs(x) < Math.abs(y)) return 'D'
+            else return 'R'
+        }
+        return 'N'
+    }
+
     public clear() {
         Renderer.canvas.removeEventListener('keydown', this.handleKeyDown.bind(this))
         Renderer.canvas.removeEventListener('keyup', this.handleKeyUp.bind(this))
@@ -60,11 +116,11 @@ class InputHandler {
     }
 
     public isKeyDown(key: string): boolean {
-        return this.keyStates[key]
+        return this.keyStatesDown[key]
     }
 
     public isKeyUp(key: string): boolean {
-        return !this.keyStates[key]
+        return this.keyStatesUp[key]
     }
 
     public isMouseDown(): boolean {
@@ -81,6 +137,23 @@ class InputHandler {
 
     public getMouseHoverCoord(): Coord {
         return this.coordHover
+    }
+
+    public isTouchDown(): boolean {
+        return this.directTouch != ''
+    }
+
+    public getDirectTouch(): string {
+        return this.directTouch
+    }
+
+    public getTouchCoord(): Coord {
+        return this.coordTouch
+    }
+
+    public resetAllKeyEvent(): void {
+        this.keyStatesDown = {}
+        this.keyStatesUp = {}
     }
 }
 

@@ -1,7 +1,7 @@
-import Coord from '../component/Coord'
-import Picture from '../component/Picture'
-import Renderable from '../component/Renderable'
-import Size from '../component/Size'
+import Coord from './component/Coord'
+import Picture from './component/Picture'
+import Renderable from './component/Renderable'
+import Size from './component/Size'
 import Sprite from './Sprite'
 
 class GameObject extends Renderable {

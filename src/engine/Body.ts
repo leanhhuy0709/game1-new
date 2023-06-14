@@ -2,7 +2,7 @@ import GameObject from './GameObject'
 //import TRexJump from '../t-rex-jump/TRexJump'
 
 export const LAND = 350 // ??
-export const GRAVITY = 0.007
+export const GRAVITY = 0.01
 
 class Body extends GameObject {
     private t: number
@@ -41,12 +41,12 @@ class Body extends GameObject {
         }
     }
 
-    public setStartSpeed(speed: number): void {
-        if (this.startSpeed != speed) {
-            this.t = 0
-            this.prevY = this.getCoord().getY()
-        }
+    public updatePrevY(): void {
+        this.t = 0
+        this.prevY = this.getCoord().getY()
+    }
 
+    public setStartSpeed(speed: number): void {
         this.startSpeed = speed
     }
 

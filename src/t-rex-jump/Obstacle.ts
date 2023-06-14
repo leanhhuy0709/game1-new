@@ -6,10 +6,6 @@ class Obstacle extends GameObject {
         super(sprites, delay, x, y, w, h)
     }
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public render() {
-        super.render()
-    }
-    //eslint-disable-next-line @typescript-eslint/no-unused-vars
     public reset(x: number) {
         //
     }

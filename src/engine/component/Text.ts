@@ -1,4 +1,4 @@
-import Renderer from '../engine/Renderer'
+import Renderer from '../Renderer'
 import Coord from './Coord'
 import Renderable from './Renderable'
 
@@ -58,13 +58,11 @@ class Text extends Renderable {
         }
     }
 
-    public setCoord(x: number, y: number):void
-    {
+    public setCoord(x: number, y: number): void {
         this.coord.setCoord(x, y)
     }
 
-    public getCoord(): Coord 
-    {
+    public getCoord(): Coord {
         return this.coord
     }
 }

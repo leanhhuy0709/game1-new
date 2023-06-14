@@ -1,5 +1,5 @@
-import Picture from '../component/Picture'
-import Renderable from '../component/Renderable'
+import Picture from './component/Picture'
+import Renderable from './component/Renderable'
 
 class Sprite extends Renderable {
     private pictures: Picture[]
@@ -47,13 +47,13 @@ class Sprite extends Renderable {
         this.getCurrent().render()
     }
 
-    public setSize(w: number, h: number):void {
+    public setSize(w: number, h: number): void {
         for (let i = 0; i < this.pictures.length; i++) {
             this.pictures[i].setSize(w, h)
         }
     }
 
-    public setCoord(x: number, y: number):void {
+    public setCoord(x: number, y: number): void {
         for (let i = 0; i < this.pictures.length; i++) {
             this.pictures[i].setCoord(x, y)
         }

@@ -1,4 +1,4 @@
-import Renderable from '../component/Renderable'
+import Renderable from './component/Renderable'
 
 class Renderer {
     public static canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('game')

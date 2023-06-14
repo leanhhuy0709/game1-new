@@ -1,6 +1,5 @@
 import Obstacle from './Obstacle'
-
-const CACTUS = 'assets/Cactus/Cactus.png'
+import { CACTUS } from './const'
 
 export default class Cactus extends Obstacle {
     public constructor(delay: number, x = 0, moveSpeed = 0) {

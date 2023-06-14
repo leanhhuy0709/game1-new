@@ -1,13 +1,12 @@
-import Button from '../component/Button'
-import Text from '../component/Text'
+import Button from '../engine/component/Button'
+import Text from '../engine/component/Text'
 import Renderer from '../engine/Renderer'
 import Scene from '../engine/Scene'
 import SceneManager from '../engine/SceneManager'
 import Sound from '../engine/Sound'
-import Background from './Background'
+import Background from '../engine/Background'
 import TRex from './TRex'
-
-const BACKGROUND = 'assets/background/5.png'
+import { SETTING_BACKGROUND } from './const'
 
 class GameSettingScene extends Scene {
     private tRex: TRex
@@ -30,7 +29,7 @@ class GameSettingScene extends Scene {
             'center',
             'black'
         )
-        this.background = new Background([BACKGROUND, BACKGROUND], 0, 700, 400)
+        this.background = new Background([SETTING_BACKGROUND], 0, 700, 400)
         this.plusBtn = new Button('+', 410, 200, 50, 50)
         this.minusBtn = new Button('-', 290, 200, 50, 50)
         this.exitBtn = new Button('Exit', 350, 280, 200, 50)
@@ -53,6 +52,15 @@ class GameSettingScene extends Scene {
             } else if (this.minusBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
                 Sound.setVolume(Sound.getVolume() - 0.1)
             } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                SceneManager.setNextScene('GameStartScene')
+            }
+        } else if (this.input.isTouchDown()) {
+            const touchCoord = this.input.getTouchCoord()
+            if (this.plusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                Sound.setVolume(Sound.getVolume() + 0.1)
+            } else if (this.minusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                Sound.setVolume(Sound.getVolume() - 0.1)
+            } else if (this.exitBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
                 SceneManager.setNextScene('GameStartScene')
             }
         }

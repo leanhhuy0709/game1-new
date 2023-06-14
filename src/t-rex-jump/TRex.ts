@@ -1,36 +1,31 @@
-import Picture from '../component/Picture'
+import Picture from '../engine/component/Picture'
 import Body, { LAND } from '../engine/Body'
 import Sound from '../engine/Sound'
 import Sprite from '../engine/Sprite'
-
-const DINOSAUR_MOVE_1 = 'assets/dinosaur-sprites/Run (1).png'
-const DINOSAUR_MOVE_2 = 'assets/dinosaur-sprites/Run (2).png'
-const DINOSAUR_MOVE_3 = 'assets/dinosaur-sprites/Run (3).png'
-const DINOSAUR_MOVE_4 = 'assets/dinosaur-sprites/Run (4).png'
-const DINOSAUR_MOVE_5 = 'assets/dinosaur-sprites/Run (5).png'
-const DINOSAUR_MOVE_6 = 'assets/dinosaur-sprites/Run (6).png'
-const DINOSAUR_MOVE_7 = 'assets/dinosaur-sprites/Run (7).png'
-const DINOSAUR_MOVE_8 = 'assets/dinosaur-sprites/Run (8).png'
-
-const DINOSAUR_1 = 'assets/dinosaur-sprites/Jump (1).png'
-const DINOSAUR_2 = 'assets/dinosaur-sprites/Jump (2).png'
-const DINOSAUR_3 = 'assets/dinosaur-sprites/Jump (3).png'
-const DINOSAUR_4 = 'assets/dinosaur-sprites/Jump (4).png'
-const DINOSAUR_5 = 'assets/dinosaur-sprites/Jump (5).png'
-const DINOSAUR_6 = 'assets/dinosaur-sprites/Jump (6).png'
-const DINOSAUR_7 = 'assets/dinosaur-sprites/Jump (7).png'
-const DINOSAUR_8 = 'assets/dinosaur-sprites/Jump (8).png'
-const DINOSAUR_9 = 'assets/dinosaur-sprites/Jump (9).png'
-const DINOSAUR_10 = 'assets/dinosaur-sprites/Jump (10).png'
-const DINOSAUR_11 = 'assets/dinosaur-sprites/Jump (11).png'
-const DINOSAUR_12 = 'assets/dinosaur-sprites/Jump (12).png'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const DINOSAUR_DEAD_1 = 'assets/dinosaur-sprites/Dead (6).png'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const DINOSAUR_IDLE_1 = 'assets/dinosaur-sprites/Idle (1).png'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const DINOSAUR_DUCK_1 = 'assets/dinosaur-sprites/Duck (1).png'
-const DINOSAUR_DUCK_2 = 'assets/dinosaur-sprites/Duck (2).png'
+import {
+    DINOSAUR_MOVE_1,
+    DINOSAUR_MOVE_2,
+    DINOSAUR_MOVE_3,
+    DINOSAUR_MOVE_4,
+    DINOSAUR_MOVE_5,
+    DINOSAUR_MOVE_6,
+    DINOSAUR_MOVE_7,
+    DINOSAUR_MOVE_8,
+    DINOSAUR_1,
+    DINOSAUR_2,
+    DINOSAUR_3,
+    DINOSAUR_4,
+    DINOSAUR_5,
+    DINOSAUR_6,
+    DINOSAUR_7,
+    DINOSAUR_8,
+    DINOSAUR_9,
+    DINOSAUR_10,
+    DINOSAUR_11,
+    DINOSAUR_12,
+    DINOSAUR_DUCK_1,
+    DINOSAUR_DUCK_2,
+} from './const'
 
 class TRex extends Body {
     private jumpSprites: Sprite
@@ -115,7 +110,7 @@ class TRex extends Body {
         }
     }
 
-    public render(canPlaySfx = true): void {
+    public render(): void {
         if (this.isJump()) {
             this.jumpSprites.setCoord(
                 this.getCoord().getX(),
@@ -123,7 +118,7 @@ class TRex extends Body {
             )
             this.jumpSprites.render()
         } else if (this.isFall()) {
-            if (this.getCoord().getY() + 30 > LAND && canPlaySfx) this.fallSfx.play()
+            if (this.getCoord().getY() + 30 > LAND) this.fallSfx.play()
             if (this.getCoord().getY() + 50 > LAND) {
                 this.fallSprites.setIdx(this.fallSprites.getLength() - 1)
                 this.fallSprites.setDelay(0)
@@ -152,20 +147,24 @@ class TRex extends Body {
 
     public jump(): void {
         if (this.isJump() || this.isFall()) return
+        this.updatePrevY()
         this.setStartSpeed(2.5)
         this.jumpSfx.play()
     }
 
     public fall(): void {
+        this.updatePrevY()
         this.setStartSpeed(0)
     }
 
     public duck(): void {
         this.isDuck = true
+        this.size.setHeight(0.8 * 100)
     }
 
     public move(): void {
         this.isDuck = false
+        this.size.setHeight(100)
     }
 }
 

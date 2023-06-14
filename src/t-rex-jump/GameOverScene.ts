@@ -1,12 +1,11 @@
-import Button from '../component/Button'
-import Text from '../component/Text'
+import Button from '../engine/component/Button'
+import Text from '../engine/component/Text'
 import Renderer from '../engine/Renderer'
 import Scene from '../engine/Scene'
 import SceneManager from '../engine/SceneManager'
-import Background from './Background'
+import Background from '../engine/Background'
 import TRexScore from './TRexScore'
-
-const BACKGROUND = 'assets/background/4.png'
+import { GAMEOVER_BACKGROUND } from './const'
 
 class GameOverScene extends Scene {
     private text: Text
@@ -18,8 +17,8 @@ class GameOverScene extends Scene {
     public constructor() {
         super('GameOverScene')
         //Comic Sans MS
-        this.text = new Text('Game Over', 350, 150, `50px Comic Sans MS`, 'center', 'red')
-        this.background = new Background([BACKGROUND, BACKGROUND], 0, 700, 400)
+        this.text = new Text('Game Over', 350, 150, `50px Comic Sans MS`, 'center', '#713B61')
+        this.background = new Background([GAMEOVER_BACKGROUND], 0, 700, 400)
         this.tryAgainBtn = new Button('Try Again', 350, 220, 200, 50)
         this.settingBtn = new Button('Setting', 350, 280, 200, 50)
         this.exitBtn = new Button('Exit', 350, 340, 200, 50)
@@ -41,6 +40,15 @@ class GameOverScene extends Scene {
             } else if (this.settingBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
                 SceneManager.setNextScene('GameSettingScene')
             } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                SceneManager.setNextScene('GameStartScene')
+            }
+        } else if (this.input.isTouchDown()) {
+            const touchCoord = this.input.getTouchCoord()
+            if (this.tryAgainBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                SceneManager.setNextScene('GamePlayScene')
+            } else if (this.settingBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                SceneManager.setNextScene('GameSettingScene')
+            } else if (this.exitBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
                 SceneManager.setNextScene('GameStartScene')
             }
         }

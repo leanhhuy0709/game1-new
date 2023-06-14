@@ -1,12 +1,15 @@
 class Sound {
     private audio: HTMLAudioElement
-    private static volume = 0
+    private static volume = 0.5
+    private static canPlaySound = false
 
     public constructor(src: string) {
         this.audio = new Audio(src)
     }
 
     public play(): void {
+        if (!Sound.canPlaySound) return
+
         this.audio.volume = Sound.volume
         this.audio.play()
     }
@@ -33,6 +36,10 @@ class Sound {
 
     public static getVolume(): number {
         return Sound.volume * 100
+    }
+
+    public static setCanPlay(): void {
+        Sound.canPlaySound = true
     }
 }
 

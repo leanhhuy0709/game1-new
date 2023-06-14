@@ -1,33 +1,23 @@
-import Score from '../engine/Score'
-
-export const GAME_SPEED_DEFAULT = 5
+import Score, { GAME_SPEED_DEFAULT } from '../engine/Score'
 
 class TRexScore extends Score {
-    private static gameSpeed = GAME_SPEED_DEFAULT
-
-    public static getGameSpeed(): number {
-        return TRexScore.gameSpeed
-    }
-
-    public static setGameSpeed(gameSpeed: number): void {
-        TRexScore.gameSpeed = gameSpeed
-    }
-
-    public static addGameSpeed(coeff: number): void {
-        TRexScore.gameSpeed += coeff
-    }
-
-    public static resetGameSpeed(): void {
-        TRexScore.gameSpeed = GAME_SPEED_DEFAULT
-    }
+    private static level = 100
 
     public static reset(): void {
-        TRexScore.gameSpeed = GAME_SPEED_DEFAULT
+        TRexScore.setGameSpeed(GAME_SPEED_DEFAULT)
+        TRexScore.level = 100
         TRexScore.resetScore()
     }
 
     public static addWithDeltaTime(deltaTime: number, coeff: number): void {
         Score.addWithDeltaTime(deltaTime, coeff * (TRexScore.gameSpeed / GAME_SPEED_DEFAULT))
+    }
+
+    public static updateLevel(): void {
+        if (TRexScore.getScore() > TRexScore.level) {
+            TRexScore.level += 300
+            TRexScore.addGameSpeed(2)
+        }
     }
 }
 
