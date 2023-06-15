@@ -34,7 +34,7 @@ export default class Rectangle extends Shape {
                 this.coord.getY(),
                 this.size.getWidth(),
                 this.size.getHeight(),
-                0
+                10
             )
             Canvas.ctx.closePath()
             Canvas.ctx.stroke()
@@ -48,5 +48,9 @@ export default class Rectangle extends Shape {
     public setHighestY(y: number): void
     {
         this.coord.setY(y - this.size.getHeight())
+    }
+
+    public getHighestX(): number {
+        return this.coord.getX() + this.size.getWidth()
     }
 }

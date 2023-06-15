@@ -5,8 +5,8 @@ import Shape from '../shape/Shape'
 import Sprite from '../sprite/Sprite'
 
 export default class GameObject extends Renderable {
-    private shape: Shape
-    private sprite: Sprite
+    private shape: Shape    //Body
+    private sprite: Sprite  //component
 
     public constructor(shape: Shape, imageHrefs: string[] = [], spriteChangeInterval = 1) {
         super()
@@ -23,7 +23,7 @@ export default class GameObject extends Renderable {
     }
 
     public render(): void {
-        this.shape.render()
+        //this.shape.render()
 
         if (this.sprite.getLength() == 0) return
 
@@ -54,5 +54,10 @@ export default class GameObject extends Renderable {
     public setY(y: number): void
     {
         this.shape.getCoord().setY(y)
+    }
+
+    public getSprite(): Sprite
+    {
+        return this.sprite
     }
 }

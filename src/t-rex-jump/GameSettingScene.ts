@@ -1,10 +1,10 @@
 import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
-import Renderer from '../engine/Renderer'
-import Scene from '../engine/Scene'
-import SceneManager from '../engine/SceneManager'
-import Sound from '../engine/Sound'
-import Background from '../engine/Background'
+import Renderer from '../engine/renderer/Renderer'
+import Scene from '../engine/scene/Scene'
+import SceneManager from '../engine/scene/SceneManager'
+import Sound from '../engine/sound/Sound'
+import Background from '../engine/sprite/Background'
 import TRex from './TRex'
 import { SETTING_BACKGROUND } from './const'
 
@@ -30,9 +30,9 @@ class GameSettingScene extends Scene {
             'black'
         )
         this.background = new Background([SETTING_BACKGROUND], 0, 700, 400)
-        this.plusBtn = new Button('+', 410, 200, 50, 50)
-        this.minusBtn = new Button('-', 290, 200, 50, 50)
-        this.exitBtn = new Button('Exit', 350, 280, 200, 50)
+        this.plusBtn = new Button('+', 385, 175, 50, 50)
+        this.minusBtn = new Button('-', 265, 175, 50, 50)
+        this.exitBtn = new Button('Exit', 250, 255, 200, 50)
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public update(deltaTime: number): void {
@@ -68,6 +68,7 @@ class GameSettingScene extends Scene {
     }
 
     public render(): void {
+        
         Renderer.addToQueue(this.background, 0)
         Renderer.addToQueue(this.text, 5)
         Renderer.addToQueue(this.volumeValue, 5)
@@ -75,6 +76,7 @@ class GameSettingScene extends Scene {
         Renderer.addToQueue(this.minusBtn, 5)
         Renderer.addToQueue(this.exitBtn, 5)
         Renderer.addToQueue(this.tRex, 5)
+        
     }
 }
 

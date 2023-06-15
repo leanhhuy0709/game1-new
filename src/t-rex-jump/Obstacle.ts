@@ -1,9 +1,11 @@
-import GameObject from '../engine/GameObject'
+import GameObject from "../engine/game-objects/GameObject"
+import Shape from "../engine/shape/Shape"
 
+//Body
 class Obstacle extends GameObject {
     protected moveSpeed: number
-    public constructor(sprites: string[], delay: number, x = 0, y = 0, w = 0, h = 0) {
-        super(sprites, delay, x, y, w, h)
+    public constructor(shape: Shape, imageHrefs: string[], spriteChangeInterval: number) {
+        super(shape, imageHrefs, spriteChangeInterval)
     }
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     public reset(x: number) {
@@ -12,6 +14,10 @@ class Obstacle extends GameObject {
 
     public getMoveSpeed() {
         return this.moveSpeed
+    }
+
+    public setMoveSpeed(moveSpeed: number) {
+        this.moveSpeed = moveSpeed
     }
 }
 

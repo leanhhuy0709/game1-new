@@ -20,7 +20,7 @@ class Scene {
     }
 
     public clear(): void {
-        this.input.clear()
+        //
     }
 
     public getName(): string {

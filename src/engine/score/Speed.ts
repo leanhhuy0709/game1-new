@@ -3,7 +3,7 @@ export default class Speed
     private static speed: number
     private static defaulSpeed: number
 
-    public init(speed: number)
+    public static init(speed: number)
     {
         Speed.speed = speed
         Speed.defaulSpeed = speed

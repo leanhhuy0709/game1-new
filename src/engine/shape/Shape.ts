@@ -33,6 +33,10 @@ export default abstract class Shape {
     public getHighestY(): number {
         return 0
     }
+
+    public getHighestX(): number {
+        return 0
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public setHighestY(y: number): void
     {

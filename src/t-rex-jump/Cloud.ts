@@ -1,28 +1,23 @@
-import GameObject from '../engine/GameObject'
+import Random from '../engine/math/Random'
+import Rectangle from '../engine/shape/Rectangle'
+import Decor from './Decor'
+import { CLOUD } from './const'
 
-const CLOUD_1 = './assets/background/cloud1.webp'
-
-class Cloud extends GameObject {
-    private moveSpeed: number
-    public constructor(x = 100, y = 100) {
-        super([CLOUD_1], 0, x, y, 90, 80)
-        this.reset(x, y)
-    }
-    public reset(x: number, y: number) {
-        //console.log
-        this.sprite.setIdx(0)
-        this.coord.setCoord(x, y)
-        this.size.setSize(90, 80)
-        this.moveSpeed = (Math.random() * 10 - 5) / 10
+export default class Cloud extends Decor {
+    public constructor(x: number, y: number, w: number, h: number) {
+        super(new Rectangle(x, y, w, h, 'Cloud'), [CLOUD], 1, Random.getIntNumber(-5, 5) / 10)
     }
 
-    public getMoveSpeed(): number {
-        return this.moveSpeed
+    public reset(x: number): void {
+        this.getShape().getCoord().setCoord(x, Random.getIntNumber(0, 140))
+        console.log(this.getShape().getCoord().getX())
+        const rect = this.getShape() as Rectangle
+        rect.getSize().setSize(90, 80)
+        this.moveSpeed = Random.getIntNumber(-5, 5) / 10
+        //console.log(this.getShape())
     }
 
-    public setMoveSpeed(speed: number): void {
-        this.moveSpeed = speed
+    public render(): void {
+        super.render()
     }
 }
-
-export default Cloud

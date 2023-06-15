@@ -6,6 +6,11 @@ export default class Loader {
 
     public static getImage(key: string)
     {
+        if (!Loader.imageMap[key])
+        {
+            Loader.imageMap[key] = new Image()
+            Loader.imageMap[key].src = key
+        }
         return Loader.imageMap[key]
     }
 
@@ -27,13 +32,14 @@ export default class Loader {
         {
             this.imageMap[imagePath[i]].onload = () => {
                 Loader.count++
+                //console.log(`${Loader.count}/${Loader.Length}`)
             }
         }
     }
 
     public static isLoadComplete()
     {
-        return Loader.count == Loader.Length
+        return Loader.count == Loader.Length - 1
     }
 }
 

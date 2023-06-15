@@ -2,6 +2,7 @@ import Size from '../component/Size'
 import Renderable from '../renderer/Renderable'
 import Canvas from '../renderer/canvas/Canvas'
 import Loader from '../resources/Loader'
+import Speed from '../score/Speed'
 
 class Background extends Renderable {
     private images: HTMLImageElement[]
@@ -22,7 +23,8 @@ class Background extends Renderable {
     }
 
     public update(deltaTime: number): void {
-        this.position -= deltaTime * this.speed
+        //console.log(this.speed)
+        this.position -= deltaTime * (this.speed + Speed.getSpeed())
         if (this.position < -this.size.getWidth()) {
             this.position += this.size.getWidth()
             this.goToNext()
@@ -42,20 +44,27 @@ class Background extends Renderable {
     }
 
     public render(): void {
-        Canvas.ctx?.drawImage(
-            this.getCurrent(),
-            this.position,
-            0,
-            this.size.getWidth(),
-            this.size.getHeight()
-        )
-        Canvas.ctx?.drawImage(
-            this.getCurrent(),
-            this.position + this.size.getWidth(),
-            0,
-            this.size.getWidth(),
-            this.size.getHeight()
-        )
+        if (Canvas.ctx)
+        {
+            Canvas.ctx.drawImage(
+                this.getCurrent(),
+                this.position,
+                0,
+                this.size.getWidth(),
+                this.size.getHeight()
+            )
+            
+            Canvas.ctx.drawImage(
+                this.getCurrent(),
+                this.position + this.size.getWidth(),
+                0,
+                this.size.getWidth(),
+                this.size.getHeight()
+            )
+            
+        }
+
+        
     }
 }
 

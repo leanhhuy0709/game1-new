@@ -25,6 +25,7 @@ export default class CollisionManager {
 
     public static checkCollision(o1: GameObject, o2: GameObject): boolean {
         //do something
+        let check = false
         if (o1.getShape() instanceof Rectangle) {
             const rect1 = o1.getShape() as Rectangle
             if (o2.getShape() instanceof Rectangle) {
@@ -62,6 +63,7 @@ export default class CollisionManager {
                         o1.setX(x1 + k / 2)
                         o2.setX(x2 - k / 2)
                     }
+                    check = true
                 }
             }
         }
@@ -90,10 +92,11 @@ export default class CollisionManager {
                     o2.setX(x2 + nx * k / 2)
                     o2.setY(y2 + ny * k / 2 + 1)
                 }
-                
+
+                check = true
             }
         }
 
-        return false
+        return check
     }
 }

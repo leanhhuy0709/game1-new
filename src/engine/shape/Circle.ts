@@ -46,4 +46,8 @@ export default class Circle extends Shape {
     {
         this.coord.setY(y - this.radius)
     }
+
+    public getHighestX(): number {
+        return this.coord.getX() + this.radius
+    }
 }

@@ -4,7 +4,6 @@ import Canvas from "../renderer/canvas/Canvas"
 class InputHandler {
     private keyStatesDown: { [key: string]: boolean }
     private keyStatesUp: { [key: string]: boolean }
-    private mouseState: { [button: number]: boolean }
     private checkMouseDown: boolean
     private coord: Coord
     private coordHover: Coord
@@ -14,16 +13,16 @@ class InputHandler {
     public constructor() {
         this.keyStatesDown = {}
         this.keyStatesUp = {}
-        this.mouseState = {}
         this.checkMouseDown = false
         this.coord = new Coord(0, 0)
         this.coordHover = new Coord(0, 0)
         this.coordTouch = new Coord(-1, -1)
         this.directTouch = ''
 
-        // Gắn các bộ lắng nghe sự kiện vào canvas
-        Canvas.canvas.addEventListener('keydown', this.handleKeyDown.bind(this))
-        Canvas.canvas.addEventListener('keyup', this.handleKeyUp.bind(this))
+        // Not syn
+        // push to queue
+        document.addEventListener('keydown', this.handleKeyDown.bind(this))
+        document.addEventListener('keyup', this.handleKeyUp.bind(this))
         Canvas.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this))
         Canvas.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this))
         Canvas.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this))
@@ -63,7 +62,7 @@ class InputHandler {
     }
 
     private handleTouchStart(event: TouchEvent) {
-        this.resetAllKeyEvent()
+        //this.resetAllKeyEvent()
         const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.touches[0]
         const x = touch.clientX - rect.left
@@ -72,7 +71,7 @@ class InputHandler {
     }
 
     private handleTouchEnd(event: TouchEvent) {
-        this.resetAllKeyEvent()
+        //this.resetAllKeyEvent()
         const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.changedTouches[0]
         const x = touch.clientX - rect.left
@@ -85,8 +84,9 @@ class InputHandler {
         this.coordTouch.setCoord(-1, -1)
         this.directTouch = ''
     }
-
-    private getDirection(x1: number, y1: number, x2: number, y2: number) {
+    //
+    //type TouchDirection = 'U' | 'L' | 'R' | 'D' | 'N'
+    private getDirection(x1: number, y1: number, x2: number, y2: number): string {
         const x = x2 - x1
         const y = y2 - y1
         if (x < 0 && y < 0) {
@@ -106,13 +106,6 @@ class InputHandler {
             else return 'R'
         }
         return 'N'
-    }
-
-    public clear() {
-        Canvas.canvas.removeEventListener('keydown', this.handleKeyDown.bind(this))
-        Canvas.canvas.removeEventListener('keyup', this.handleKeyUp.bind(this))
-        Canvas.canvas.removeEventListener('mousedown', this.handleMouseDown.bind(this))
-        Canvas.canvas.removeEventListener('mouseup', this.handleMouseUp.bind(this))
     }
 
     public isKeyDown(key: string): boolean {
@@ -156,5 +149,5 @@ class InputHandler {
         this.keyStatesUp = {}
     }
 }
-
+// 
 export default InputHandler

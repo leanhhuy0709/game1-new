@@ -69,6 +69,14 @@ class Text extends Renderable {
     public getCoord(): Coord {
         return this.coord
     }
+
+    public setColor(color: string): void {
+        this.color = color
+    }
+
+    public getColor(): string {
+        return this.color
+    }
 }
 
 export default Text

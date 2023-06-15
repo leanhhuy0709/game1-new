@@ -1,12 +1,14 @@
 import Shape from '../shape/Shape'
-import GameObject from './GameObject'
+import GameObject from '../game-objects/GameObject'
 //import TRexJump from '../t-rex-jump/TRexJump'
 
 export const LAND = 350 // ??
-export const GRAVITY = 0.0001
+export const GRAVITY = 0.01
 //export const GRAVITY = 0.001
 //Fix gravity
-
+//Behavior Design Pattern
+//SOLID
+//Velocity - huhu
 class Body extends GameObject {
     private t: number
     private prevY: number
@@ -22,9 +24,8 @@ class Body extends GameObject {
         if (!this.isJumpOrFall()) return
 
         if (this.getShape().getHighestY() > LAND) {
-            this.t = 0
             this.getShape().setHighestY(LAND)
-            this.prevY = this.getShape().getCoord().getY()
+            this.updatePrevY()
             this.startSpeed = 0
         } else {
             this.t += deltaTime
@@ -57,7 +58,7 @@ class Body extends GameObject {
     }
 
     public isJumpOrFall(): boolean {
-        return !(this.getShape().getCoord().getY() == LAND && this.startSpeed == 0)
+        return !(this.getShape().getHighestY() == LAND && this.startSpeed == 0)
     }
 
     public isJump(): boolean {
@@ -65,7 +66,7 @@ class Body extends GameObject {
     }
 
     public isFall(): boolean {
-        return this.getShape().getCoord().getY() != LAND && this.startSpeed == 0
+        return Math.floor(this.getShape().getHighestY()) != LAND && this.startSpeed == 0
     }
 
     public setY(y: number): void {

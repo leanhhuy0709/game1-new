@@ -1,25 +1,28 @@
 import Obstacle from './Obstacle'
 import Cactus from './Cactus'
-import TRex from './TRex'
-import TRexScore from './TRexScore'
-import CollisionManager from '../engine/CollisionManager'
 import FlyDino from './FlyDino'
-import { GAME_SPEED_DEFAULT } from '../engine/Score'
+import Speed from '../engine/score/Speed'
+import CollisionManager from '../engine/physics/CollisionManager'
+import TRex from './TRex'
+import Random from '../engine/math/Random'
+import Renderable from '../engine/renderer/Renderable'
 
 //ObstacleManager: manage obstacle and handle collision
-export default class ObstacleManager {
+export default class ObstacleManager extends Renderable {
     private obstacles: Obstacle[]
     public constructor() {
+        super()
         this.obstacles = []
         const randNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        randNum.sort(() => Math.random())
+        Random.shuffle(randNum)
         for (let i = 0; i < 10; i++) {
             if (randNum[i] % 2 == 1) this.obstacles.push(new Cactus(0))
-            else this.obstacles.push(new FlyDino(30))
+            else 
+            this.obstacles.push(new FlyDino(30))
         }
-        this.start()
+        this.reset()
     }
-    public start() {
+    public reset() {
         let tmp = 500
         for (let i = 0; i < 10; i++) {
             tmp = Math.floor(Math.random() * 1000) + 400 + tmp
@@ -30,25 +33,26 @@ export default class ObstacleManager {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
             if (!isStop) {
-                if (this.obstacles[i].getCoord().getX() <= 900)
+                if (this.obstacles[i].getShape().getCoord().getX() <= 900)
                     this.obstacles[i]
+                    .getShape()
                         .getCoord()
                         .setX(
-                            this.obstacles[i].getCoord().getX() -
+                            this.obstacles[i].getShape().getCoord().getX() -
                                 (deltaTime *
-                                    (TRexScore.getGameSpeed() + this.obstacles[i].getMoveSpeed())) /
-                                    GAME_SPEED_DEFAULT
+                                    (Speed.getSpeed() + this.obstacles[i].getMoveSpeed())) /
+                                    Speed.getDefaultSpeed()
                         )
                 else
                     this.obstacles[i]
-                        .getCoord()
+                    .getShape().getCoord()
                         .setX(
-                            this.obstacles[i].getCoord().getX() -
-                                (deltaTime * TRexScore.getGameSpeed()) / GAME_SPEED_DEFAULT
+                            this.obstacles[i].getShape().getCoord().getX() -
+                                (deltaTime * Speed.getSpeed()) / Speed.getDefaultSpeed()
                         )
 
                 if (
-                    this.obstacles[i].getCoord().getX() < -this.obstacles[i].getSize().getWidth() &&
+                    this.obstacles[i].getShape().getHighestX() < 0 &&
                     !isStop
                 ) {
                     listObstacleNeedToReset.push(i)
@@ -61,28 +65,32 @@ export default class ObstacleManager {
         let maxX = 0
         for (let i = 0; i < this.obstacles.length; i++)
             maxX =
-                maxX > this.obstacles[i].getCoord().getX()
+                maxX > this.obstacles[i].getShape().getCoord().getX()
                     ? maxX
-                    : this.obstacles[i].getCoord().getX()
+                    : this.obstacles[i].getShape().getCoord().getX()
         for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
             j = listObstacleNeedToReset[i]
             maxX += Math.floor(Math.random() * 1000) + 400
-            this.obstacles[j].getCoord().setX(maxX)
+            this.obstacles[j].getShape().getCoord().setX(maxX)
         }
     }
 
     public render(): void {
         for (let i = 0; i < this.obstacles.length; i++) {
-            if (this.obstacles[i].getCoord().getX() <= 1200) {
                 this.obstacles[i].render()
-            }
         }
     }
 
     public checkCollision(tRex: TRex): boolean {
         for (let i = 0; i < this.obstacles.length; i++) {
-            if (CollisionManager.check(tRex, this.obstacles[i])) return true
+            if (CollisionManager.checkCollision(this.obstacles[i], tRex))
+                return true
         }
         return false
+    }
+
+    public getObstacles(): Obstacle[]
+    {
+        return this.obstacles
     }
 }
