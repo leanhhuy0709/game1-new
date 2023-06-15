@@ -4,7 +4,6 @@ import Loader from '../resources/Loader'
 export default class Debug extends Game {
     public constructor() {
         super(700, 400)
-
         Loader.loadAllImages([], [])
     }
 

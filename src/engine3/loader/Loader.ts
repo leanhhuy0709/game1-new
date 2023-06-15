@@ -12,15 +12,11 @@ export default class Loader {
         return Loader.imageMap[key]
     }
 
-    public static loadAllImages(imagePath: string[], audioPath: string[]) {
-        Loader.Length = imagePath.length + audioPath.length
+    public static loadAllImages(imagePath: string[]) {
+        Loader.Length = imagePath.length
         for (let i = 0; i < imagePath.length; i++) {
             this.imageMap[imagePath[i]] = new Image()
             this.imageMap[imagePath[i]].src = imagePath[i]
-        }
-
-        for (let i = 0; i < audioPath.length; i++) {
-            //skip it
         }
 
         for (let i = 0; i < imagePath.length; i++) {
