@@ -44,19 +44,19 @@ export default class CollisionManager {
 
         const deltaX = x2 + w2 - (x1 + w1),
             deltaY = y2 + h2 - (y1 + h1)
-
-        if (Math.abs(deltaX) < Math.abs(deltaY)) {
+        
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
             if (move1)
                 move1.setVelocity(
-                    move1.getVelocity().getMagnitudeY(),
-                    0,
-                    move1.getVelocity().getDirection().getY()
+                    move1.getVelocity().getMagnitudeX(),
+                    move1.getVelocity().getDirection().getX(),
+                    0
                 )
             if (move2)
                 move2.setVelocity(
-                    move2.getVelocity().getMagnitudeY(),
-                    0,
-                    -move2.getVelocity().getDirection().getY()
+                    move2.getVelocity().getMagnitudeX(),
+                    move2.getVelocity().getDirection().getX(),
+                    0
                 )
             if (y1 < y2) {
                 const k = y1 + h1 - y2
@@ -90,16 +90,16 @@ export default class CollisionManager {
         } else {
             if (move1)
                 move1.setVelocity(
-                    move1.getVelocity().getMagnitudeX(),
-                    move1.getVelocity().getDirection().getX(),
-                    0
+                    move1.getVelocity().getMagnitudeY(),
+                    0,
+                    move1.getVelocity().getDirection().getY()
                 )
 
             if (move2)
                 move2.setVelocity(
-                    move2.getVelocity().getMagnitudeX(),
-                    move2.getVelocity().getDirection().getX(),
-                    0
+                    move2.getVelocity().getMagnitudeY(),
+                    0,
+                    move2.getVelocity().getDirection().getY()
                 )
 
             if (x1 < x2) {

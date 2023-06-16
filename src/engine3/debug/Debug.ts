@@ -23,8 +23,8 @@ import Game from '../Game'
 import Picture from '../component/Picture'
 import Sprite from '../component/Sprite'
 import Body from '../component/physics/Body'
+import Collider from '../component/physics/Collider'
 import CollisionManager from '../component/physics/CollisionManager'
-import FixedBody from '../component/physics/FixedBody'
 import Movement from '../component/physics/Movement'
 import GameObject from '../game-objects/GameObject'
 import InputHandler from '../input/InputHandler'
@@ -60,7 +60,7 @@ export default class Debug extends Game {
             START_BACKGROUND,
             CLOUD_BACKGROUND
         ])
-        this.o1 = new GameObject(0, 0, 100, 100)
+        this.o1 = new GameObject(300, 0, 100, 100)
         //this.o1.addComponent(new Picture(this.o1, DINOSAUR_1))
         this.o1.addComponent(
             new Sprite(
@@ -82,11 +82,12 @@ export default class Debug extends Game {
         const body = new Body(this.o1, 0, 0, 0)
         //body.addForce(new Force(0.01, 1, 0.3))
         this.o1.addComponent(body)
+        this.o1.addComponent(new Collider(this.o1))
 
         this.o2 = new GameObject(0, 350, 700, 50)
         this.o2.addComponent(new Picture(this.o2, START_BACKGROUND, 1))
 
-        this.o2.addComponent(new FixedBody(this.o2))
+        this.o2.addComponent(new Collider(this.o2))
 
         this.o3 = new GameObject(0, 0, 1000, 400)
         this.o3.addComponent(new Picture(this.o3, CLOUD_BACKGROUND, 0))
@@ -121,7 +122,7 @@ export default class Debug extends Game {
         {
             this.o1.setY(this.o1.getY() + 1)
         }
-
+        console.log(this.o1)
         this.o1.update(deltaTime)
         this.o2.update(deltaTime)
         this.o3.update(deltaTime)
