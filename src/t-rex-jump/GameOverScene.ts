@@ -1,77 +1,41 @@
-/*
+
+import Background from '../engine/component/Background'
 import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
-import Renderer from '../engine/renderer/Renderer'
+import GameObject from '../engine/game-objects/GameObject'
 import Scene from '../engine/scene/Scene'
-import SceneManager from '../engine/scene/SceneManager'
-import Background from '../engine/sprite/Background'
-import TRexScore from './TRexScore'
 
 import { GAMEOVER_BACKGROUND } from './const'
+import { DEPTH } from './depth'
 
-class GameOverScene extends Scene {
-    private text: Text
-    private background: Background
-    private tryAgainBtn: Button
-    private settingBtn: Button
-    private exitBtn: Button
+export default class GameOverScene extends Scene {
+    public constructor(cameraSpeed = 0) {
+        super('GameOverScene', cameraSpeed)
 
-    public constructor() {
-        super('GameOverScene')
-        //Comic Sans MS
-        this.text = new Text('Game Over', 350, 150, `50px Comic Sans MS`, 'center', '#713B61')
-        this.background = new Background([GAMEOVER_BACKGROUND], 0, 700, 400)
-        this.tryAgainBtn = new Button('Try Again', 250, 195, 200, 50)
-        this.settingBtn = new Button('Setting', 250, 255, 200, 50)
-        this.exitBtn = new Button('Exit', 250, 315, 200, 50)
-        // this.background = new Background(BACKGROUND_LIST, 0, 1000, 400)
+        const textBox = new GameObject(350, 120, 0, 0)
+        textBox.addComponent(new Text(textBox, DEPTH.OBJECT_MEDIUM, 'Game Over', '50px Comic Sans MS', 'center', '#713B61'))
+        this.addObject(textBox)
+
+        const bg = new GameObject(0, 0, 1000, 400)
+        bg.addComponent(new Background(bg, GAMEOVER_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
+        this.addObject(bg)
+
+        const startBtn = new GameObject(250, 195, 200, 50)
+        startBtn.addComponent(new Button(startBtn, DEPTH.OBJECT_MEDIUM, 'Try again'))
+        this.addObject(startBtn)
+
+        const settingBtn = new GameObject(250, 255, 200, 50)
+        settingBtn.addComponent(new Button(settingBtn, DEPTH.OBJECT_MEDIUM, 'Setting'))
+        this.addObject(settingBtn)
+
+        const exitBtn = new GameObject(250, 315, 200, 50)
+        exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
+        this.addObject(exitBtn)
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    
     public update(deltaTime: number): void {
-        const mouseHoverCoord = this.input.getMouseHoverCoord()
-        const x = mouseHoverCoord.getX()
-        const y = mouseHoverCoord.getY()
-        this.tryAgainBtn.isHovered(x, y)
-        this.settingBtn.isHovered(x, y)
-        this.exitBtn.isHovered(x, y)
-
-        if (this.input.isMouseDown()) {
-            const mouseCoord = this.input.getMouseCoord()
-            if (this.tryAgainBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GamePlayScene')
-            } else if (this.settingBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GameSettingScene')
-            } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
-            }
-        } else if (this.input.isTouchDown()) {
-            const touchCoord = this.input.getTouchCoord()
-            if (this.tryAgainBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GamePlayScene')
-            } else if (this.settingBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GameSettingScene')
-            } else if (this.exitBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
-            }
-        }
-    }
-
-    public render(): void {
-        Renderer.addToQueue(this.background, 0)
-        Renderer.addToQueue(this.text, 5)
-        Renderer.addToQueue(this.tryAgainBtn, 5)
-        Renderer.addToQueue(this.settingBtn, 5)
-        Renderer.addToQueue(this.exitBtn, 5)
-
-        TRexScore.getHighScoreText().setCoord(5, 25)
-        Renderer.addToQueue(TRexScore.getScoreText(), 5)
-
-        TRexScore.getHighScoreText().setAlign('end')
-        TRexScore.getHighScoreText().setCoord(700, 25)
-        Renderer.addToQueue(TRexScore.getHighScoreText(), 5)
-        
+        super.update(deltaTime)
     }
 }
 
-export default GameOverScene
-*/
+ GameOverScene

@@ -1,24 +1,45 @@
-/*
+
+import Background from '../engine/component/Background'
 import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
-import Renderer from '../engine/renderer/Renderer'
+import GameObject from '../engine/game-objects/GameObject'
 import Scene from '../engine/scene/Scene'
-import SceneManager from '../engine/scene/SceneManager'
-import Sound from '../engine/sound/Sound'
-import Background from '../engine/sprite/Background'
 import TRex from './TRex'
 import { SETTING_BACKGROUND } from './const'
+import { DEPTH } from './depth'
 
-class GameSettingScene extends Scene {
-    private tRex: TRex
-    private text: Text
-    private background: Background
-    private plusBtn: Button
-    private minusBtn: Button
-    private exitBtn: Button
-    private volumeValue: Text
+export default class GameSettingScene extends Scene {
+    public constructor(cameraSpeed = 0) {
+        super('GameSettingScene', cameraSpeed)
 
-    public constructor() {
+        const tRex = new TRex(0, 0, 100, 100, 0)
+        this.addObject(tRex)
+
+        const textBox = new GameObject(350, 120, 0, 0)
+        textBox.addComponent(new Text(textBox, DEPTH.OBJECT_MEDIUM, 'T-Rex Jump', '50px Comic Sans MS', 'center', '#713B61'))
+        this.addObject(textBox)
+
+        const bg = new GameObject(0, 0, 1000, 400)
+        bg.addComponent(new Background(bg, SETTING_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
+        this.addObject(bg)
+
+        const textBox2 = new GameObject(350, 210, 0, 0)
+        textBox2.addComponent(new Text(textBox2, DEPTH.OBJECT_MEDIUM, `${100}`, '35px Comic Sans MS', 'center', 'black'))
+        this.addObject(textBox2)
+
+        const startBtn = new GameObject(385, 175, 50, 50)
+        startBtn.addComponent(new Button(startBtn, DEPTH.OBJECT_MEDIUM, '+'))
+        this.addObject(startBtn)
+
+        const settingBtn = new GameObject(265, 175, 50, 50)
+        settingBtn.addComponent(new Button(settingBtn, DEPTH.OBJECT_MEDIUM, '-'))
+        this.addObject(settingBtn)
+
+        const exitBtn = new GameObject(250, 255, 200, 50)
+        exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
+        this.addObject(exitBtn)
+
+        /*
         super('GameSettingScene')
         this.tRex = new TRex(20, 550, 100, 100, 100)
         this.text = new Text('Setting', 350, 120, `50px Comic Sans MS`, 'center', 'red')
@@ -34,52 +55,11 @@ class GameSettingScene extends Scene {
         this.plusBtn = new Button('+', 385, 175, 50, 50)
         this.minusBtn = new Button('-', 265, 175, 50, 50)
         this.exitBtn = new Button('Exit', 250, 255, 200, 50)
+        */
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     public update(deltaTime: number): void {
-        this.tRex.update(deltaTime)
-
-        const mouseHoverCoord = this.input.getMouseHoverCoord()
-        const x = mouseHoverCoord.getX()
-        const y = mouseHoverCoord.getY()
-        this.plusBtn.isHovered(x, y)
-        this.minusBtn.isHovered(x, y)
-        this.exitBtn.isHovered(x, y)
-
-        if (this.input.isMouseDown()) {
-            const mouseCoord = this.input.getMouseCoord()
-            if (this.plusBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                Sound.setVolume(Sound.getVolume() + 0.1)
-            } else if (this.minusBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                Sound.setVolume(Sound.getVolume() - 0.1)
-            } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
-            }
-        } else if (this.input.isTouchDown()) {
-            const touchCoord = this.input.getTouchCoord()
-            if (this.plusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                Sound.setVolume(Sound.getVolume() + 0.1)
-            } else if (this.minusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                Sound.setVolume(Sound.getVolume() - 0.1)
-            } else if (this.exitBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
-            }
-        }
-        this.volumeValue.setContent(`${Sound.getVolume().toFixed(0)}`)
-    }
-
-    public render(): void {
-        
-        Renderer.addToQueue(this.background, 0)
-        Renderer.addToQueue(this.text, 5)
-        Renderer.addToQueue(this.volumeValue, 5)
-        Renderer.addToQueue(this.plusBtn, 5)
-        Renderer.addToQueue(this.minusBtn, 5)
-        Renderer.addToQueue(this.exitBtn, 5)
-        Renderer.addToQueue(this.tRex, 5)
-        
+        super.update(deltaTime)
     }
 }
 
-export default GameSettingScene
-*/
