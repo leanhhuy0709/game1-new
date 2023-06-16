@@ -4,7 +4,7 @@ import Loader from '../loader/Loader'
 import Canvas from '../renderer/canvas/Canvas'
 import RenderComponent from './RenderComponent'
 
-class Picture extends RenderComponent {
+export default class Background extends RenderComponent {
     private image: HTMLImageElement
 
     public constructor(obj: GameObject, imageHrefs: string, depth = 1) {
@@ -12,12 +12,13 @@ class Picture extends RenderComponent {
         this.image = Loader.getImage(imageHrefs)
     }
 
-    public getPicture(): HTMLImageElement {
+    public getBackground(): HTMLImageElement {
         return this.image
     }
 
     public render(camera = new Camera()): void {
         if (!this.isActive) return
+
         Canvas.ctx?.drawImage(
             this.image,
             this.parent.getX() - camera.getX(),
@@ -28,8 +29,6 @@ class Picture extends RenderComponent {
     }
 
     public update(_deltaTime: number) {
-        //render
+        //
     }
 }
-
-export default Picture
