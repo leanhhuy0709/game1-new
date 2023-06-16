@@ -1,4 +1,3 @@
-import Rectangle from '../engine/shape/Rectangle'
 import Obstacle from './Obstacle'
 import { CACTUS } from './const'
 

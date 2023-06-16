@@ -1,23 +1,14 @@
 import GameObject from "../engine/game-objects/GameObject"
-import Shape from "../engine/shape/Shape"
 
 //Body
 class Obstacle extends GameObject {
-    protected moveSpeed: number
-    public constructor(shape: Shape, imageHrefs: string[], spriteChangeInterval: number) {
-        super(shape, imageHrefs, spriteChangeInterval)
+    public constructor(x: number, y: number, w: number, h: number) {
+        super(x, y, w, h)
     }
-    //eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public reset(x: number) {
+
+    public reset(_x: number)
+    {
         //
-    }
-
-    public getMoveSpeed() {
-        return this.moveSpeed
-    }
-
-    public setMoveSpeed(moveSpeed: number) {
-        this.moveSpeed = moveSpeed
     }
 }
 
