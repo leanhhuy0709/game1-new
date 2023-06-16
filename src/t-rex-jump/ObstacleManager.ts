@@ -1,22 +1,18 @@
 import Obstacle from './Obstacle'
 import Cactus from './Cactus'
 import FlyDino from './FlyDino'
-import Speed from '../engine/score/Speed'
-import CollisionManager from '../engine/physics/CollisionManager'
 import TRex from './TRex'
 import Random from '../engine/math/Random'
-import Renderable from '../engine/renderer/Renderable'
 
 //ObstacleManager: manage obstacle and handle collision
-export default class ObstacleManager extends Renderable {
+export default class ObstacleManager {
     private obstacles: Obstacle[]
     public constructor() {
-        super()
         this.obstacles = []
         const randNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         Random.shuffle(randNum)
         for (let i = 0; i < 10; i++) {
-            if (randNum[i] % 2 == 1) this.obstacles.push(new Cactus(0))
+            if (randNum[i] % 2 == 1) this.obstacles.push(new Cactus(0, 0, 0, 0))
             else 
             this.obstacles.push(new FlyDino(30))
         }
