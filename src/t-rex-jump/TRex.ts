@@ -1,3 +1,4 @@
+import GameObject from '../engine/game-objects/GameObject'
 import Body from '../engine/physics/Body'
 import Rectangle from '../engine/shape/Rectangle'
 import Sound from '../engine/sound/Sound'
@@ -30,7 +31,7 @@ import {
     DINOSAUR_DUCK_2,
 } from './const'
 
-class TRex extends Body {
+class TRex extends GameObject {
     private jumpSprites: Sprite
     private fallSprites: Sprite
     private duckSprites: Sprite
