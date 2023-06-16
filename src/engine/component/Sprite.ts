@@ -56,7 +56,6 @@ class Sprite extends RenderComponent {
 
     public render(camera = new Camera()): void {
         if (!this.isActive) return
-
         Canvas.ctx?.drawImage(
             this.getCurrent(),
             this.parent.getX() - camera.getX(),

@@ -14,6 +14,7 @@ class Renderer {
     
     public addToQueue(obj: GameObject): void {
         const comps = obj.getComponents()
+        //->GameObject[]
         for (let i = 0; i < comps.length; i++)
         {
             if (comps[i] instanceof RenderComponent)
@@ -31,7 +32,7 @@ class Renderer {
     public renderAll() {
         this.sortQueue()
         for (let i = 0; i < this.renders.length; i++)
-        {            
+        {
             this.renders[i].render(this.camera)
         }
     }

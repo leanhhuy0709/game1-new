@@ -3,7 +3,7 @@ import Game from '../engine/Game'
 import Loader from '../engine/loader/Loader'
 import SceneManager from '../engine/scene/SceneManager'
 import GameOverScene from './GameOverScene'
-//import GamePlayScene from './GamePlayScene'
+import GamePlayScene from './GamePlayScene'
 import GameSettingScene from './GameSettingScene'
 import GameStartScene from './GameStartScene'
 import {
@@ -47,7 +47,7 @@ class TRexJump extends Game {
 
     public constructor() {
         super(700, 400)
-        this.sceneManager = new SceneManager(new GameSettingScene())
+        this.sceneManager = new SceneManager(new GamePlayScene())
 
         Loader.loadAllImages([
             DINOSAUR_MOVE_1,
@@ -102,11 +102,11 @@ class TRexJump extends Game {
             this.sceneManager.render()
             if (this.sceneManager.isNeedToChangeScene()) {
                 switch (SceneManager.getNextScene()) {
-                    /*
+                    
                     case 'GamePlayScene':
                         this.sceneManager.setNewScene(new GamePlayScene())
                         break
-                        */
+                        
                     case 'GameOverScene':
                         this.sceneManager.setNewScene(new GameOverScene())
                         break

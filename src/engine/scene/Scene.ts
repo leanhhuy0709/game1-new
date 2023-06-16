@@ -1,3 +1,4 @@
+import CollisionManager from "../component/physics/CollisionManager"
 import GameObject from "../game-objects/GameObject"
 import InputHandler from "../input/InputHandler"
 import Renderer from "../renderer/Renderer"
@@ -19,6 +20,16 @@ class Scene {
     public update(deltaTime: number): void {
         for (let i = 0; i < this.gameObjects.length; i++)
             this.gameObjects[i].update(deltaTime)
+        this.renderer.update(deltaTime)
+        for (let i = 0; i + 1 < this.gameObjects.length; i++)
+        {
+            for (let j = i + 1; j < this.gameObjects.length; j++)
+            {
+                const obj1 = this.gameObjects[i]
+                const obj2 = this.gameObjects[j]
+                CollisionManager.checkCollision(obj1, obj2)
+            }
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

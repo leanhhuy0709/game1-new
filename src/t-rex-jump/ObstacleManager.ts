@@ -5,11 +5,13 @@ import TRex from './TRex'
 import Random from '../engine/math/Random'
 import Camera from '../engine/camera/Camera'
 import CollisionManager from '../engine/component/physics/CollisionManager'
+import GameObject from '../engine/game-objects/GameObject'
 
 //ObstacleManager: manage obstacle and handle collision
-export default class ObstacleManager {
+export default class ObstacleManager extends GameObject {
     private obstacles: Obstacle[]
     public constructor() {
+        super(0, 0, 0, 0)
         this.obstacles = []
         const randNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         Random.shuffle(randNum)
@@ -26,7 +28,7 @@ export default class ObstacleManager {
             this.obstacles[i].reset(tmp)
         }
     }
-    public update(deltaTime: number, camera: Camera) {
+    public update(deltaTime: number, camera: Camera = new Camera()) {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
             this.obstacles[i].update(deltaTime)

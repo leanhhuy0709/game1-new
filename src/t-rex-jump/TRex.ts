@@ -100,6 +100,15 @@ class TRex extends GameObject {
 
         const body = this.getComponent<Body>(Body)[0]
         //don't duck at this time
+        if (Math.abs(body.getVelocity().getMagnitudeY()) < 0.01)
+        {
+            moveSprite.setIsAcitve(true)
+            duckSprite.setIsAcitve(false)
+            jumpSprite.setIsAcitve(false)
+            fallSprite.setIsAcitve(false)
+        }
+        else
+
         if (body.getVelocity().getMagnitudeY() < 0)
         {
             moveSprite.setIsAcitve(false)
@@ -115,12 +124,6 @@ class TRex extends GameObject {
             jumpSprite.setIsAcitve(false)
             fallSprite.setIdx(0)
             fallSprite.setIsAcitve(true)
-        }
-        else {
-            moveSprite.setIsAcitve(true)
-            duckSprite.setIsAcitve(false)
-            jumpSprite.setIsAcitve(false)
-            fallSprite.setIsAcitve(false)
         }
     }
     //fix
