@@ -1,8 +1,10 @@
-import Component from '../component/Component'
+import { DEPTH } from '../../t-rex-jump/depth'
+import Camera from '../camera/Camera'
+import RenderComponent from '../component/RenderComponent'
 import Text from '../component/Text'
 import GameObject from '../game-objects/GameObject'
 
-export default class Score extends Component {
+export default class Score extends RenderComponent {
     private score = 0
     private highScore = 0
     private scoreText: Text 
@@ -10,7 +12,8 @@ export default class Score extends Component {
 
     public constructor(obj: GameObject)
     {
-        super(obj)
+        super(obj, DEPTH.OBJECT_LOW)
+        //this.scoreText = new Text(this)
     }
 
     public getScore(): number {
@@ -49,6 +52,16 @@ export default class Score extends Component {
 
     public getHighScoreText(): Text {
         return this.highScoreText
+    }
+
+    public render(camera = new Camera()): void {
+        if (!this.isActive) return
+        this.scoreText.render(camera)
+        this.highScoreText.render(camera)
+    }
+
+    public update(deltaTime: number): void {
+        this.addWithDeltaTime(deltaTime, 5)
     }
 }
 

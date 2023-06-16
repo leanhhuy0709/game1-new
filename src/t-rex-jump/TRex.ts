@@ -166,6 +166,14 @@ class TRex extends GameObject {
     public getMinJump(): number {
         return this.minJump
     }
+
+    public getDefaultSpeed(): number {
+        return this.defaultSpeed
+    }
+
+    public setDefaultSpeed(speed: number): void {
+        this.defaultSpeed = speed
+    }
 }
 
 export default TRex

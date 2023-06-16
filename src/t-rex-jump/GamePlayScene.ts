@@ -17,6 +17,8 @@ import { DEPTH } from './depth'
 const CAMERA_SPEED = 1.5
 
 class GamePlayScene extends Scene {
+    obstacleManager: ObstacleManager
+
     public constructor(sceneManager: SceneManager) {
         super(sceneManager, 'GamePlayScene', CAMERA_SPEED)
         //console.log(this.renderer)
@@ -29,7 +31,7 @@ class GamePlayScene extends Scene {
         //bg.addComponent(new Movement(bg, 0, 0, 0))
         this.addObject(bg)
 
-        const ground = new GameObject(0, 350, 10000, 100)
+        const ground = new GameObject(0, 350, 100000, 100)
         ground.addComponent(new Picture(ground, GROUND, DEPTH.BACKGROUND_HIGH))
         ground.addComponent(new Collider(ground))
         this.addObject(ground)
@@ -42,18 +44,17 @@ class GamePlayScene extends Scene {
         const flydino1 = new FlyDino(100)
         const flydino2 = new FlyDino(100)
         const flydino3 = new FlyDino(100)
-        const obstacleManager = new ObstacleManager()
-        obstacleManager.add(cactus1)
-        obstacleManager.add(cactus2)
-        obstacleManager.add(cactus3)
-        obstacleManager.add(cactus4)
-        obstacleManager.add(cactus5)
-        obstacleManager.add(flydino1)
-        obstacleManager.add(flydino2)
-        obstacleManager.add(flydino3)
-        obstacleManager.reset()
+        this.obstacleManager = new ObstacleManager()
+        this.obstacleManager.add(cactus1)
+        this.obstacleManager.add(cactus2)
+        this.obstacleManager.add(cactus3)
+        this.obstacleManager.add(cactus4)
+        this.obstacleManager.add(cactus5)
+        this.obstacleManager.add(flydino1)
+        this.obstacleManager.add(flydino2)
+        this.obstacleManager.add(flydino3)
+        this.obstacleManager.reset()
 
-        this.addObject(obstacleManager)
         this.addObject(cactus1)
         this.addObject(cactus2)
         this.addObject(cactus3)
@@ -67,10 +68,10 @@ class GamePlayScene extends Scene {
         bg2.addComponent(new Background(bg2, MOUTAIN, DEPTH.BACKGROUND_MEDIUM))
         bg2.addComponent(new Movement(bg2, 0.15, -1, 0))
         this.addObject(bg2)
-        //const flydino = new FlyDino(600)
-        //console.log(flydino)
-        //this.addObject(cactus)
-        //this.addObject(flydino)
+
+        //const score = new GameObject(0, 0, 0, 0)
+        //score.addComponent(new Score(score))
+        //this.addObject(score)
     }
 
     public update(deltaTime: number): void {
@@ -84,8 +85,8 @@ class GamePlayScene extends Scene {
             }
         }
 
-        const obstacleManager = this.gameObjects[3] as ObstacleManager
-        if (obstacleManager.checkCollision(tRex)) {
+        this.obstacleManager.update(deltaTime, this.renderer.getCamera())
+        if (this.obstacleManager.checkCollision(tRex)) {
             this.sceneManager.setNextScene('GameOverScene')
         }
 

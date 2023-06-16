@@ -22,6 +22,7 @@ export default class ObstacleManager extends GameObject {
     public update(deltaTime: number, camera: Camera = new Camera()) {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
+            if (this.obstacles[i].getX() < camera.getX() + 700)
             this.obstacles[i].update(deltaTime)
             if (this.obstacles[i].getX() + this.obstacles[i].getWidth() < camera.getX()) {
                 listObstacleNeedToReset.push(i)
@@ -33,7 +34,7 @@ export default class ObstacleManager extends GameObject {
             maxX = maxX > this.obstacles[i].getX() ? maxX : this.obstacles[i].getX()
         for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
             j = listObstacleNeedToReset[i]
-            maxX += Math.floor(Math.random() * 1000) + 400
+            maxX += Math.floor(Math.random() * 1000) + 400 + camera.getX()
 
             if (this.obstacles[j].getComponent<Movement>(Movement).length > 0) {
                 const v = this.obstacles[j].getComponent<Movement>(Movement)[0].getVelocity().getMagnitude()
