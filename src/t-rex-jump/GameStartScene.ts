@@ -69,6 +69,7 @@ class GameStartScene extends Scene {
             this.input.resetTouch()
         }
         */
+
         super.update(deltaTime)
     }
 

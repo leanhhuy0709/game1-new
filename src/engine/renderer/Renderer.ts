@@ -31,7 +31,7 @@ class Renderer {
     public renderAll() {
         this.sortQueue()
         for (let i = 0; i < this.renders.length; i++)
-        {
+        {            
             this.renders[i].render(this.camera)
         }
     }

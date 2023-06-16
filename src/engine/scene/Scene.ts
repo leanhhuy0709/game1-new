@@ -35,14 +35,10 @@ class Scene {
         return this.name
     }
 
-    public addObjectToRenderQueue(obj: GameObject)
-    {
-        this.renderer.addToQueue(obj)
-    }
-
     public addObject(obj: GameObject)
     {
         this.gameObjects.push(obj)
+        this.renderer.addToQueue(obj)
     }
 }
 

@@ -100,7 +100,6 @@ class TRexJump extends Game {
         if (Loader.isLoadComplete()) {
             this.sceneManager.update(deltaTime)
             this.sceneManager.render()
-
             if (this.sceneManager.isNeedToChangeScene()) {
                 switch (SceneManager.getNextScene()) {
                     /*

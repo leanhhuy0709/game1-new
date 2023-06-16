@@ -28,6 +28,7 @@ import {
     DINOSAUR_DUCK_1,
     DINOSAUR_DUCK_2,
 } from './const'
+import SpriteNoReset from '../engine/component/SpriteNoReset'
 
 class TRex extends GameObject {
     public constructor(x = 0, y = 0, w = 0, h = 0, speed = 1) {
@@ -53,7 +54,7 @@ class TRex extends GameObject {
         )
 
         this.addComponent(
-            new Sprite(
+            new SpriteNoReset(
                 this,
                 [
                     DINOSAUR_1,
@@ -65,16 +66,16 @@ class TRex extends GameObject {
                     DINOSAUR_7,
                     DINOSAUR_8,
                 ],
-                10,
+                20,
                 DEPTH.OBJECT_HIGH
             )
         )
 
         this.addComponent(
-            new Sprite(
+            new SpriteNoReset(
                 this,
                 [DINOSAUR_8, DINOSAUR_8, DINOSAUR_9, DINOSAUR_10, DINOSAUR_11, DINOSAUR_12],
-                10,
+                20,
                 DEPTH.OBJECT_HIGH
             )
         )
@@ -99,18 +100,20 @@ class TRex extends GameObject {
 
         const body = this.getComponent<Body>(Body)[0]
         //don't duck at this time
-        if (body.getVelocity().getMagnitudeY() > 0)
+        if (body.getVelocity().getMagnitudeY() < 0)
         {
             moveSprite.setIsAcitve(false)
             duckSprite.setIsAcitve(false)
+            jumpSprite.setIdx(0)
             jumpSprite.setIsAcitve(true)
             fallSprite.setIsAcitve(false)
         }
-        else if (body.getVelocity().getMagnitudeY() < 0)
+        else if (body.getVelocity().getMagnitudeY() > 0)
         {
             moveSprite.setIsAcitve(false)
             duckSprite.setIsAcitve(false)
             jumpSprite.setIsAcitve(false)
+            fallSprite.setIdx(0)
             fallSprite.setIsAcitve(true)
         }
         else {

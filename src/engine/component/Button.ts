@@ -11,7 +11,7 @@ export default class Button extends RenderComponent {
     public constructor(obj: GameObject, depth: number, content: string) {
         super(obj, depth)
         this.text = new Text(
-            obj,
+            new GameObject(obj.getX() + obj.getWidth() / 2, obj.getY() + obj.getHeight() / 2, 0, 0),
             depth,
             content,
             `30px 'Montserrat', sans-serif`,

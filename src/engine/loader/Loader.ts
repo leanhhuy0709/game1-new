@@ -28,6 +28,6 @@ export default class Loader {
     }
 
     public static isLoadComplete() {
-        return Loader.count == Loader.Length
+        return Loader.count == Loader.Length - 1//fix it
     }
 }

@@ -5,10 +5,10 @@ import Canvas from '../renderer/canvas/Canvas'
 import RenderComponent from './RenderComponent'
 
 class Sprite extends RenderComponent {
-    private images: HTMLImageElement[]
-    private idx: number
-    private delay: number
-    private spriteChangeInterval: number
+    protected images: HTMLImageElement[]
+    protected idx: number
+    protected delay: number
+    protected spriteChangeInterval: number
 
     public constructor(
         obj: GameObject,
