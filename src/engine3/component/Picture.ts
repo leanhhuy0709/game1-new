@@ -1,3 +1,4 @@
+import Camera from '../camera/Camera'
 import GameObject from '../game-objects/GameObject'
 import Loader from '../loader/Loader'
 import Canvas from '../renderer/canvas/Canvas'
@@ -15,7 +16,17 @@ class Picture extends RenderComponent {
         return this.image
     }
 
-    public render(): void {
+    public render(camera = new Camera()): void {
+        if (!this.isActive) return
+        if (camera.getSpeed() > 0) {
+            Canvas.ctx?.drawImage(
+                this.image,
+                this.parent.getX() - camera.getX(),
+                this.parent.getY() - camera.getY(),
+                this.parent.getWidth(),
+                this.parent.getHeight()
+            )
+        } else
         Canvas.ctx?.drawImage(
             this.image,
             this.parent.getX(),

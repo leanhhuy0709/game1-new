@@ -1,8 +1,7 @@
 import Component from '../component/Component'
 import Coord from '../component/Coord'
-import Picture from '../component/Picture'
+import RenderComponent from '../component/RenderComponent'
 import Size from '../component/Size'
-import Sprite from '../component/Sprite'
 
 export default class GameObject {
     private coord: Coord
@@ -59,14 +58,20 @@ export default class GameObject {
 
     public render(): void {
         for (let i = 0; i < this.components.length; i++) {
-            if (this.components[i] instanceof Sprite) {
-                const comp = this.components[i] as Sprite
-                comp.render()
-            }
-            if (this.components[i] instanceof Picture) {
-                const comp = this.components[i] as Picture
+            if (this.components[i] instanceof RenderComponent) {
+                const comp = this.components[i] as RenderComponent
                 comp.render()
             }
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public getComponent<T extends Component>(type: new (...args: any[]) => T): T[] {
+        return this.components.filter(component => component instanceof type) as T[]
+    }
+
+    public getComponents()
+    {
+        return this.components
     }
 }

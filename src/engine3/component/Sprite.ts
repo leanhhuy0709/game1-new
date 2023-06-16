@@ -1,3 +1,4 @@
+import Camera from '../camera/Camera'
 import GameObject from '../game-objects/GameObject'
 import Loader from '../loader/Loader'
 import Canvas from '../renderer/canvas/Canvas'
@@ -53,14 +54,24 @@ class Sprite extends RenderComponent {
         return this.idx
     }
 
-    public render(): void {
-        Canvas.ctx?.drawImage(
-            this.getCurrent(),
-            this.parent.getX(),
-            this.parent.getY(),
-            this.parent.getWidth(),
-            this.parent.getHeight()
-        )
+    public render(camera = new Camera()): void {
+        if (!this.isActive) return
+        if (camera.getSpeed() > 0) {
+            Canvas.ctx?.drawImage(
+                this.getCurrent(),
+                this.parent.getX() - camera.getX(),
+                this.parent.getY() - camera.getY(),
+                this.parent.getWidth(),
+                this.parent.getHeight()
+            )
+        } else
+            Canvas.ctx?.drawImage(
+                this.getCurrent(),
+                this.parent.getX(),
+                this.parent.getY(),
+                this.parent.getWidth(),
+                this.parent.getHeight()
+            )
     }
 
     public setDelay(delay: number): void {
