@@ -4,13 +4,14 @@ import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
 import GameObject from '../engine/game-objects/GameObject'
 import Scene from '../engine/scene/Scene'
+import SceneManager from '../engine/scene/SceneManager'
 import TRex from './TRex'
 import { SETTING_BACKGROUND } from './const'
 import { DEPTH } from './depth'
 
 export default class GameSettingScene extends Scene {
-    public constructor(cameraSpeed = 0) {
-        super('GameSettingScene', cameraSpeed)
+    public constructor(sceneManager: SceneManager, cameraSpeed = 0) {
+        super(sceneManager, 'GameSettingScene', cameraSpeed)
 
         const tRex = new TRex(0, 0, 100, 100, 0)
         this.addObject(tRex)
@@ -38,27 +39,43 @@ export default class GameSettingScene extends Scene {
         const exitBtn = new GameObject(250, 255, 200, 50)
         exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
         this.addObject(exitBtn)
-
-        /*
-        super('GameSettingScene')
-        this.tRex = new TRex(20, 550, 100, 100, 100)
-        this.text = new Text('Setting', 350, 120, `50px Comic Sans MS`, 'center', 'red')
-        this.volumeValue = new Text(
-            `${Sound.getVolume().toFixed(0)}`,
-            350,
-            210,
-            `35px Comic Sans MS`,
-            'center',
-            'black'
-        )
-        this.background = new Background([SETTING_BACKGROUND], 0, 700, 400)
-        this.plusBtn = new Button('+', 385, 175, 50, 50)
-        this.minusBtn = new Button('-', 265, 175, 50, 50)
-        this.exitBtn = new Button('Exit', 250, 255, 200, 50)
-        */
     }
 
     public update(deltaTime: number): void {
+
+        const mouseHoverCoord = this.input.getMouseHoverCoord()
+        const x = mouseHoverCoord.getX() - this.renderer.getCamera().getX()
+        const y = mouseHoverCoord.getY() - this.renderer.getCamera().getY()
+
+        const plusBtn = this.gameObjects[4].getComponent<Button>(Button)[0]
+        const minusBtn = this.gameObjects[5].getComponent<Button>(Button)[0]
+        const exBtn = this.gameObjects[6].getComponent<Button>(Button)[0]
+
+        plusBtn.isHovered(x, y)
+        minusBtn.isHovered(x, y)
+        exBtn.isHovered(x, y)
+
+        if (this.input.isMouseDown()) {
+            const mouseCoord = this.input.getMouseCoord()
+            if (plusBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                //
+            } else if (minusBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                //
+            } else if (exBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                this.sceneManager.setNextScene('GameStartScene')
+            }
+        } else if (this.input.isTouchDown()) {
+            const touchCoord = this.input.getTouchCoord()
+            if (plusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                //
+            } else if (minusBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                //
+            } else if (exBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                this.sceneManager.setNextScene('GameStartScene')
+            }
+            this.input.resetTouch()
+        }
+
         super.update(deltaTime)
     }
 }

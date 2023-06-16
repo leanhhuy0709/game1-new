@@ -41,6 +41,11 @@ class Renderer {
     {
         this.camera.update(deltaTime)
     }
+
+    public getCamera(): Camera
+    {
+        return this.camera
+    }
 }
 
 export default Renderer

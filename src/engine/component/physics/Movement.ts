@@ -1,6 +1,5 @@
 import GameObject from '../../game-objects/GameObject'
 import Component from '../Component'
-import Coord from '../Coord'
 import ForceVector from './force/ForceVector'
 
 //Body can be affected by many forces
@@ -38,16 +37,13 @@ export default class Movement extends Component {
     public addVeloctity(v: number, x: number, y: number): void {
         const vX = this.velocity.getMagnitudeX() + v * x
         const vY = this.velocity.getMagnitudeY() + v * y
-
-        if (Coord.distance(0, 0, vX, vY) == 0) {
+        const d = Math.sqrt(vX ** 2 + vY ** 2 )
+        if (d == 0) {
             this.velocity.setMagnitude(0)
             this.velocity.setDirection(0, 0)
         } else {
-            this.velocity.setMagnitude(Coord.distance(0, 0, vX, vY))
-            this.velocity.setDirection(
-                vX / Coord.distance(0, 0, vX, vY),
-                vY / Coord.distance(0, 0, vX, vY)
-            )
+            this.velocity.setDirection(vX / d, vY / d)
+            this.velocity.setMagnitude(d)
         }
     }
 }

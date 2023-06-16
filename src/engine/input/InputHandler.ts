@@ -148,6 +148,11 @@ class InputHandler {
         this.keyStatesDown = {}
         this.keyStatesUp = {}
     }
+
+    public resetKeyEvent(key: string): void {
+        this.keyStatesDown[key] = false
+        this.keyStatesUp[key] = false
+    }
 }
 // 
 export default InputHandler

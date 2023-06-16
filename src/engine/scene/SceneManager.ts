@@ -1,11 +1,11 @@
 import Scene from './Scene'
 
 class SceneManager {
-    scene: Scene
-    private static nextSceneName: string
+    private scene: Scene
+    private nextSceneName: string
     public constructor(scene: Scene) {
         this.scene = scene
-        SceneManager.nextSceneName = this.scene.getName()
+        this.nextSceneName = this.scene.getName()
     }
 
     public update(deltaTime: number): void {
@@ -19,19 +19,19 @@ class SceneManager {
     public setNewScene(scene: Scene): void {
         this.scene.clear()
         this.scene = scene
-        SceneManager.nextSceneName = this.scene.getName()
+        this.nextSceneName = this.scene.getName()
     }
 
     public isNeedToChangeScene(): boolean {
-        return SceneManager.nextSceneName !== this.scene.getName()
+        return this.nextSceneName !== this.scene.getName()
     }
 
-    public static setNextScene(sceneName: string): void {
-        SceneManager.nextSceneName = sceneName
+    public setNextScene(sceneName: string): void {
+        this.nextSceneName = sceneName
     }
 
-    public static getNextScene(): string {
-        return SceneManager.nextSceneName
+    public getNextScene(): string {
+        return this.nextSceneName
     }
 }
 

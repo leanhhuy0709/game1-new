@@ -6,22 +6,31 @@ import Scene from '../engine/scene/Scene'
 //import SceneManager from '../engine/scene/SceneManager'
 import { DEPTH } from './depth'
 
-
 import TRex from './TRex'
 import { START_BACKGROUND } from './const'
+import SceneManager from '../engine/scene/SceneManager'
 
 class GameStartScene extends Scene {
-    public constructor(cameraSpeed = 0) {
-        super('GameStartScene', cameraSpeed)
+    public constructor(sceneManager: SceneManager, cameraSpeed = 0) {
+        super(sceneManager, 'GameStartScene', cameraSpeed)
 
         const tRex = new TRex(0, 0, 100, 100, 0)
         this.addObject(tRex)
 
         const textBox = new GameObject(350, 120, 0, 0)
-        textBox.addComponent(new Text(textBox, DEPTH.OBJECT_MEDIUM, 'T-Rex Jump', '50px Comic Sans MS', 'center', '#713B61'))
+        textBox.addComponent(
+            new Text(
+                textBox,
+                DEPTH.OBJECT_MEDIUM,
+                'T-Rex Jump',
+                '50px Comic Sans MS',
+                'center',
+                '#713B61'
+            )
+        )
         this.addObject(textBox)
 
-        const bg = new GameObject(0, 0, 1000, 400)
+        const bg = new GameObject(0, 0, 700, 400)
         bg.addComponent(new Background(bg, START_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
         this.addObject(bg)
 
@@ -39,40 +48,41 @@ class GameStartScene extends Scene {
     }
 
     public update(deltaTime: number): void {
-        /*
         const mouseHoverCoord = this.input.getMouseHoverCoord()
-        const x = mouseHoverCoord.getX()
-        const y = mouseHoverCoord.getY()
-        
-        this.startBtn.isHovered(x, y)
-        this.settingBtn.isHovered(x, y)
-        this.exitBtn.isHovered(x, y)
+        const x = mouseHoverCoord.getX() - this.renderer.getCamera().getX()
+        const y = mouseHoverCoord.getY() - this.renderer.getCamera().getY()
+
+        const stBtn = this.gameObjects[3].getComponent<Button>(Button)[0]
+        const setBtn = this.gameObjects[4].getComponent<Button>(Button)[0]
+        const exBtn = this.gameObjects[5].getComponent<Button>(Button)[0]
+
+        stBtn.isHovered(x, y)
+        setBtn.isHovered(x, y)
+        exBtn.isHovered(x, y)
 
         if (this.input.isMouseDown()) {
             const mouseCoord = this.input.getMouseCoord()
-            if (this.startBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GamePlayScene')
-            } else if (this.settingBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GameSettingScene')
-            } else if (this.exitBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
+            if (stBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                this.sceneManager.setNextScene('GamePlayScene')
+            } else if (setBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                this.sceneManager.setNextScene('GameSettingScene')
+            } else if (exBtn.isClicked(mouseCoord.getX(), mouseCoord.getY())) {
+                this.sceneManager.setNextScene('GameStartScene')
             }
         } else if (this.input.isTouchDown()) {
             const touchCoord = this.input.getTouchCoord()
-            if (this.startBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GamePlayScene')
-            } else if (this.settingBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GameSettingScene')
-            } else if (this.exitBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
-                SceneManager.setNextScene('GameStartScene')
+            if (stBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                this.sceneManager.setNextScene('GamePlayScene')
+            } else if (setBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                this.sceneManager.setNextScene('GameSettingScene')
+            } else if (exBtn.isClicked(touchCoord.getX(), touchCoord.getY())) {
+                this.sceneManager.setNextScene('GameStartScene')
             }
             this.input.resetTouch()
         }
-        */
 
         super.update(deltaTime)
     }
-
 }
 
 export default GameStartScene

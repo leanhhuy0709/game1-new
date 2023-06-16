@@ -2,6 +2,7 @@ import CollisionManager from "../component/physics/CollisionManager"
 import GameObject from "../game-objects/GameObject"
 import InputHandler from "../input/InputHandler"
 import Renderer from "../renderer/Renderer"
+import SceneManager from "./SceneManager"
 
 
 class Scene {
@@ -9,12 +10,14 @@ class Scene {
     protected name: string
     protected renderer: Renderer
     protected gameObjects: GameObject[]
+    protected sceneManager: SceneManager
 
-    public constructor(name: string, cameraSpeed = 0) {
+    public constructor(sceneManager:SceneManager, name: string, cameraSpeed = 0) {
         this.input = new InputHandler()
         this.name = name
         this.renderer = new Renderer(cameraSpeed)
         this.gameObjects = []
+        this.sceneManager = sceneManager
     }
     
     public update(deltaTime: number): void {

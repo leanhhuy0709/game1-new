@@ -31,6 +31,10 @@ import {
 import SpriteNoReset from '../engine/component/SpriteNoReset'
 
 class TRex extends GameObject {
+    private minJump: number
+    private checkMinJump: boolean
+    private defaultSpeed: number
+
     public constructor(x = 0, y = 0, w = 0, h = 0, speed = 1) {
         super(x, y, w, h)
         this.addComponent(new Body(this, speed, 1, 0))
@@ -84,6 +88,9 @@ class TRex extends GameObject {
             new Sprite(this, [DINOSAUR_DUCK_1, DINOSAUR_DUCK_2], 10, DEPTH.OBJECT_HIGH)
         )
 
+        this.minJump = 0
+        this.checkMinJump = false
+        this.defaultSpeed = speed
         //this.jumpSfx = new Sound('assets/sound/jump_sfx.mp3')
         //this.fallSfx = new Sound('assets/sound/fall_sfx.wav')
     }
@@ -100,91 +107,41 @@ class TRex extends GameObject {
 
         const body = this.getComponent<Body>(Body)[0]
         //don't duck at this time
-        if (Math.abs(body.getVelocity().getMagnitudeY()) < 0.01)
-        {
+        if (Math.abs(body.getVelocity().getMagnitudeY()) < 0.05) {
             moveSprite.setIsAcitve(true)
             duckSprite.setIsAcitve(false)
             jumpSprite.setIsAcitve(false)
             fallSprite.setIsAcitve(false)
-        }
-        else
-
-        if (body.getVelocity().getMagnitudeY() < 0)
-        {
+        } else if (body.getVelocity().getMagnitudeY() < 0) {
             moveSprite.setIsAcitve(false)
             duckSprite.setIsAcitve(false)
             jumpSprite.setIdx(0)
             jumpSprite.setIsAcitve(true)
             fallSprite.setIsAcitve(false)
-        }
-        else if (body.getVelocity().getMagnitudeY() > 0)
-        {
+        } else if (body.getVelocity().getMagnitudeY() > 0) {
             moveSprite.setIsAcitve(false)
             duckSprite.setIsAcitve(false)
             jumpSprite.setIsAcitve(false)
             fallSprite.setIdx(0)
             fallSprite.setIsAcitve(true)
         }
-    }
-    //fix
-    public render(): void {
-        super.render()
-        //this.getShape().render()
-        /*
-        const rect = this.getShape() as Rectangle
 
-        if (this.isJump()) {
-            this.jumpSprites.render(
-                rect.getCoord().getX(),
-                rect.getCoord().getY(),
-                rect.getSize().getWidth(),
-                rect.getSize().getHeight()
-            )
-        } else if (this.isFall()) {
-            if (rect.getHighestY() + 30 > LAND) this.fallSfx.play()
-            if (rect.getHighestY() + 50 > LAND) {
-                this.fallSprites.setIdx(this.fallSprites.getLength() - 1)
-                this.fallSprites.setDelay(0)
-                this.fallSprites.render(
-                    rect.getCoord().getX(),
-                    rect.getCoord().getY(),
-                    rect.getSize().getWidth(),
-                    rect.getSize().getHeight()
-                )
-            } else {
-                this.fallSprites.render(
-                    rect.getCoord().getX(),
-                    rect.getCoord().getY(),
-                    rect.getSize().getWidth(),
-                    rect.getSize().getHeight()
-                )
-            }
-        } else {
-            if (this.isDuck) {
-                this.duckSprites.render(
-                    rect.getCoord().getX(),
-                    rect.getCoord().getY(),
-                    rect.getSize().getWidth(),
-                    rect.getSize().getHeight()
-                )
-            } else super.render()
-        }
-        */
+        if (this.checkMinJump) this.minJump += 1.5 * deltaTime
     }
 
     public jump(): void {
         const body = this.getComponent<Body>(Body)[0]
-        if (body.getVelocity().getMagnitudeY() == 0)
-        {
-            body.addVeloctity(10, 0, 1)
+        if (Math.abs(body.getVelocity().getMagnitudeY()) == 0) {
+            this.minJump = 0
+            this.checkMinJump = true
+            body.addVeloctity(2.1, 0, -1)
         }
     }
 
     public fall(): void {
         const body = this.getComponent<Body>(Body)[0]
-        if (body.getVelocity().getMagnitudeY() == 0)
-        {
-            body.addVeloctity(10, 0, -1)
+        if (body.getVelocity().getMagnitudeY() < 0) {
+            body.setVelocity(this.defaultSpeed, 1, 0)
         }
     }
 
@@ -204,6 +161,10 @@ class TRex extends GameObject {
         rect.getSize().setHeight(100)
         */
         //rect.getCoord().setY(250)
+    }
+
+    public getMinJump(): number {
+        return this.minJump
     }
 }
 

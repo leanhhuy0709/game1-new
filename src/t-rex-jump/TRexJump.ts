@@ -47,7 +47,8 @@ class TRexJump extends Game {
 
     public constructor() {
         super(700, 400)
-        this.sceneManager = new SceneManager(new GamePlayScene())
+        this.sceneManager = new SceneManager(new GameStartScene(this.sceneManager))
+        this.sceneManager.setNewScene(new GameStartScene(this.sceneManager))
 
         Loader.loadAllImages([
             DINOSAUR_MOVE_1,
@@ -100,23 +101,24 @@ class TRexJump extends Game {
         if (Loader.isLoadComplete()) {
             this.sceneManager.update(deltaTime)
             this.sceneManager.render()
+            
             if (this.sceneManager.isNeedToChangeScene()) {
-                switch (SceneManager.getNextScene()) {
-                    
+                switch (this.sceneManager.getNextScene()) {
                     case 'GamePlayScene':
-                        this.sceneManager.setNewScene(new GamePlayScene())
+                        
+                        this.sceneManager.setNewScene(new GamePlayScene(this.sceneManager))
                         break
                         
                     case 'GameOverScene':
-                        this.sceneManager.setNewScene(new GameOverScene())
+                        this.sceneManager.setNewScene(new GameOverScene(this.sceneManager))
                         break
                     
                     case 'GameStartScene':
-                        this.sceneManager.setNewScene(new GameStartScene())
+                        this.sceneManager.setNewScene(new GameStartScene(this.sceneManager))
                         break
                         
                     case 'GameSettingScene':
-                        this.sceneManager.setNewScene(new GameSettingScene())
+                        this.sceneManager.setNewScene(new GameSettingScene(this.sceneManager))
                         break
                 }
             }

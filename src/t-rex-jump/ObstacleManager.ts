@@ -1,11 +1,9 @@
 import Obstacle from './Obstacle'
-import Cactus from './Cactus'
-import FlyDino from './FlyDino'
 import TRex from './TRex'
-import Random from '../engine/math/Random'
 import Camera from '../engine/camera/Camera'
 import CollisionManager from '../engine/component/physics/CollisionManager'
 import GameObject from '../engine/game-objects/GameObject'
+import Movement from '../engine/component/physics/Movement'
 
 //ObstacleManager: manage obstacle and handle collision
 export default class ObstacleManager extends GameObject {
@@ -13,17 +11,10 @@ export default class ObstacleManager extends GameObject {
     public constructor() {
         super(0, 0, 0, 0)
         this.obstacles = []
-        const randNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        Random.shuffle(randNum)
-        for (let i = 0; i < 10; i++) {
-            if (randNum[i] % 2 == 1) this.obstacles.push(new Cactus(0))
-            else this.obstacles.push(new FlyDino(0))
-        }
-        this.reset()
     }
     public reset() {
         let tmp = 500
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.obstacles.length; i++) {
             tmp = Math.floor(Math.random() * 1000) + 400 + tmp
             this.obstacles[i].reset(tmp)
         }
@@ -43,7 +34,11 @@ export default class ObstacleManager extends GameObject {
         for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
             j = listObstacleNeedToReset[i]
             maxX += Math.floor(Math.random() * 1000) + 400
-            this.obstacles[j].reset(maxX)
+
+            if (this.obstacles[j].getComponent<Movement>(Movement).length > 0) {
+                const v = this.obstacles[j].getComponent<Movement>(Movement)[0].getVelocity().getMagnitude()
+                this.obstacles[j].reset(maxX + 400 * v)
+            } else this.obstacles[j].reset(maxX)
         }
     }
 
@@ -62,5 +57,9 @@ export default class ObstacleManager extends GameObject {
 
     public getObstacles(): Obstacle[] {
         return this.obstacles
+    }
+
+    public add(obj: Obstacle): void {
+        this.obstacles.push(obj)
     }
 }
