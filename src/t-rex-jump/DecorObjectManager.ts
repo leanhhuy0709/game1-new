@@ -1,13 +1,11 @@
-import Renderable from "../engine/renderer/Renderable"
-import Speed from "../engine/score/Speed"
-import Cloud from "./Cloud"
-import Decor from "./Decor"
+import Camera from '../engine/camera/Camera'
+import Cloud from './Cloud'
+import Decor from './Decor'
 //import Stone from "./Stone"
 
-export default class DecorObjectManager extends Renderable {
+export default class DecorObjectManager {
     private objs: Decor[]
     public constructor() {
-        super()
         this.objs = []
         for (let i = 0; i < 10; i++) {
             this.objs.push(new Cloud(50, 50, 100, 100))
@@ -31,54 +29,27 @@ export default class DecorObjectManager extends Renderable {
         }
     }
 
-    public update(deltaTime: number): void 
-    {
-            const listObstacleNeedToReset = []
-            for (let i = 0; i < this.objs.length; i++) {
+    public update(deltaTime: number, camera: Camera): void {
+        const listObstacleNeedToReset = []
+        for (let i = 0; i < this.objs.length; i++) {
+            this.objs[i].update(deltaTime)
 
-                    if (this.objs[i].getShape().getCoord().getX() <= 900)
-                        this.objs[i]
-                        .getShape()
-                            .getCoord()
-                            .setX(
-                                this.objs[i].getShape().getCoord().getX() -
-                                    (deltaTime *
-                                        (Speed.getSpeed() + this.objs[i].getMoveSpeed())) /
-                                        Speed.getDefaultSpeed()
-                            )
-                    else
-                        this.objs[i]
-                        .getShape().getCoord()
-                            .setX(
-                                this.objs[i].getShape().getCoord().getX() -
-                                    (deltaTime * Speed.getSpeed()) / Speed.getDefaultSpeed()
-                            )
-    
-                    if (
-                        this.objs[i].getShape().getHighestX() < 0 
-                    ) {
-                        listObstacleNeedToReset.push(i)
-                    }
-                    this.objs[i].getSprite().goToNext(deltaTime)
+            if (this.objs[i].getX() + this.objs[i].getWidth() < camera.getX()) {
+                listObstacleNeedToReset.push(i)
             }
-    
-            let maxX = 0
-            for (let i = 0; i < this.objs.length; i++)
-                maxX =
-                    maxX > this.objs[i].getShape().getCoord().getX()
-                        ? maxX
-                        : this.objs[i].getShape().getCoord().getX()
-            for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
-                j = listObstacleNeedToReset[i]
-                maxX += Math.floor(Math.random() * 500) + 100
-                this.objs[j].getShape().getCoord().setX(maxX)
-            }
-        
+        }
+
+        let maxX = 0
+        for (let i = 0; i < this.objs.length; i++)
+            maxX = maxX > this.objs[i].getX() ? maxX : this.objs[i].getX()
+        for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
+            j = listObstacleNeedToReset[i]
+            maxX += Math.floor(Math.random() * 500) + 100
+            this.objs[j].reset(maxX)
+        }
     }
 
-    public getDecors(): Decor[]
-    {
+    public getDecors(): Decor[] {
         return this.objs
     }
-
 }
