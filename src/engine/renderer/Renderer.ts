@@ -1,29 +1,44 @@
-import Renderable from "./Renderable"
-
+import Camera from "../camera/Camera"
+import RenderComponent from "../component/RenderComponent"
+import GameObject from "../game-objects/GameObject"
 
 class Renderer {
-    private static renders: Renderable[] = []
-    private static depths: number[] = []
-    
-    public static addToQueue(re: Renderable, depth: number) {
-        Renderer.renders.push(re)
-        Renderer.depths.push(depth)
+    private renders: RenderComponent[]
+    private camera: Camera
 
-        for (let i = Renderer.renders.length - 1; i > 0; i--) {
-            if (Renderer.depths[i] < Renderer.depths[i - 1]) {
-                const temp = Renderer.renders[i]
-                Renderer.renders[i] = Renderer.renders[i - 1]
-                Renderer.renders[i - 1] = temp
-            } else break
+    public constructor(speed: number)
+    {
+        this.renders = []
+        this.camera = new Camera(speed)
+    }
+    
+    public addToQueue(obj: GameObject): void {
+        const comps = obj.getComponents()
+        for (let i = 0; i < comps.length; i++)
+        {
+            if (comps[i] instanceof RenderComponent)
+            {
+                this.renders.push(comps[i] as RenderComponent)
+            }
         }
     }
 
-    public static drawAll() {
-        for (let i = 0; i < Renderer.renders.length; i++) {
-            Renderer.renders[i].render()
+    public sortQueue(): void
+    {
+        this.renders.sort((e1, e2) => e1.getDepth() - e2.getDepth())
+    }
+
+    public renderAll() {
+        this.sortQueue()
+        for (let i = 0; i < this.renders.length; i++)
+        {
+            this.renders[i].render(this.camera)
         }
-        Renderer.renders.length = 0
-        Renderer.depths.length = 0
+    }
+
+    public update(deltaTime: number)
+    {
+        this.camera.update(deltaTime)
     }
 }
 

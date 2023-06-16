@@ -5,8 +5,8 @@ export default class Game {
         console.log('Game Init')
         Canvas.init('game', gameWidth, gameHeight)
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public update(lastTime: number) {
+
+    public update(_lastTime: number) {
         const currTime = Date.now()
         requestAnimationFrame(() => this.update(currTime))
     }
@@ -15,9 +15,3 @@ export default class Game {
         requestAnimationFrame(() => this.update(Date.now()))
     }
 }
-
-/*
-<body style="width: 100%; display: flex; justify-content: center; align-items: center;">
-    <canvas tabindex='1' id="game"></canvas>
-  </body>
-*/

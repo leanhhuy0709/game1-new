@@ -1,26 +1,25 @@
-import Renderable from '../renderer/Renderable'
-import Canvas from '../renderer/canvas/Canvas'
-import Coord from './Coord'
+import Camera from "../camera/Camera"
+import GameObject from "../game-objects/GameObject"
+import Canvas from "../renderer/canvas/Canvas"
+import RenderComponent from "./RenderComponent"
 
-class Text extends Renderable {
+export default class Text extends RenderComponent {
     private content: string
     private font: string
     private align: CanvasTextAlign
     private baseline: CanvasTextBaseline
     private color: string
-    private coord: Coord
 
     public constructor(
+        obj: GameObject,
+        depth: number,
         content = '',
-        x = 100,
-        y = 100,
         font = '30px Cambria',
         align: CanvasTextAlign,
         color = 'black',
         baseline: CanvasTextBaseline = 'alphabetic'
     ) {
-        super()
-        this.coord = new Coord(x, y)
+        super(obj, depth)
         this.content = content
         this.font = font
         this.align = align
@@ -52,22 +51,14 @@ class Text extends Renderable {
         this.align = align
     }
 
-    public render(): void {
+    public render(camera = new Camera()): void {
         if (Canvas.ctx) {
             Canvas.ctx.fillStyle = this.color
             Canvas.ctx.font = this.font
             Canvas.ctx.textAlign = this.align
             Canvas.ctx.textBaseline = this.baseline
-            Canvas.ctx.fillText(this.content, this.coord.getX(), this.coord.getY())
+            Canvas.ctx.fillText(this.content, this.parent.getX() - camera.getX(), this.parent.getY() - camera.getY())
         }
-    }
-
-    public setCoord(x: number, y: number): void {
-        this.coord.setCoord(x, y)
-    }
-
-    public getCoord(): Coord {
-        return this.coord
     }
 
     public setColor(color: string): void {
@@ -78,5 +69,3 @@ class Text extends Renderable {
         return this.color
     }
 }
-
-export default Text

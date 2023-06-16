@@ -1,63 +1,77 @@
-import Renderable from '../renderer/Renderable'
-import Circle from '../shape/Circle'
-import Rectangle from '../shape/Rectangle'
-import Shape from '../shape/Shape'
-import Sprite from '../sprite/Sprite'
+import Component from '../component/Component'
+import Coord from '../component/Coord'
+import RenderComponent from '../component/RenderComponent'
+import Size from '../component/Size'
 
-export default class GameObject extends Renderable {
-    private shape: Shape    //Body
-    private sprite: Sprite  //component
+export default class GameObject {
+    private coord: Coord
+    private size: Size
+    private components: Component[]
 
-    public constructor(shape: Shape, imageHrefs: string[] = [], spriteChangeInterval = 1) {
-        super()
-        this.shape = shape
-        this.sprite = new Sprite(imageHrefs, spriteChangeInterval)
+    public constructor(x: number, y: number, w: number, h: number) {
+        this.coord = new Coord(x, y)
+        this.size = new Size(w, h)
+        this.components = []
     }
 
-    public getShape(): Shape {
-        return this.shape
+    public getX(): number {
+        return this.coord.getX()
     }
 
-    public setShape(shape: Shape): void {
-        this.shape = shape
+    public getY(): number {
+        return this.coord.getY()
     }
 
-    public render(): void {
-        //this.shape.render()
+    public setX(x: number): void {
+        this.coord.setX(x)
+    }
 
-        if (this.sprite.getLength() == 0) return
+    public setY(y: number): void {
+        this.coord.setY(y)
+    }
 
-        if (this.shape instanceof Rectangle) {
-            const rectangle = this.shape as Rectangle
-            this.sprite.render(
-                rectangle.getCoord().getX(),
-                rectangle.getCoord().getY(),
-                rectangle.getSize().getWidth(),
-                rectangle.getSize().getHeight()
-            )
-        } else if (this.shape instanceof Circle) {
-            const circle = this.shape as Circle
-            this.sprite.render(
-                circle.getCoord().getX() - circle.getRadius(),
-                circle.getCoord().getY() - circle.getRadius(),
-                circle.getRadius() * 2,
-                circle.getRadius() * 2
-            )
+    public getWidth(): number {
+        return this.size.getWidth()
+    }
+
+    public getHeight(): number {
+        return this.size.getHeight()
+    }
+
+    public setWidth(w: number): void {
+        this.size.setWidth(w)
+    }
+
+    public setHeight(h: number): void {
+        this.size.setHeight(h)
+    }
+
+    public addComponent(comp: Component) {
+        this.components.push(comp)
+    }
+
+    public update(deltaTime: number): void {
+        for (let i = 0; i < this.components.length; i++) {
+            this.components[i].update(deltaTime)
         }
     }
 
-    public setX(x: number): void
-    {
-        this.shape.getCoord().setX(x)
+    public render(): void {
+        for (let i = 0; i < this.components.length; i++) {
+            if (this.components[i] instanceof RenderComponent) {
+                const comp = this.components[i] as RenderComponent
+                comp.render()
+            }
+        }
     }
 
-    public setY(y: number): void
-    {
-        this.shape.getCoord().setY(y)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public getComponent<T extends Component>(type: new (...args: any[]) => T): T[] {
+        return this.components.filter(component => component instanceof type) as T[]
     }
 
-    public getSprite(): Sprite
+    public getComponents()
     {
-        return this.sprite
+        return this.components
     }
 }

@@ -1,9 +1,7 @@
 //import Button from '../component/Button'
 import Game from '../engine/Game'
-import Renderer from '../engine/renderer/Renderer'
-import Loader from '../engine/resources/Loader'
+import Loader from '../engine/loader/Loader'
 import SceneManager from '../engine/scene/SceneManager'
-import Speed from '../engine/score/Speed'
 import GameOverScene from './GameOverScene'
 import GamePlayScene from './GamePlayScene'
 import GameSettingScene from './GameSettingScene'
@@ -50,46 +48,42 @@ class TRexJump extends Game {
     public constructor() {
         super(700, 400)
         this.sceneManager = new SceneManager(new GameStartScene())
-        Speed.init(1)
-        
-        Loader.loadAllImages(
-            [
-                DINOSAUR_MOVE_1,
-                DINOSAUR_MOVE_2,
-                DINOSAUR_MOVE_3,
-                DINOSAUR_MOVE_4,
-                DINOSAUR_MOVE_5,
-                DINOSAUR_MOVE_6,
-                DINOSAUR_MOVE_7,
-                DINOSAUR_MOVE_8,
-                DINOSAUR_1,
-                DINOSAUR_2,
-                DINOSAUR_3,
-                DINOSAUR_4,
-                DINOSAUR_5,
-                DINOSAUR_6,
-                DINOSAUR_7,
-                DINOSAUR_8,
-                DINOSAUR_9,
-                DINOSAUR_10,
-                DINOSAUR_11,
-                DINOSAUR_12,
-                DINOSAUR_DUCK_1,
-                DINOSAUR_DUCK_2,
-                FLYDINO_1,
-                FLYDINO_2,
-                FLYDINO_3,
-                CACTUS,
-                GAMEOVER_BACKGROUND,
-                START_BACKGROUND,
-                CLOUD_BACKGROUND,
-                GROUND,
-                MOUTAIN,
-                SETTING_BACKGROUND,
-                CLOUD
-            ],
-            []
-        )
+
+        Loader.loadAllImages([
+            DINOSAUR_MOVE_1,
+            DINOSAUR_MOVE_2,
+            DINOSAUR_MOVE_3,
+            DINOSAUR_MOVE_4,
+            DINOSAUR_MOVE_5,
+            DINOSAUR_MOVE_6,
+            DINOSAUR_MOVE_7,
+            DINOSAUR_MOVE_8,
+            DINOSAUR_1,
+            DINOSAUR_2,
+            DINOSAUR_3,
+            DINOSAUR_4,
+            DINOSAUR_5,
+            DINOSAUR_6,
+            DINOSAUR_7,
+            DINOSAUR_8,
+            DINOSAUR_9,
+            DINOSAUR_10,
+            DINOSAUR_11,
+            DINOSAUR_12,
+            DINOSAUR_DUCK_1,
+            DINOSAUR_DUCK_2,
+            FLYDINO_1,
+            FLYDINO_2,
+            FLYDINO_3,
+            CACTUS,
+            GAMEOVER_BACKGROUND,
+            START_BACKGROUND,
+            CLOUD_BACKGROUND,
+            GROUND,
+            MOUTAIN,
+            SETTING_BACKGROUND,
+            CLOUD,
+        ])
     }
 
     public start(): void {
@@ -123,8 +117,6 @@ class TRexJump extends Game {
                         break
                 }
             }
-
-            Renderer.drawAll()
         }
 
         currTime = Date.now()

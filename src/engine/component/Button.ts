@@ -1,18 +1,19 @@
+import Camera from '../camera/Camera'
 import GameObject from '../game-objects/GameObject'
 import Canvas from '../renderer/canvas/Canvas'
-import Rectangle from '../shape/Rectangle'
+import RenderComponent from './RenderComponent'
 import Text from './Text'
 
-class Button extends GameObject {
+export default class Button extends RenderComponent {
     private text: Text
     private isHover: boolean
 
-    public constructor(content: string, x: number, y: number, w: number, h: number) {
-        super(new Rectangle(x, y, w, h))
+    public constructor(obj: GameObject, depth: number, content: string) {
+        super(obj, depth)
         this.text = new Text(
+            obj,
+            depth,
             content,
-            x + w / 2,
-            y + h / 2,
             `30px 'Montserrat', sans-serif`,
             'center',
             'white',
@@ -29,45 +30,40 @@ class Button extends GameObject {
         this.text.setContent(content)
     }
 
-    public render(): void {
+    public render(camera = new Camera()): void {
         super.render()
         if (Canvas.ctx) {
-            if (this.getShape() instanceof Rectangle) {
-                const rect = this.getShape() as Rectangle
-                Canvas.ctx.beginPath()
-                Canvas.ctx.fillStyle = this.isHover ? '#ffffff' : '#0d63fd'
-                Canvas.ctx.roundRect(
-                    rect.getCoord().getX(),
-                    rect.getCoord().getY(),
-                    rect.getSize().getWidth(),
-                    rect.getSize().getHeight(),
-                    10
-                )
-                Canvas.ctx.closePath()
-                Canvas.ctx.fill()
-                this.text.setColor(this.isHover ? '#0d63fd' : '#ffffff')
-                this.text.render()
-            }
+            Canvas.ctx.beginPath()
+            Canvas.ctx.fillStyle = this.isHover ? '#ffffff' : '#0d63fd'
+            Canvas.ctx.roundRect(
+                this.parent.getX() - camera.getX(),
+                this.parent.getY() - camera.getY(),
+                this.parent.getWidth(),
+                this.parent.getHeight(),
+                10
+            )
+            Canvas.ctx.closePath()
+            Canvas.ctx.fill()
+            this.text.setColor(this.isHover ? '#0d63fd' : '#ffffff')
+            this.text.render()
         }
     }
 
     public isClicked(x: number, y: number): boolean {
         return (
-            x >= this.getShape().getCoord().getX() &&
-            x <= this.getShape().getHighestX() &&
-            y >= this.getShape().getCoord().getY() &&
-            y <= this.getShape().getHighestY()
+            x >= this.parent.getX() &&
+            x <= this.parent.getX() + this.parent.getWidth() &&
+            y >= this.parent.getY() &&
+            y <= this.parent.getY() + this.parent.getHeight()
         )
     }
 
     public isHovered(x: number, y: number): boolean {
         this.isHover =
-            x >= this.getShape().getCoord().getX() &&
-            x <= this.getShape().getHighestX() &&
-            y >= this.getShape().getCoord().getY() &&
-            y <= this.getShape().getHighestY()
+            x >= this.parent.getX() &&
+            x <= this.parent.getX() + this.parent.getWidth() &&
+            y >= this.parent.getY() &&
+            y <= this.parent.getY() + this.parent.getHeight()
         return this.isHover
     }
 }
-
-export default Button

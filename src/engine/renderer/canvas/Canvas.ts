@@ -8,7 +8,6 @@ export default class Canvas {
         Canvas.setSize(w, h)
 
         //Use to check canvas location
-
         if (Canvas.ctx) {
             Canvas.ctx.fillStyle = 'white'
 

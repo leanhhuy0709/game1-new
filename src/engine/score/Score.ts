@@ -1,48 +1,55 @@
-import Text from "../component/Text"
+import Component from '../component/Component'
+import Text from '../component/Text'
+import GameObject from '../game-objects/GameObject'
 
-class Score {
-    private static score = 0
-    private static highScore = 0
-    private static scoreText: Text = new Text('0', 0, 0, '30px Cambria', 'start')
-    private static highScoreText: Text = new Text('0', 0, 0, '30px Cambria', 'end')
+export default class Score extends Component {
+    private score = 0
+    private highScore = 0
+    private scoreText: Text 
+    private highScoreText: Text
 
-    public static getScore(): number {
-        return Score.score
+    public constructor(obj: GameObject)
+    {
+        super(obj)
     }
 
-    public static getHighScore(): number {
-        return Score.highScore
+    public getScore(): number {
+        return this.score
     }
 
-    public static addWithDeltaTime(deltaTime: number, coeff: number): void {
-        Score.score += deltaTime * coeff
-        Score.highScore = Score.highScore > Score.score ? Score.highScore : Score.score
-        Score.scoreText.setContent(Score.score.toFixed(0))
-        Score.highScoreText.setContent(Score.highScore.toFixed(0))
+    public getHighScore(): number {
+        return this.highScore
     }
 
-    public static add(coeff: number): void {
-        Score.score += coeff
-        Score.highScore = Score.highScore > Score.score ? Score.highScore : Score.score
-        Score.scoreText.setContent(Score.score.toFixed(0))
-        Score.highScoreText.setContent(Score.highScore.toFixed(0))
+    public addWithDeltaTime(deltaTime: number, coeff: number): void {
+        this.score += deltaTime * coeff
+        this.highScore = this.highScore > this.score ? this.highScore : this.score
+        this.scoreText.setContent(this.score.toFixed(0))
+        this.highScoreText.setContent(this.highScore.toFixed(0))
     }
 
-    public static resetScore(): void {
-        Score.score = 0
+    public add(coeff: number): void {
+        this.score += coeff
+        this.highScore = this.highScore > this.score ? this.highScore : this.score
+        this.scoreText.setContent(this.score.toFixed(0))
+        this.highScoreText.setContent(this.highScore.toFixed(0))
     }
 
-    public static resetHighScore(): void {
-        Score.highScore = 0
+    public resetScore(): void {
+        this.score = 0
     }
 
-    public static getScoreText(): Text {
-        return Score.scoreText
+    public resetHighScore(): void {
+        this.highScore = 0
     }
 
-    public static getHighScoreText(): Text {
-        return Score.highScoreText
+    public getScoreText(): Text {
+        return this.scoreText
+    }
+
+    public getHighScoreText(): Text {
+        return this.highScoreText
     }
 }
 
-export default Score
+
