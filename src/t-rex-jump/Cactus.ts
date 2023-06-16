@@ -1,13 +1,16 @@
+import Picture from '../engine/component/Picture'
+import Collider from '../engine/component/physics/Collider'
+import { DEPTH } from '../types/depth'
 import Obstacle from './Obstacle'
 import { CACTUS } from './const'
 
 export default class Cactus extends Obstacle {
-    public constructor(delay: number, x = 0, moveSpeed = 0) {
-        super(new Rectangle(x, 270, 60, 80, 'Cactus'), [CACTUS], delay)
-        this.reset(x, moveSpeed)
+    public constructor(x: number, y: number, w: number, h: number) {
+        super(x, y, w, h)
+        this.addComponent(new Collider(this))
+        this.addComponent(new Picture(this, CACTUS, DEPTH.OBJECT_MEDIUM))
     }
     public reset(x: number, moveSpeed = 0) {
-        this.getShape().getCoord().setX(x)
-        this.moveSpeed = moveSpeed
+        //
     }
 }
