@@ -1,10 +1,8 @@
+import Sprite from '../engine/component/Sprite'
+import Body from '../engine/component/physics/Body'
+import Collider from '../engine/component/physics/Collider'
 import GameObject from '../engine/game-objects/GameObject'
-import Body from '../engine/physics/Body'
-import Rectangle from '../engine/shape/Rectangle'
-import Sound from '../engine/sound/Sound'
-import Sprite from '../engine/sprite/Sprite'
-
-const LAND = 350
+import { DEPTH } from '../types/depth'
 
 import {
     DINOSAUR_MOVE_1,
@@ -32,78 +30,103 @@ import {
 } from './const'
 
 class TRex extends GameObject {
-    private jumpSprites: Sprite
-    private fallSprites: Sprite
-    private duckSprites: Sprite
-    private jumpSfx: Sound
-    private fallSfx: Sound
-    private isDuck: boolean
-
-    public constructor(delay: number, x = 0, y = 0, w = 0, h = 0) {
-        super(
-            new Rectangle(x, y, w, h, 'TRex'),
-            [
-                DINOSAUR_MOVE_1,
-                DINOSAUR_MOVE_2,
-                DINOSAUR_MOVE_3,
-                DINOSAUR_MOVE_4,
-                DINOSAUR_MOVE_5,
-                DINOSAUR_MOVE_6,
-                DINOSAUR_MOVE_7,
-                DINOSAUR_MOVE_8,
-            ],
-            delay
+    public constructor(x = 0, y = 0, w = 0, h = 0, speed = 1) {
+        super(x, y, w, h)
+        this.addComponent(new Body(this, speed, 1, 0))
+        this.addComponent(new Collider(this))
+        this.addComponent(
+            new Sprite(
+                this,
+                [
+                    DINOSAUR_MOVE_1,
+                    DINOSAUR_MOVE_2,
+                    DINOSAUR_MOVE_3,
+                    DINOSAUR_MOVE_4,
+                    DINOSAUR_MOVE_5,
+                    DINOSAUR_MOVE_6,
+                    DINOSAUR_MOVE_7,
+                    DINOSAUR_MOVE_8,
+                ],
+                10,
+                DEPTH.OBJECT_HIGH
+            )
         )
 
-        let sprites = [
-            DINOSAUR_1,
-            DINOSAUR_2,
-            DINOSAUR_3,
-            DINOSAUR_4,
-            DINOSAUR_5,
-            DINOSAUR_6,
-            DINOSAUR_7,
-            DINOSAUR_8,
-        ]
+        this.addComponent(
+            new Sprite(
+                this,
+                [
+                    DINOSAUR_1,
+                    DINOSAUR_2,
+                    DINOSAUR_3,
+                    DINOSAUR_4,
+                    DINOSAUR_5,
+                    DINOSAUR_6,
+                    DINOSAUR_7,
+                    DINOSAUR_8,
+                ],
+                10,
+                DEPTH.OBJECT_HIGH
+            )
+        )
 
-        this.jumpSprites = new Sprite(sprites, delay)
+        this.addComponent(
+            new Sprite(
+                this,
+                [DINOSAUR_8, DINOSAUR_8, DINOSAUR_9, DINOSAUR_10, DINOSAUR_11, DINOSAUR_12],
+                10,
+                DEPTH.OBJECT_HIGH
+            )
+        )
 
-        sprites = [DINOSAUR_8, DINOSAUR_8, DINOSAUR_9, DINOSAUR_10, DINOSAUR_11, DINOSAUR_12]
+        this.addComponent(
+            new Sprite(this, [DINOSAUR_DUCK_1, DINOSAUR_DUCK_2], 10, DEPTH.OBJECT_HIGH)
+        )
 
-        this.fallSprites = new Sprite(sprites, delay)
-
-        sprites = [DINOSAUR_DUCK_1, DINOSAUR_DUCK_2]
-
-        this.duckSprites = new Sprite(sprites, delay * 2)
-
-        this.jumpSfx = new Sound('assets/sound/jump_sfx.mp3')
-        this.fallSfx = new Sound('assets/sound/fall_sfx.wav')
+        //this.jumpSfx = new Sound('assets/sound/jump_sfx.mp3')
+        //this.fallSfx = new Sound('assets/sound/fall_sfx.wav')
     }
 
     public update(deltaTime: number) {
         super.update(deltaTime)
 
-        if (this.isJump()) {
-            this.fallSprites.setIdx(0)
-            if (this.jumpSprites.getIdx() + 1 < this.jumpSprites.getLength())
-                this.jumpSprites.goToNext(deltaTime)
-        } else if (this.isFall()) {
-            this.jumpSprites.setIdx(0)
-            if (this.fallSprites.getIdx() + 1 < this.fallSprites.getLength())
-                this.fallSprites.goToNext(deltaTime)
-        } else {
-            this.fallSprites.setIdx(0)
-            this.jumpSprites.setIdx(0)
+        //update sprite loading
+        const spriteList = this.getComponent<Sprite>(Sprite)
+        const moveSprite = spriteList[0]
+        const jumpSprite = spriteList[1]
+        const fallSprite = spriteList[2]
+        const duckSprite = spriteList[3]
 
-            if (this.isDuck) this.duckSprites.goToNext(deltaTime)
-            else this.getSprite().goToNext(deltaTime)
+        const body = this.getComponent<Body>(Body)[0]
+        //don't duck at this time
+        if (body.getVelocity().getMagnitudeY() > 0)
+        {
+            moveSprite.setIsAcitve(false)
+            duckSprite.setIsAcitve(false)
+            jumpSprite.setIsAcitve(true)
+            fallSprite.setIsAcitve(false)
+        }
+        else if (body.getVelocity().getMagnitudeY() < 0)
+        {
+            moveSprite.setIsAcitve(false)
+            duckSprite.setIsAcitve(false)
+            jumpSprite.setIsAcitve(false)
+            fallSprite.setIsAcitve(true)
+        }
+        else {
+            moveSprite.setIsAcitve(true)
+            duckSprite.setIsAcitve(false)
+            jumpSprite.setIsAcitve(false)
+            fallSprite.setIsAcitve(false)
         }
     }
     //fix
     public render(): void {
+        super.render()
         //this.getShape().render()
+        /*
         const rect = this.getShape() as Rectangle
-        
+
         if (this.isJump()) {
             this.jumpSprites.render(
                 rect.getCoord().getX(),
@@ -140,31 +163,40 @@ class TRex extends GameObject {
                 )
             } else super.render()
         }
+        */
     }
 
     public jump(): void {
-        if (this.isJump() || this.isFall()) return
-        this.updatePrevY()
-        this.setStartSpeed(2.5)
-        this.jumpSfx.play()
+        const body = this.getComponent<Body>(Body)[0]
+        if (body.getVelocity().getMagnitudeY() == 0)
+        {
+            body.addVeloctity(10, 0, 1)
+        }
     }
 
     public fall(): void {
-        this.updatePrevY()
-        this.setStartSpeed(0)
+        const body = this.getComponent<Body>(Body)[0]
+        if (body.getVelocity().getMagnitudeY() == 0)
+        {
+            body.addVeloctity(10, 0, -1)
+        }
     }
 
     public duck(): void {
+        /*
         this.isDuck = true
         const rect = this.getShape() as Rectangle
         rect.getSize().setHeight(0.8 * 100)
         rect.getCoord().setY(270)
+        */
     }
 
     public move(): void {
+        /*
         this.isDuck = false
         const rect = this.getShape() as Rectangle
         rect.getSize().setHeight(100)
+        */
         //rect.getCoord().setY(250)
     }
 }
