@@ -2,9 +2,9 @@
 import Game from '../engine/Game'
 import Loader from '../engine/loader/Loader'
 import SceneManager from '../engine/scene/SceneManager'
-import GameOverScene from './GameOverScene'
-import GamePlayScene from './GamePlayScene'
-import GameSettingScene from './GameSettingScene'
+//import GameOverScene from './GameOverScene'
+//import GamePlayScene from './GamePlayScene'
+//import GameSettingScene from './GameSettingScene'
 import GameStartScene from './GameStartScene'
 import {
     CACTUS,
@@ -103,18 +103,21 @@ class TRexJump extends Game {
 
             if (this.sceneManager.isNeedToChangeScene()) {
                 switch (SceneManager.getNextScene()) {
+                    /*
                     case 'GamePlayScene':
                         this.sceneManager.setNewScene(new GamePlayScene())
                         break
                     case 'GameOverScene':
                         this.sceneManager.setNewScene(new GameOverScene())
                         break
+                    */
                     case 'GameStartScene':
                         this.sceneManager.setNewScene(new GameStartScene())
                         break
+                        /*
                     case 'GameSettingScene':
                         this.sceneManager.setNewScene(new GameSettingScene())
-                        break
+                        break*/
                 }
             }
         }

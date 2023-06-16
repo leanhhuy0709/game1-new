@@ -1,5 +1,5 @@
 import Picture from '../engine/component/Picture'
-import { DEPTH } from '../types/depth'
+import { DEPTH } from './depth'
 import Obstacle from './Obstacle'
 import { CACTUS } from './const'
 

@@ -2,7 +2,7 @@ import Sprite from '../engine/component/Sprite'
 import Body from '../engine/component/physics/Body'
 import Collider from '../engine/component/physics/Collider'
 import GameObject from '../engine/game-objects/GameObject'
-import { DEPTH } from '../types/depth'
+import { DEPTH } from './depth'
 
 import {
     DINOSAUR_MOVE_1,

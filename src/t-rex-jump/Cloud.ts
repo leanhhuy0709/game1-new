@@ -1,7 +1,7 @@
 import Picture from '../engine/component/Picture'
 import Movement from '../engine/component/physics/Movement'
 import Random from '../engine/math/Random'
-import { DEPTH } from '../types/depth'
+import { DEPTH } from './depth'
 import Decor from './Decor'
 import { CLOUD } from './const'
 

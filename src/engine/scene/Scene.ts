@@ -15,9 +15,10 @@ class Scene {
         this.renderer = new Renderer(cameraSpeed)
         this.gameObjects = []
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    
     public update(deltaTime: number): void {
-        //
+        for (let i = 0; i < this.gameObjects.length; i++)
+            this.gameObjects[i].update(deltaTime)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -34,9 +35,14 @@ class Scene {
         return this.name
     }
 
-    public addGameObject(obj: GameObject)
+    public addObjectToRenderQueue(obj: GameObject)
     {
         this.renderer.addToQueue(obj)
+    }
+
+    public addObject(obj: GameObject)
+    {
+        this.gameObjects.push(obj)
     }
 }
 

@@ -1,7 +1,7 @@
 import Sprite from '../engine/component/Sprite'
 import Movement from '../engine/component/physics/Movement'
 import Random from '../engine/math/Random'
-import { DEPTH } from '../types/depth'
+import { DEPTH } from './depth'
 import Obstacle from './Obstacle'
 import { FLYDINO_1, FLYDINO_2, FLYDINO_3 } from './const'
 

@@ -1,3 +1,4 @@
+/*
 import CollisionManager from '../engine/physics/CollisionManager'
 import Renderer from '../engine/renderer/Renderer'
 import Scene from '../engine/scene/Scene'
@@ -115,3 +116,4 @@ class GamePlayScene extends Scene {
 }
 
 export default GamePlayScene
+*/

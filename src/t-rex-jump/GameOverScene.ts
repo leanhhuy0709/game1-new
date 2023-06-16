@@ -1,3 +1,4 @@
+/*
 import Button from '../engine/component/Button'
 import Text from '../engine/component/Text'
 import Renderer from '../engine/renderer/Renderer'
@@ -73,3 +74,4 @@ class GameOverScene extends Scene {
 }
 
 export default GameOverScene
+*/
