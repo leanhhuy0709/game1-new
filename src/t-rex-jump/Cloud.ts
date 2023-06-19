@@ -25,8 +25,4 @@ export default class Cloud extends Decor {
             tmp[0].setVelocity(Random.getIntNumber(-5, 5) / 10, -1, 0)
         }
     }
-
-    public render(): void {
-        super.render()
-    }
 }

@@ -27,13 +27,18 @@ import {
     DINOSAUR_12,
     DINOSAUR_DUCK_1,
     DINOSAUR_DUCK_2,
+    JUMP_SFX,
+    FALL_SFX,
 } from './const'
 import SpriteNoReset from '../engine/component/SpriteNoReset'
+import Sound from '../engine/sound/Sound'
 
 class TRex extends GameObject {
     private minJump: number
     private checkMinJump: boolean
     private defaultSpeed: number
+    private jumpSfx: Sound
+    private fallSfx: Sound
 
     public constructor(x = 0, y = 0, w = 0, h = 0, speed = 1) {
         super(x, y, w, h)
@@ -91,8 +96,8 @@ class TRex extends GameObject {
         this.minJump = 0
         this.checkMinJump = false
         this.defaultSpeed = speed
-        //this.jumpSfx = new Sound('assets/sound/jump_sfx.mp3')
-        //this.fallSfx = new Sound('assets/sound/fall_sfx.wav')
+        this.jumpSfx = new Sound(JUMP_SFX)
+        this.fallSfx = new Sound(FALL_SFX)
     }
 
     public update(deltaTime: number) {
@@ -135,6 +140,8 @@ class TRex extends GameObject {
             this.minJump = 0
             this.checkMinJump = true
             body.addVeloctity(3, 0, -1)
+            this.jumpSfx.stop()
+            this.jumpSfx.play()
         }
         if (this.getY() <= 0) this.fall()
     }

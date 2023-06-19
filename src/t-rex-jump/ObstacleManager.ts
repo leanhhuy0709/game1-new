@@ -12,18 +12,29 @@ export default class ObstacleManager extends GameObject {
         super(0, 0, 0, 0)
         this.obstacles = []
     }
-    public reset() {
+    public reset(camera: Camera = new Camera()) {
         let tmp = 1000
         for (let i = 0; i < this.obstacles.length; i++) {
-            tmp = Math.floor(Math.random() * 1000) + 550 + tmp
-            this.obstacles[i].reset(tmp)
+            //tmp = Math.floor(Math.random() * 1000) + 550 + tmp
+            tmp = 550 + tmp
+
+            const v = -this.obstacles[i]
+                .getComponent<Movement>(Movement)[0]
+                .getVelocity()
+                .getMagnitudeX()
+            //console.log(v, camera.getSpeed())
+            if (v > 0)
+                this.obstacles[i].reset(((tmp - camera.getX() + 550) / camera.getSpeed()) * v + tmp)
+            else this.obstacles[i].reset(((tmp - camera.getX()) / camera.getSpeed()) * v + tmp)
+            //console.log(tmp, this.obstacles[i].getX())
         }
     }
     public update(deltaTime: number, camera: Camera = new Camera()) {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
-            if (this.obstacles[i].getX() < camera.getX() + 700)
-                this.obstacles[i].update(deltaTime)
+            this.obstacles[i].update(deltaTime)
+            if (i == 3) console.log(i, this.obstacles[i].getX())
+
             if (this.obstacles[i].getX() + this.obstacles[i].getWidth() < camera.getX()) {
                 listObstacleNeedToReset.push(i)
             }
@@ -35,12 +46,17 @@ export default class ObstacleManager extends GameObject {
 
         for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
             j = listObstacleNeedToReset[i]
-            maxX += Math.floor(Math.random() * 1000) + 550
+            //maxX += Math.floor(Math.random() * 1000) + 550
+            maxX += 550
 
-            if (this.obstacles[j].getComponent<Movement>(Movement).length > 0) {
-                const v = this.obstacles[j].getComponent<Movement>(Movement)[0].getVelocity().getMagnitudeX()
-                this.obstacles[j].reset(maxX + Math.abs(400 * v))
-            } else this.obstacles[j].reset(maxX)
+            //if (maxX % 4000 <= 100) maxX += 100
+
+            const v = -this.obstacles[j]
+                .getComponent<Movement>(Movement)[0]
+                .getVelocity()
+                .getMagnitudeX()
+
+            this.obstacles[j].reset(((maxX - camera.getX()) / camera.getSpeed()) * v + maxX)
         }
     }
 

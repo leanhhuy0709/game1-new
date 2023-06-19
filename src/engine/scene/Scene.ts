@@ -1,3 +1,4 @@
+import Camera from "../camera/Camera"
 import CollisionManager from "../component/physics/CollisionManager"
 import GameObject from "../game-objects/GameObject"
 import InputHandler from "../input/InputHandler"
@@ -11,6 +12,7 @@ class Scene {
     protected renderer: Renderer
     protected gameObjects: GameObject[]
     protected sceneManager: SceneManager
+    protected camera: Camera
 
     public constructor(sceneManager:SceneManager, name: string, cameraSpeed = 0) {
         this.input = new InputHandler()
@@ -18,6 +20,7 @@ class Scene {
         this.renderer = new Renderer(cameraSpeed)
         this.gameObjects = []
         this.sceneManager = sceneManager
+        this.camera = new Camera(cameraSpeed)
     }
     
     public update(deltaTime: number): void {
@@ -35,7 +38,6 @@ class Scene {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public render(): void {
         this.renderer.sortQueue()
         this.renderer.renderAll()

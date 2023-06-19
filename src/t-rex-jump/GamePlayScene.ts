@@ -11,11 +11,12 @@ import FlyDino from './FlyDino'
 import ObstacleManager from './ObstacleManager'
 
 import TRex from './TRex'
-import { CLOUD_BACKGROUND, GROUND, MOUTAIN } from './const'
+import { CLOUD_BACKGROUND, GROUND, MOUTAIN, MUSIC1 } from './const'
 import { DEPTH } from './depth'
 import Text from '../engine/component/Text'
 import Score from '../engine/score/Score'
 import CollisionManager from '../engine/component/physics/CollisionManager'
+import Sound from '../engine/sound/Sound'
 
 const CAMERA_SPEED = 1.8
 
@@ -26,6 +27,7 @@ class GamePlayScene extends Scene {
     private ground1: GameObject
     private ground2: GameObject
     private ground3: GameObject
+    private sound: Sound
 
     public constructor(sceneManager: SceneManager) {
         super(sceneManager, 'GamePlayScene', CAMERA_SPEED)
@@ -47,34 +49,28 @@ class GamePlayScene extends Scene {
         const cactus1 = new Cactus(100)
         const cactus2 = new Cactus(100)
         const cactus3 = new Cactus(100)
-        const cactus4 = new Cactus(100)
-        const cactus5 = new Cactus(100)
+        //const cactus4 = new Cactus(100)
         const flydino1 = new FlyDino(100)
         const flydino2 = new FlyDino(100)
-        const flydino3 = new FlyDino(100)
         this.obstacleManager = new ObstacleManager()
         this.obstacleManager.add(cactus1)
         this.obstacleManager.add(cactus2)
         this.obstacleManager.add(cactus3)
-        this.obstacleManager.add(cactus4)
-        this.obstacleManager.add(cactus5)
-        //this.obstacleManager.add(flydino1)
-        //this.obstacleManager.add(flydino2)
-        //this.obstacleManager.add(flydino3)
-        this.obstacleManager.reset()
+        //this.obstacleManager.add(cactus4)
+        this.obstacleManager.add(flydino1)
+        this.obstacleManager.add(flydino2)
+        this.obstacleManager.reset(this.renderer.getCamera())
 
         this.addObject(cactus1)
         this.addObject(cactus2)
         this.addObject(cactus3)
-        this.addObject(cactus4)
-        this.addObject(cactus5)
-        //this.addObject(flydino1)
-        //this.addObject(flydino2)
-        //this.addObject(flydino3)
+        //this.addObject(cactus4)
+        this.addObject(flydino1)
+        this.addObject(flydino2)
 
         const bg2 = new GameObject(0, 0, 1000, 400)
         bg2.addComponent(new Background(bg2, MOUTAIN, DEPTH.BACKGROUND_MEDIUM))
-        bg2.addComponent(new Movement(bg2, 0.075, -1, 0))
+        bg2.addComponent(new Movement(bg2, 0.1, -1, 0))
         this.addObject(bg2)
 
         const scoreText = new GameObject(10, 30, 100, 100)
@@ -115,7 +111,12 @@ class GamePlayScene extends Scene {
         this.ground3.addComponent(new Collider(this.ground3))
         this.addObject(this.ground3)
 
+        Sound.setCanPlay()
+        this.sound = new Sound(MUSIC1)
+        this.sound.play()
+
         Score.resetScore()
+        Score.resetLevel()
     }
 
     public update(deltaTime: number): void {
@@ -156,6 +157,15 @@ class GamePlayScene extends Scene {
 
         Score.addWithDeltaTime(deltaTime, 0.1)
 
+        if (Score.getScore() > Score.getLevel() * 1000)
+        {
+            tRex.getComponent<Movement>(Movement)[0].addVeloctity(0.5, 1, 0)
+            tRex.setDefaultSpeed(tRex.getDefaultSpeed() + 0.5)
+            Score.setLevel(Score.getLevel() + 1)
+            this.renderer.getCamera().setSpeed(this.renderer.getCamera().getSpeed() + 0.5)
+        }
+
+
         super.update(deltaTime)
         if (CollisionManager.checkCollision(tRex, this.ground1) && tRex.getX() < this.ground1.getX())
             this.sceneManager.setNextScene('GameOverScene')
@@ -167,7 +177,7 @@ class GamePlayScene extends Scene {
 
     public clear(): void {
         super.clear()
-        //this.sound.stop()
+        this.sound.stop()
     }
 }
 

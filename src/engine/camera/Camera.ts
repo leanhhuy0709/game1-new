@@ -28,4 +28,8 @@ export default class Camera {
     public getY(): number {
         return this.position.getY()
     }
+
+    public setSpeed(v: number): void {
+        this.velocity.setMagnitude(v)
+    }
 }
