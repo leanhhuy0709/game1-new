@@ -37,7 +37,7 @@ export default class Movement extends Component {
     public addVeloctity(v: number, x: number, y: number): void {
         const vX = this.velocity.getMagnitudeX() + v * x
         const vY = this.velocity.getMagnitudeY() + v * y
-        const d = Math.sqrt(vX ** 2 + vY ** 2 )
+        const d = Math.sqrt(vX ** 2 + vY ** 2)
         if (d == 0) {
             this.velocity.setMagnitude(0)
             this.velocity.setDirection(0, 0)
