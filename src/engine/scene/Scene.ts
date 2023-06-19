@@ -24,9 +24,9 @@ class Scene {
     }
     
     public update(deltaTime: number): void {
+        this.camera.update(deltaTime)
         for (let i = 0; i < this.gameObjects.length; i++)
             this.gameObjects[i].update(deltaTime)
-        this.camera.update(deltaTime)
         for (let i = 0; i + 1 < this.gameObjects.length; i++)
         {
             for (let j = i + 1; j < this.gameObjects.length; j++)

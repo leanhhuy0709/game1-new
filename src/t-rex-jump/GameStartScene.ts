@@ -12,17 +12,23 @@ import SceneManager from '../engine/scene/SceneManager'
 import Score from '../engine/score/Score'
 
 class GameStartScene extends Scene {
+    private tRex: TRex
+    private textBox: GameObject
     private highScoreText: GameObject
+    private bg: GameObject
+    private startBtn: GameObject
+    private settingBtn: GameObject
+    private exitBtn: GameObject
     public constructor(sceneManager: SceneManager, cameraSpeed = 0) {
         super(sceneManager, 'GameStartScene', cameraSpeed)
 
-        const tRex = new TRex(0, 0, 100, 100, 0)
-        this.addObject(tRex)
+        this.tRex = new TRex(0, 0, 100, 100, 0)
+        this.addObject(this.tRex)
 
-        const textBox = new GameObject(350, 120, 0, 0)
-        textBox.addComponent(
+        this.textBox = new GameObject(350, 120, 0, 0)
+        this.textBox.addComponent(
             new Text(
-                textBox,
+                this.textBox,
                 DEPTH.OBJECT_MEDIUM,
                 'T-Rex Jump',
                 '50px Comic Sans MS',
@@ -30,23 +36,23 @@ class GameStartScene extends Scene {
                 '#713B61'
             )
         )
-        this.addObject(textBox)
+        this.addObject(this.textBox)
 
-        const bg = new GameObject(0, 0, 700, 400)
-        bg.addComponent(new Background(bg, START_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
-        this.addObject(bg)
+        this.bg = new GameObject(0, 0, 700, 400)
+        this.bg.addComponent(new Background(this.bg, START_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
+        this.addObject(this.bg)
 
-        const startBtn = new GameObject(250, 195, 200, 50)
-        startBtn.addComponent(new Button(startBtn, DEPTH.OBJECT_MEDIUM, 'Start'))
-        this.addObject(startBtn)
+        this.startBtn = new GameObject(250, 195, 200, 50)
+        this.startBtn.addComponent(new Button(this.startBtn, DEPTH.OBJECT_MEDIUM, 'Start'))
+        this.addObject(this.startBtn)
 
-        const settingBtn = new GameObject(250, 255, 200, 50)
-        settingBtn.addComponent(new Button(settingBtn, DEPTH.OBJECT_MEDIUM, 'Setting'))
-        this.addObject(settingBtn)
+        this.settingBtn = new GameObject(250, 255, 200, 50)
+        this.settingBtn.addComponent(new Button(this.settingBtn, DEPTH.OBJECT_MEDIUM, 'Setting'))
+        this.addObject(this.settingBtn)
 
-        const exitBtn = new GameObject(250, 315, 200, 50)
-        exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
-        this.addObject(exitBtn)
+        this.exitBtn = new GameObject(250, 315, 200, 50)
+        this.exitBtn.addComponent(new Button(this.exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
+        this.addObject(this.exitBtn)
 
         this.highScoreText = new GameObject(350, 175, 200, 50)
         this.highScoreText.addComponent(
@@ -67,9 +73,9 @@ class GameStartScene extends Scene {
         const x = mouseHoverCoord.getX() - this.getCamera().getX()
         const y = mouseHoverCoord.getY() - this.getCamera().getY()
 
-        const stBtn = this.gameObjects[3].getComponent<Button>(Button)[0]
-        const setBtn = this.gameObjects[4].getComponent<Button>(Button)[0]
-        const exBtn = this.gameObjects[5].getComponent<Button>(Button)[0]
+        const stBtn = this.startBtn.getComponent<Button>(Button)[0]
+        const setBtn = this.settingBtn.getComponent<Button>(Button)[0]
+        const exBtn = this.exitBtn.getComponent<Button>(Button)[0]
 
         stBtn.isHovered(x, y)
         setBtn.isHovered(x, y)

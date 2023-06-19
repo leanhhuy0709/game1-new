@@ -99,8 +99,8 @@ class TRexJump extends Game {
         const deltaTime = (currTime - lastTime) / 10
 
         if (Loader.isLoadComplete()) {
-            this.sceneManager.update(deltaTime)
-            this.sceneManager.render()
+            this.sceneManager.getScene().update(deltaTime)
+            this.sceneManager.getScene().render()
             
             if (this.sceneManager.isNeedToChangeScene()) {
                 switch (this.sceneManager.getNextScene()) {

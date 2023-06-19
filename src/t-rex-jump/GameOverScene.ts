@@ -10,15 +10,20 @@ import { GAMEOVER_BACKGROUND } from './const'
 import { DEPTH } from './depth'
 
 export default class GameOverScene extends Scene {
+    private textBox: GameObject
+    private bg: GameObject
+    private tryAgainBtn: GameObject
+    private settingBtn: GameObject
+    private exitBtn: GameObject
     private scoreText: GameObject
     private highScoreText: GameObject
     public constructor(sceneManager: SceneManager, cameraSpeed = 0) {
         super(sceneManager, 'GameOverScene', cameraSpeed)
 
-        const textBox = new GameObject(350, 120, 0, 0)
-        textBox.addComponent(
+        this.textBox = new GameObject(350, 120, 0, 0)
+        this.textBox.addComponent(
             new Text(
-                textBox,
+                this.textBox,
                 DEPTH.OBJECT_MEDIUM,
                 'Game Over',
                 '50px Comic Sans MS',
@@ -26,28 +31,28 @@ export default class GameOverScene extends Scene {
                 '#713B61'
             )
         )
-        this.addObject(textBox)
+        this.addObject(this.textBox)
 
-        const bg = new GameObject(0, 0, 700, 400)
-        bg.addComponent(new Background(bg, GAMEOVER_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
-        this.addObject(bg)
+        this.bg = new GameObject(0, 0, 700, 400)
+        this.bg.addComponent(new Background(this.bg, GAMEOVER_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
+        this.addObject(this.bg)
 
-        const startBtn = new GameObject(250, 195, 200, 50)
-        startBtn.addComponent(new Button(startBtn, DEPTH.OBJECT_MEDIUM, 'Try again'))
-        this.addObject(startBtn)
+        this.tryAgainBtn = new GameObject(250, 195, 200, 50)
+        this.tryAgainBtn.addComponent(new Button(this.tryAgainBtn, DEPTH.OBJECT_MEDIUM, 'Try again'))
+        this.addObject(this.tryAgainBtn)
 
-        const settingBtn = new GameObject(250, 255, 200, 50)
-        settingBtn.addComponent(new Button(settingBtn, DEPTH.OBJECT_MEDIUM, 'Setting'))
-        this.addObject(settingBtn)
+        this.settingBtn = new GameObject(250, 255, 200, 50)
+        this.settingBtn.addComponent(new Button(this.settingBtn, DEPTH.OBJECT_MEDIUM, 'Setting'))
+        this.addObject(this.settingBtn)
 
-        const exitBtn = new GameObject(250, 315, 200, 50)
-        exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
-        this.addObject(exitBtn)
+        this.exitBtn = new GameObject(250, 315, 200, 50)
+        this.exitBtn.addComponent(new Button(this.exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
+        this.addObject(this.exitBtn)
 
-        const scoreText = new GameObject(10, 30, 100, 100)
-        scoreText.addComponent(
+        this.scoreText = new GameObject(10, 30, 100, 100)
+        this.scoreText.addComponent(
             new Text(
-                scoreText,
+                this.scoreText,
                 DEPTH.OBJECT_LOW,
                 `${Math.floor(Score.getScore())}`,
                 '30px Comic Sans MS',
@@ -55,13 +60,12 @@ export default class GameOverScene extends Scene {
                 '#000000'
             )
         )
-        this.addObject(scoreText)
-        this.scoreText = scoreText
+        this.addObject(this.scoreText)
 
-        const highScoreText = new GameObject(700, 30, 100, 100)
-        highScoreText.addComponent(
+        this.highScoreText = new GameObject(700, 30, 100, 100)
+        this.highScoreText.addComponent(
             new Text(
-                highScoreText,
+                this.highScoreText,
                 DEPTH.OBJECT_LOW,
                 `${Math.floor(Score.getHighScore())}`,
                 '30px Comic Sans MS',
@@ -69,8 +73,7 @@ export default class GameOverScene extends Scene {
                 '#000000'
             )
         )
-        this.addObject(highScoreText)
-        this.highScoreText = highScoreText
+        this.addObject(this.highScoreText)
     }
 
     public update(deltaTime: number): void {
@@ -78,9 +81,9 @@ export default class GameOverScene extends Scene {
         const x = mouseHoverCoord.getX() - this.getCamera().getX()
         const y = mouseHoverCoord.getY() - this.getCamera().getY()
 
-        const stBtn = this.gameObjects[2].getComponent<Button>(Button)[0]
-        const setBtn = this.gameObjects[3].getComponent<Button>(Button)[0]
-        const exBtn = this.gameObjects[4].getComponent<Button>(Button)[0]
+        const stBtn = this.tryAgainBtn.getComponent<Button>(Button)[0]
+        const setBtn = this.settingBtn.getComponent<Button>(Button)[0]
+        const exBtn = this.exitBtn.getComponent<Button>(Button)[0]
 
         stBtn.isHovered(x, y)
         setBtn.isHovered(x, y)

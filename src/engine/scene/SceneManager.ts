@@ -8,12 +8,9 @@ class SceneManager {
         this.nextSceneName = this.scene.getName()
     }
 
-    public update(deltaTime: number): void {
-        this.scene.update(deltaTime)
-    }
-
-    public render(): void {
-        this.scene.render()
+    public getScene(): Scene
+    {
+        return this.scene
     }
 
     public setNewScene(scene: Scene): void {

@@ -33,7 +33,6 @@ export default class ObstacleManager extends GameObject {
         const listObstacleNeedToReset = []
         for (let i = 0; i < this.obstacles.length; i++) {
             this.obstacles[i].update(deltaTime)
-            if (i == 3) console.log(i, this.obstacles[i].getX())
 
             if (this.obstacles[i].getX() + this.obstacles[i].getWidth() < camera.getX()) {
                 listObstacleNeedToReset.push(i)

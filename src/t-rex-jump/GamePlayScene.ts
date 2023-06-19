@@ -21,6 +21,10 @@ import Sound from '../engine/sound/Sound'
 const CAMERA_SPEED = 1.8
 
 class GamePlayScene extends Scene {
+    private tRex: TRex
+    private bg: GameObject
+    private moutain: GameObject
+
     private obstacleManager: ObstacleManager
     private scoreText: GameObject
     private highScoreText: GameObject
@@ -31,15 +35,13 @@ class GamePlayScene extends Scene {
 
     public constructor(sceneManager: SceneManager) {
         super(sceneManager, 'GamePlayScene', CAMERA_SPEED)
-        //console.log(this.renderer)
 
-        const tRex = new TRex(0, 100, 100, 100, CAMERA_SPEED)
-        this.addObject(tRex)
+        this.tRex = new TRex(0, 100, 100, 100, CAMERA_SPEED)
+        this.addObject(this.tRex)
 
-        const bg = new GameObject(0, 0, 1000, 400)
-        bg.addComponent(new Background(bg, CLOUD_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
-        //bg.addComponent(new Movement(bg, 0, 0, 0))
-        this.addObject(bg)
+        this.bg = new GameObject(0, 0, 1000, 400)
+        this.bg.addComponent(new Background(this.bg, CLOUD_BACKGROUND, DEPTH.BACKGROUND_MEDIUM))
+        this.addObject(this.bg)
 
         this.ground1 = new GameObject(0, 350, 4000, 100)
         this.ground1.addComponent(new Picture(this.ground1, GROUND, DEPTH.BACKGROUND_HIGH))
@@ -68,10 +70,10 @@ class GamePlayScene extends Scene {
         this.addObject(flydino1)
         this.addObject(flydino2)
 
-        const bg2 = new GameObject(0, 0, 1000, 400)
-        bg2.addComponent(new Background(bg2, MOUTAIN, DEPTH.BACKGROUND_MEDIUM))
-        bg2.addComponent(new Movement(bg2, 0.1, -1, 0))
-        this.addObject(bg2)
+        this.moutain = new GameObject(0, 0, 1000, 400)
+        this.moutain.addComponent(new Background(this.moutain, MOUTAIN, DEPTH.BACKGROUND_MEDIUM))
+        this.moutain.addComponent(new Movement(this.moutain, 0.1, -1, 0))
+        this.addObject(this.moutain)
 
         const scoreText = new GameObject(10, 30, 100, 100)
         scoreText.addComponent(
@@ -122,31 +124,23 @@ class GamePlayScene extends Scene {
     public update(deltaTime: number): void {
         if (this.ground1.getX() + this.ground1.getWidth() <= this.getCamera().getX()) {
             this.ground1.setX(this.ground3.getX() + this.ground3.getWidth())
-        } else if (
-            this.ground2.getX() + this.ground2.getWidth() <=
-            this.getCamera().getX()
-        ) {
+        } else if (this.ground2.getX() + this.ground2.getWidth() <= this.getCamera().getX()) {
             this.ground2.setX(this.ground1.getX() + this.ground1.getWidth())
-        }
-        else if (
-            this.ground3.getX() + this.ground3.getWidth() <=
-            this.getCamera().getX()
-        ) {
+        } else if (this.ground3.getX() + this.ground3.getWidth() <= this.getCamera().getX()) {
             this.ground3.setX(this.ground2.getX() + this.ground2.getWidth())
         }
 
-        const tRex = this.gameObjects[0] as TRex
         if (this.input.isKeyDown('Space')) {
-            tRex.jump()
+            this.tRex.jump()
         } else if (this.input.isKeyUp('Space')) {
-            if (tRex.getMinJump() >= 90) {
-                tRex.fall()
+            if (this.tRex.getMinJump() >= 90) {
+                this.tRex.fall()
                 this.input.resetAllKeyEvent()
             }
         }
 
         this.obstacleManager.update(deltaTime, this.getCamera())
-        if (this.obstacleManager.checkCollision(tRex)) {
+        if (this.obstacleManager.checkCollision(this.tRex)) {
             this.sceneManager.setNextScene('GameOverScene')
         }
 
@@ -157,21 +151,28 @@ class GamePlayScene extends Scene {
 
         Score.addWithDeltaTime(deltaTime, 0.1)
 
-        if (Score.getScore() > Score.getLevel() * 1000)
-        {
-            tRex.getComponent<Movement>(Movement)[0].addVeloctity(0.5, 1, 0)
-            tRex.setDefaultSpeed(tRex.getDefaultSpeed() + 0.5)
+        if (Score.getScore() > Score.getLevel() * 1000) {
+            this.tRex.getComponent<Movement>(Movement)[0].addVeloctity(0.5, 1, 0)
+            this.tRex.setDefaultSpeed(this.tRex.getDefaultSpeed() + 0.5)
             Score.setLevel(Score.getLevel() + 1)
             this.getCamera().setSpeed(this.getCamera().getSpeed() + 0.5)
         }
 
-
         super.update(deltaTime)
-        if (CollisionManager.checkCollision(tRex, this.ground1) && tRex.getX() < this.ground1.getX())
+        if (
+            CollisionManager.checkCollision(this.tRex, this.ground1) &&
+            this.tRex.getX() < this.ground1.getX()
+        )
             this.sceneManager.setNextScene('GameOverScene')
-        if (CollisionManager.checkCollision(tRex, this.ground2) && tRex.getX() < this.ground2.getX())
+        if (
+            CollisionManager.checkCollision(this.tRex, this.ground2) &&
+            this.tRex.getX() < this.ground2.getX()
+        )
             this.sceneManager.setNextScene('GameOverScene')
-        if (CollisionManager.checkCollision(tRex, this.ground3) && tRex.getX() < this.ground3.getX())
+        if (
+            CollisionManager.checkCollision(this.tRex, this.ground3) &&
+            this.tRex.getX() < this.ground3.getX()
+        )
             this.sceneManager.setNextScene('GameOverScene')
     }
 
