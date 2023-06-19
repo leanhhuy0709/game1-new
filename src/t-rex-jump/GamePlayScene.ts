@@ -51,22 +51,22 @@ class GamePlayScene extends Scene {
         const cactus1 = new Cactus(100)
         const cactus2 = new Cactus(100)
         const cactus3 = new Cactus(100)
-        //const cactus4 = new Cactus(100)
+        const cactus4 = new Cactus(100)
         const flydino1 = new FlyDino(100)
         const flydino2 = new FlyDino(100)
         this.obstacleManager = new ObstacleManager()
         this.obstacleManager.add(cactus1)
         this.obstacleManager.add(cactus2)
         this.obstacleManager.add(cactus3)
-        //this.obstacleManager.add(cactus4)
+        this.obstacleManager.add(cactus4)
         this.obstacleManager.add(flydino1)
         this.obstacleManager.add(flydino2)
-        this.obstacleManager.reset(this.getCamera())
+        this.obstacleManager.reset(this.camera)
 
         this.addObject(cactus1)
         this.addObject(cactus2)
         this.addObject(cactus3)
-        //this.addObject(cactus4)
+        this.addObject(cactus4)
         this.addObject(flydino1)
         this.addObject(flydino2)
 
@@ -130,6 +130,8 @@ class GamePlayScene extends Scene {
             this.ground3.setX(this.ground2.getX() + this.ground2.getWidth())
         }
 
+        this.obstacleManager.update(deltaTime, this.getCamera())
+
         if (this.input.isKeyDown('Space')) {
             this.tRex.jump()
         } else if (this.input.isKeyUp('Space')) {
@@ -138,6 +140,13 @@ class GamePlayScene extends Scene {
                 this.input.resetAllKeyEvent()
             }
         }
+
+        if (this.input.isKeyDown('ArrowDown')) {
+            this.tRex.duck()
+        } else if (this.input.isKeyUp('ArrowDown')) {
+            this.tRex.move()
+        }
+
 
         this.obstacleManager.update(deltaTime, this.getCamera())
         if (this.obstacleManager.checkCollision(this.tRex)) {
@@ -179,6 +188,11 @@ class GamePlayScene extends Scene {
     public clear(): void {
         super.clear()
         this.sound.stop()
+    }
+
+    public render(): void {
+        this.obstacleManager.render()
+        super.render()
     }
 }
 

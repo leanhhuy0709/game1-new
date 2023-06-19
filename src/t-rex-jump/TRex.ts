@@ -39,6 +39,7 @@ class TRex extends GameObject {
     private defaultSpeed: number
     private jumpSfx: Sound
     private fallSfx: Sound
+    private isDuck: boolean
 
     public constructor(x = 0, y = 0, w = 0, h = 0, speed = 1) {
         super(x, y, w, h)
@@ -111,8 +112,13 @@ class TRex extends GameObject {
         const duckSprite = spriteList[3]
 
         const body = this.getComponent<Body>(Body)[0]
-        //don't duck at this time
-        if (Math.abs(body.getVelocity().getMagnitudeY()) < 0.05) {
+
+        if (this.isDuck) {
+            moveSprite.setIsAcitve(false)
+            duckSprite.setIsAcitve(true)
+            jumpSprite.setIsAcitve(false)
+            fallSprite.setIsAcitve(false)
+        } else if (Math.abs(body.getVelocity().getMagnitudeY()) < 0.05) {
             moveSprite.setIsAcitve(true)
             duckSprite.setIsAcitve(false)
             jumpSprite.setIsAcitve(false)
@@ -135,6 +141,9 @@ class TRex extends GameObject {
     }
 
     public jump(): void {
+        if (this.isDuck) {
+            this.move()
+        }
         const body = this.getComponent<Body>(Body)[0]
         if (Math.abs(body.getVelocity().getMagnitudeY()) == 0) {
             this.minJump = 0
@@ -147,6 +156,9 @@ class TRex extends GameObject {
     }
 
     public fall(): void {
+        if (this.isDuck) {
+            this.move()
+        }
         const body = this.getComponent<Body>(Body)[0]
         if (body.getVelocity().getMagnitudeY() < 0) {
             body.setVelocity(this.defaultSpeed, 1, 0)
@@ -154,21 +166,21 @@ class TRex extends GameObject {
     }
 
     public duck(): void {
-        /*
-        this.isDuck = true
-        const rect = this.getShape() as Rectangle
-        rect.getSize().setHeight(0.8 * 100)
-        rect.getCoord().setY(270)
-        */
+        const body = this.getComponent<Body>(Body)[0]
+        if (Math.abs(body.getVelocity().getMagnitudeY()) == 0) {
+            this.isDuck = true
+            this.setHeight(80)
+            this.setY(270)
+        }
     }
 
     public move(): void {
-        /*
-        this.isDuck = false
-        const rect = this.getShape() as Rectangle
-        rect.getSize().setHeight(100)
-        */
-        //rect.getCoord().setY(250)
+        const body = this.getComponent<Body>(Body)[0]
+        if (Math.abs(body.getVelocity().getMagnitudeY()) == 0) {
+            this.isDuck = false
+            this.setHeight(100)
+            this.setY(250)
+        }
     }
 
     public getMinJump(): number {

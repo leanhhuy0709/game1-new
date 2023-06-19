@@ -15,7 +15,7 @@ export default class FlyDino extends Obstacle {
         this.reset(x)
     }
 
-    public reset(x: number, moveSpeed = 0.3) {
+    public reset(x: number, moveSpeed = 0.1) {
         this.setX(x)
         const arr = [80, 50]
         this.setY(arr[Random.getIntNumber(0, arr.length)])
@@ -26,6 +26,7 @@ export default class FlyDino extends Obstacle {
         const tmp = this.getComponent<Movement>(Movement)
         if (tmp.length > 0) {
             tmp[0].setVelocity(moveSpeed, -1, 0)
+            //tmp[0].setVelocity(0, -1, 0)
         }
     }
 }
