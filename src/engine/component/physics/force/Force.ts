@@ -32,5 +32,5 @@ export default class Force {
     }
 }
 
-export const GRAVITY = new Force(0.01, 0, 1)
+export const GRAVITY = new Force(0.015, 0, 1)
 export const MASS = 1

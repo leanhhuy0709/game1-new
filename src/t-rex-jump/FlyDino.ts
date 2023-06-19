@@ -17,8 +17,8 @@ export default class FlyDino extends Obstacle {
 
     public reset(x: number, moveSpeed = 0.3) {
         this.setX(x)
-        const arr = [170, 130, 100]
-        this.setY(arr[Random.getIntNumber(0, 3)])
+        const arr = [80, 50]
+        this.setY(arr[Random.getIntNumber(0, arr.length)])
 
         this.setWidth(90)
         this.setHeight(80)

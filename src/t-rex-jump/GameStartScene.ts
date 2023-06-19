@@ -9,8 +9,10 @@ import { DEPTH } from './depth'
 import TRex from './TRex'
 import { START_BACKGROUND } from './const'
 import SceneManager from '../engine/scene/SceneManager'
+import Score from '../engine/score/Score'
 
 class GameStartScene extends Scene {
+    private highScoreText: GameObject
     public constructor(sceneManager: SceneManager, cameraSpeed = 0) {
         super(sceneManager, 'GameStartScene', cameraSpeed)
 
@@ -45,6 +47,19 @@ class GameStartScene extends Scene {
         const exitBtn = new GameObject(250, 315, 200, 50)
         exitBtn.addComponent(new Button(exitBtn, DEPTH.OBJECT_MEDIUM, 'Exit'))
         this.addObject(exitBtn)
+
+        this.highScoreText = new GameObject(350, 175, 200, 50)
+        this.highScoreText.addComponent(
+            new Text(
+                this.highScoreText,
+                DEPTH.OBJECT_LOW,
+                `Highscore: ${Score.getHighScore()}`,
+                '30px Comic Sans MS',
+                'center',
+                '#000000'
+            )
+        )
+        this.addObject(this.highScoreText)
     }
 
     public update(deltaTime: number): void {
@@ -80,6 +95,8 @@ class GameStartScene extends Scene {
             }
             this.input.resetTouch()
         }
+
+        this.highScoreText.getComponent<Text>(Text)[0].setContent(`Highscore: ${Math.floor(Score.getHighScore())}`)
 
         super.update(deltaTime)
     }

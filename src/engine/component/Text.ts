@@ -1,7 +1,6 @@
-import Camera from "../camera/Camera"
-import GameObject from "../game-objects/GameObject"
-import Canvas from "../renderer/canvas/Canvas"
-import RenderComponent from "./RenderComponent"
+import GameObject from '../game-objects/GameObject'
+import Canvas from '../renderer/canvas/Canvas'
+import RenderComponent from './RenderComponent'
 
 export default class Text extends RenderComponent {
     private content: string
@@ -51,13 +50,13 @@ export default class Text extends RenderComponent {
         this.align = align
     }
 
-    public render(camera = new Camera()): void {
+    public render(): void {
         if (Canvas.ctx) {
             Canvas.ctx.fillStyle = this.color
             Canvas.ctx.font = this.font
             Canvas.ctx.textAlign = this.align
             Canvas.ctx.textBaseline = this.baseline
-            Canvas.ctx.fillText(this.content, this.parent.getX() - camera.getX(), this.parent.getY() - camera.getY())
+            Canvas.ctx.fillText(this.content, this.parent.getX(), this.parent.getY())
         }
     }
 

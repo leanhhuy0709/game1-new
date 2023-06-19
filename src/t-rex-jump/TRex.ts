@@ -134,8 +134,9 @@ class TRex extends GameObject {
         if (Math.abs(body.getVelocity().getMagnitudeY()) == 0) {
             this.minJump = 0
             this.checkMinJump = true
-            body.addVeloctity(2.1, 0, -1)
+            body.addVeloctity(3, 0, -1)
         }
+        if (this.getY() <= 0) this.fall()
     }
 
     public fall(): void {
