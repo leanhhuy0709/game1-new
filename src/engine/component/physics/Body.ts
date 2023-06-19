@@ -8,8 +8,8 @@ export default class Body extends Movement {
     private forces: Force[]
     private acceleration: ForceVector
 
-    public constructor(obj: GameObject, velocity: number, x: number, y: number) {
-        super(obj, velocity, x, y)
+    public constructor(obj: GameObject, speed = 0, x = 0, y = 0) {
+        super(obj, speed, x, y)
         this.forces = [GRAVITY]
         this.acceleration = new ForceVector(0, 0, 0)
         this.calculateAcceleration()

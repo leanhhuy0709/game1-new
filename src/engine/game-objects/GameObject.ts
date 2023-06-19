@@ -65,8 +65,7 @@ export default class GameObject {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public getComponent<T extends Component>(type: new (...args: any[]) => T): T[] {
+    public getComponent<T extends Component>(type: typeof Component): T[] {
         return this.components.filter(component => component instanceof type) as T[]
     }
 

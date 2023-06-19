@@ -17,7 +17,7 @@ class Scene {
     public constructor(sceneManager:SceneManager, name: string, cameraSpeed = 0) {
         this.input = new InputHandler()
         this.name = name
-        this.renderer = new Renderer(cameraSpeed)
+        this.renderer = new Renderer()
         this.gameObjects = []
         this.sceneManager = sceneManager
         this.camera = new Camera(cameraSpeed)
@@ -26,7 +26,7 @@ class Scene {
     public update(deltaTime: number): void {
         for (let i = 0; i < this.gameObjects.length; i++)
             this.gameObjects[i].update(deltaTime)
-        this.renderer.update(deltaTime)
+        this.camera.update(deltaTime)
         for (let i = 0; i + 1 < this.gameObjects.length; i++)
         {
             for (let j = i + 1; j < this.gameObjects.length; j++)
@@ -39,8 +39,7 @@ class Scene {
     }
 
     public render(): void {
-        this.renderer.sortQueue()
-        this.renderer.renderAll()
+        this.renderer.renderAll(this.camera)
     }
 
     public clear(): void {
@@ -51,10 +50,20 @@ class Scene {
         return this.name
     }
 
-    public addObject(obj: GameObject)
+    public addObject(obj: GameObject): void
     {
         this.gameObjects.push(obj)
         this.renderer.addToQueue(obj)
+    }
+
+    public getCamera(): Camera
+    {
+        return this.camera
+    }
+
+    public setCameraSpeed(speed: number): void
+    {
+        this.camera.setSpeed(speed)
     }
 }
 

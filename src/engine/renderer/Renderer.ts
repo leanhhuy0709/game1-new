@@ -4,12 +4,10 @@ import GameObject from "../game-objects/GameObject"
 
 class Renderer {
     private renders: RenderComponent[]
-    private camera: Camera
 
-    public constructor(speed: number)
+    public constructor()
     {
         this.renders = []
-        this.camera = new Camera(speed)
     }
     
     public addToQueue(obj: GameObject): void {
@@ -29,22 +27,12 @@ class Renderer {
         this.renders.sort((e1, e2) => e1.getDepth() - e2.getDepth())
     }
 
-    public renderAll() {
+    public renderAll(camera = new Camera()) {
         this.sortQueue()
         for (let i = 0; i < this.renders.length; i++)
         {
-            this.renders[i].render(this.camera)
+            this.renders[i].render(camera)
         }
-    }
-
-    public update(deltaTime: number)
-    {
-        this.camera.update(deltaTime)
-    }
-
-    public getCamera(): Camera
-    {
-        return this.camera
     }
 }
 

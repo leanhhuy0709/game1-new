@@ -6,7 +6,7 @@ import ForceVector from './force/ForceVector'
 export default class Movement extends Component {
     protected velocity: ForceVector
 
-    public constructor(obj: GameObject, velocity: number, x: number, y: number) {
+    public constructor(obj: GameObject, velocity = 0, x = 0, y = 0) {
         super(obj)
         this.velocity = new ForceVector(velocity, x, y)
     }

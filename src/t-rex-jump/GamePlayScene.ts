@@ -59,7 +59,7 @@ class GamePlayScene extends Scene {
         //this.obstacleManager.add(cactus4)
         this.obstacleManager.add(flydino1)
         this.obstacleManager.add(flydino2)
-        this.obstacleManager.reset(this.renderer.getCamera())
+        this.obstacleManager.reset(this.getCamera())
 
         this.addObject(cactus1)
         this.addObject(cactus2)
@@ -120,17 +120,17 @@ class GamePlayScene extends Scene {
     }
 
     public update(deltaTime: number): void {
-        if (this.ground1.getX() + this.ground1.getWidth() <= this.renderer.getCamera().getX()) {
+        if (this.ground1.getX() + this.ground1.getWidth() <= this.getCamera().getX()) {
             this.ground1.setX(this.ground3.getX() + this.ground3.getWidth())
         } else if (
             this.ground2.getX() + this.ground2.getWidth() <=
-            this.renderer.getCamera().getX()
+            this.getCamera().getX()
         ) {
             this.ground2.setX(this.ground1.getX() + this.ground1.getWidth())
         }
         else if (
             this.ground3.getX() + this.ground3.getWidth() <=
-            this.renderer.getCamera().getX()
+            this.getCamera().getX()
         ) {
             this.ground3.setX(this.ground2.getX() + this.ground2.getWidth())
         }
@@ -145,7 +145,7 @@ class GamePlayScene extends Scene {
             }
         }
 
-        this.obstacleManager.update(deltaTime, this.renderer.getCamera())
+        this.obstacleManager.update(deltaTime, this.getCamera())
         if (this.obstacleManager.checkCollision(tRex)) {
             this.sceneManager.setNextScene('GameOverScene')
         }
@@ -162,7 +162,7 @@ class GamePlayScene extends Scene {
             tRex.getComponent<Movement>(Movement)[0].addVeloctity(0.5, 1, 0)
             tRex.setDefaultSpeed(tRex.getDefaultSpeed() + 0.5)
             Score.setLevel(Score.getLevel() + 1)
-            this.renderer.getCamera().setSpeed(this.renderer.getCamera().getSpeed() + 0.5)
+            this.getCamera().setSpeed(this.getCamera().getSpeed() + 0.5)
         }
 
 

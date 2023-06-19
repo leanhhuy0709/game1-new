@@ -97,7 +97,7 @@ export default class Debug extends Game {
         this.o3.addComponent(new Movement(this.o3, 0.05, 1, 0))
 
         this.input = new InputHandler()
-        this.renderer = new Renderer(0.1)
+        this.renderer = new Renderer()
         this.renderer.addToQueue(this.o1)
         this.renderer.addToQueue(this.o2)
         this.renderer.addToQueue(this.o3)
@@ -128,7 +128,6 @@ export default class Debug extends Game {
         this.o1.update(deltaTime)
         this.o2.update(deltaTime)
         this.o3.update(deltaTime)
-        this.renderer.update(deltaTime)
 
         CollisionManager.checkCollision(this.o1, this.o2)
         //CollisionManager.checkCollision(this.o1, this.o3)

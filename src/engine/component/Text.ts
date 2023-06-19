@@ -11,10 +11,10 @@ export default class Text extends RenderComponent {
 
     public constructor(
         obj: GameObject,
-        depth: number,
+        depth = 1,
         content = '',
         font = '30px Cambria',
-        align: CanvasTextAlign,
+        align: CanvasTextAlign = 'center',
         color = 'black',
         baseline: CanvasTextBaseline = 'alphabetic'
     ) {

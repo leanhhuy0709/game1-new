@@ -8,7 +8,7 @@ export default class Button extends RenderComponent {
     private text: Text
     private isHover: boolean
 
-    public constructor(obj: GameObject, depth: number, content: string) {
+    public constructor(obj: GameObject, depth = 1, content = '') {
         super(obj, depth)
         this.text = new Text(
             new GameObject(obj.getX() + obj.getWidth() / 2, obj.getY() + obj.getHeight() / 2, 0, 0),

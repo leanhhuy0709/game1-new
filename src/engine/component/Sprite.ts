@@ -12,8 +12,8 @@ class Sprite extends RenderComponent {
 
     public constructor(
         obj: GameObject,
-        imageHrefs: string[],
-        spriteChangeInterval: number,
+        imageHrefs: string[] = [],
+        spriteChangeInterval = 1,
         depth = 1
     ) {
         super(obj, depth)

@@ -64,8 +64,8 @@ class GameStartScene extends Scene {
 
     public update(deltaTime: number): void {
         const mouseHoverCoord = this.input.getMouseHoverCoord()
-        const x = mouseHoverCoord.getX() - this.renderer.getCamera().getX()
-        const y = mouseHoverCoord.getY() - this.renderer.getCamera().getY()
+        const x = mouseHoverCoord.getX() - this.getCamera().getX()
+        const y = mouseHoverCoord.getY() - this.getCamera().getY()
 
         const stBtn = this.gameObjects[3].getComponent<Button>(Button)[0]
         const setBtn = this.gameObjects[4].getComponent<Button>(Button)[0]
