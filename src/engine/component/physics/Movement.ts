@@ -2,7 +2,7 @@ import GameObject from '../../game-objects/GameObject'
 import Component from '../Component'
 import ForceVector from './force/ForceVector'
 
-//Body can be affected by many forces
+//Object which has Movement can move
 export default class Movement extends Component {
     protected velocity: ForceVector
 

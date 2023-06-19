@@ -9,7 +9,7 @@ import Collider from '../engine/component/physics/Collider'
 export default class FlyDino extends Obstacle {
     public constructor(x: number) {
         super(x, 0, 0, 0)
-        this.addComponent(new Sprite(this, [FLYDINO_1, FLYDINO_2, FLYDINO_3], 25, DEPTH.OBJECT_MEDIUM))
+        this.addComponent(new Sprite(this, [FLYDINO_1, FLYDINO_2, FLYDINO_3], 27, DEPTH.OBJECT_MEDIUM))
         this.addComponent(new Movement(this, 0, 0, 0))
         this.addComponent(new Collider(this))
         this.reset(x)
@@ -26,7 +26,6 @@ export default class FlyDino extends Obstacle {
         const tmp = this.getComponent<Movement>(Movement)
         if (tmp.length > 0) {
             tmp[0].setVelocity(moveSpeed, -1, 0)
-            //tmp[0].setVelocity(0, -1, 0)
         }
     }
 }

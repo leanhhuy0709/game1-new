@@ -113,5 +113,3 @@ export default class GameOverScene extends Scene {
         super.update(deltaTime)
     }
 }
-
-GameOverScene

@@ -17,6 +17,8 @@ import Text from '../engine/component/Text'
 import Score from '../engine/score/Score'
 import CollisionManager from '../engine/component/physics/CollisionManager'
 import Sound from '../engine/sound/Sound'
+import DecorObjectManager from './DecorObjectManager'
+import Cloud from './Cloud'
 
 const CAMERA_SPEED = 1.8
 
@@ -26,6 +28,7 @@ class GamePlayScene extends Scene {
     private moutain: GameObject
 
     private obstacleManager: ObstacleManager
+    private decorManager: DecorObjectManager
     private scoreText: GameObject
     private highScoreText: GameObject
     private ground1: GameObject
@@ -117,6 +120,24 @@ class GamePlayScene extends Scene {
         this.sound = new Sound(MUSIC1)
         this.sound.play()
 
+        this.decorManager = new DecorObjectManager()
+        const cloud1 = new Cloud(500, 100, 90, 80)
+        const cloud2 = new Cloud(600, 100, 90, 80)
+        const cloud3 = new Cloud(700, 100, 90, 80)
+        const cloud4 = new Cloud(800, 100, 90, 80)
+        const cloud5 = new Cloud(900, 100, 90, 80)
+        this.addObject(cloud1)
+        this.addObject(cloud2)
+        this.addObject(cloud3)
+        this.addObject(cloud4)
+        this.addObject(cloud5)
+
+        this.decorManager.addDecor(cloud1)
+        this.decorManager.addDecor(cloud2)
+        this.decorManager.addDecor(cloud3)
+        this.decorManager.addDecor(cloud4)
+        this.decorManager.addDecor(cloud5)
+
         Score.resetScore()
         Score.resetLevel()
     }
@@ -131,6 +152,7 @@ class GamePlayScene extends Scene {
         }
 
         this.obstacleManager.update(deltaTime, this.getCamera())
+        this.decorManager.update(deltaTime, this.getCamera())
 
         if (this.input.isKeyDown('Space')) {
             this.tRex.jump()
@@ -191,7 +213,6 @@ class GamePlayScene extends Scene {
     }
 
     public render(): void {
-        this.obstacleManager.render()
         super.render()
     }
 }

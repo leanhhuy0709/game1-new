@@ -62,7 +62,6 @@ class InputHandler {
     }
 
     private handleTouchStart(event: TouchEvent) {
-        //this.resetAllKeyEvent()
         const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.touches[0]
         const x = touch.clientX - rect.left
@@ -71,7 +70,6 @@ class InputHandler {
     }
 
     private handleTouchEnd(event: TouchEvent) {
-        //this.resetAllKeyEvent()
         const rect = Canvas.canvas.getBoundingClientRect()
         const touch = event.changedTouches[0]
         const x = touch.clientX - rect.left
@@ -84,7 +82,7 @@ class InputHandler {
         this.coordTouch.setCoord(-1, -1)
         this.directTouch = ''
     }
-    //
+    
     //type TouchDirection = 'U' | 'L' | 'R' | 'D' | 'N'
     private getDirection(x1: number, y1: number, x2: number, y2: number): string {
         const x = x2 - x1

@@ -11,9 +11,9 @@ export default class Cactus extends Obstacle {
         this.addComponent(new Body(this, 0, 0, 0))
         this.reset(x)
     }
+    
     public reset(x: number) {
         this.setX(x)
-        //this.setY(270)
         this.setY(100)
         this.setWidth(60)
         this.setHeight(80)

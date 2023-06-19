@@ -95,7 +95,6 @@ class TRexJump extends Game {
 
     public update(lastTime: number): void {
         let currTime = Date.now()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const deltaTime = (currTime - lastTime) / 10
 
         if (Loader.isLoadComplete()) {

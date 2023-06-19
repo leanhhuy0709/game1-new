@@ -6,10 +6,10 @@ import Decor from './Decor'
 import { CLOUD } from './const'
 
 export default class Cloud extends Decor {
-    public constructor(x: number, y: number, w: number, h: number) {
+    public constructor(x: number, y: number, w: number, h: number, depth = DEPTH.OBJECT_LOW) {
         super(x, y, w, h)
         //super(new Rectangle(x, y, w, h, 'Cloud'), [CLOUD], 1, Random.getIntNumber(-5, 5) / 10)
-        this.addComponent(new Picture(this, CLOUD, DEPTH.OBJECT_LOW))
+        this.addComponent(new Picture(this, CLOUD, depth))
         this.addComponent(new Movement(this, 0, 0, 0))
         this.reset(x)
     }

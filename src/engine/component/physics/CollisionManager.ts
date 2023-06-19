@@ -34,7 +34,7 @@ export default class CollisionManager {
             w2 = object2.getWidth(),
             h2 = object2.getHeight()
 
-        //take component body from object1
+        //take component body from object
         const moves1 = object1.getComponent<Movement>(Movement)
         const moves2 = object2.getComponent<Movement>(Movement)
         let move1: Movement | null, move2: Movement | null
@@ -42,7 +42,6 @@ export default class CollisionManager {
         else move1 = null
         if (moves2.length > 0) move2 = moves2[0]
         else move2 = null
-        //check va cham x or y
 
         const deltaX = x2 + w2 - (x1 + w1),
             deltaY = y2 + h2 - (y1 + h1)

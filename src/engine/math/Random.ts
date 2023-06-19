@@ -13,7 +13,6 @@ export default class Random
 
     public static shuffle(arr: number[])
     {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        arr.sort((a, b) => Math.random())
+        arr.sort((_a, _b) => Math.random())
     }
 }

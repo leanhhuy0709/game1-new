@@ -28,7 +28,7 @@ class Picture extends RenderComponent {
     }
 
     public update(_deltaTime: number) {
-        //render
+        //
     }
 }
 

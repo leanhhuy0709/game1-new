@@ -1,24 +1,16 @@
 import Camera from '../engine/camera/Camera'
-import Cloud from './Cloud'
 import Decor from './Decor'
-//import Stone from "./Stone"
 
 export default class DecorObjectManager {
     private objs: Decor[]
     public constructor() {
         this.objs = []
-        for (let i = 0; i < 10; i++) {
-            this.objs.push(new Cloud(50, 50, 100, 100))
-            //else this.objs.push(new Stone(50, 50, 50))
-        }
-        this.reset()
     }
 
     public reset() {
-        console.log(this.objs)
         let tmp = 0
-        for (let i = 0; i < 10; i++) {
-            tmp = Math.floor(Math.random() * 500) + 100 + tmp
+        for (let i = 0; i < this.objs.length; i++) {
+            tmp = Math.floor(Math.random() * 500) + 300 + tmp
             this.objs[i].reset(tmp)
         }
     }
@@ -44,12 +36,16 @@ export default class DecorObjectManager {
             maxX = maxX > this.objs[i].getX() ? maxX : this.objs[i].getX()
         for (let i = 0, j = 0; i < listObstacleNeedToReset.length; i++) {
             j = listObstacleNeedToReset[i]
-            maxX += Math.floor(Math.random() * 500) + 100
+            maxX += Math.floor(Math.random() * 500) + 300
             this.objs[j].reset(maxX)
         }
     }
 
     public getDecors(): Decor[] {
         return this.objs
+    }
+
+    public addDecor(decor: Decor): void {
+        this.objs.push(decor)
     }
 }

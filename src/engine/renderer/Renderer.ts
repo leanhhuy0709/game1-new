@@ -12,7 +12,6 @@ class Renderer {
     
     public addToQueue(obj: GameObject): void {
         const comps = obj.getComponents()
-        //->GameObject[]
         for (let i = 0; i < comps.length; i++)
         {
             if (comps[i] instanceof RenderComponent)
